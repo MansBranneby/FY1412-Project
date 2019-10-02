@@ -11,11 +11,17 @@ enum ObjectType //Troligtvis ett tillfälligt sätt att hantera detta.
 	TERRAIN
 };
 
+enum Geometry
+{
+	SPHERE, PLANE
+};
+
 class GameObject
 {
 private:
 	Model _model;
 	ObjectType _objectType;
+	Geometry _geometryType;
 	std::string _modelDirectory = ".\\Resources\\Models\\";
 	XMVECTOR _position;
 	
@@ -25,8 +31,8 @@ protected:
 	void updateTransformations(XMFLOAT3 position);
 
 public:
-	GameObject(ObjectType objectType, DirectX::XMVECTOR startingPosition);
-	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, DirectX::XMVECTOR position, std::string modelFile);
+	GameObject(ObjectType objectType, Geometry geometryType, DirectX::XMVECTOR startingPosition);
+	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType, DirectX::XMVECTOR position, std::string modelFile);
 	virtual ~GameObject() = 0;
 
 	Model* getModel();

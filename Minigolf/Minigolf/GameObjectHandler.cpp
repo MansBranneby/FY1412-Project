@@ -49,20 +49,20 @@ GameObjectHandler::~GameObjectHandler()
 	freeMemory();
 }
 
-void GameObjectHandler::addGameObject(ObjectType objType, XMVECTOR position, std::string modelFile)
+void GameObjectHandler::addGameObject(ObjectType objType, Geometry geometryType, XMVECTOR position, std::string modelFile)
 {
 	if (_nrOfObjects == _capacity)
 		expand();
 	switch (objType)
 	{
 	case PLAYER:
-		_player = new Player(_device, _deviceContext, position, modelFile);
+		_player = new Player(_device, _deviceContext, geometryType, position, modelFile);
 		break;
 	case ENEMY:
 		//_gameObjects[_nrOfObjects++] = new Enemy(_device, _deviceContext, position);
 		break;
 	case STATICOBJECT:
-		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, position, modelFile);
+		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, geometryType, position, modelFile);
 		break;
 	case TERRAIN:
 		_terrain.push_back(new Terrain(_device, _deviceContext, position, modelFile));

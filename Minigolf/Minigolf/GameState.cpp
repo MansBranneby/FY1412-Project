@@ -1,5 +1,42 @@
 #include "GameState.h"
 
+void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
+{
+}
+
+void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)
+{
+	// currently just moves player in the opposite direction until no collision. This also prevents player from "gliding along the surface" which isn't good.
+	// In order to fix not being able to slide along the surface one has to find the collision normal and push out that way
+
+	bool colliding = false;
+
+	for (int i = 0; i < nrOfObjects && colliding == false; i++)
+		colliding = player->getBoundingVolume()->intersectsWithOBB(game->getLevelHandler()->getGameObject(i)->getBoundingVolume()).colliding; //Not safe, will crasch if you try to access gameobject outside of array.		
+
+	// if collision between player and object change travel direction
+	if (colliding)
+	{
+		player->move(-player->getAcceleration(), game->getClock()->getDeltaSeconds());
+	}
+	else
+		player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
+}
+
+void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
+{
+}
+
+void GameState::heightmapCalculations(Game * game, Player * player)
+{
+	/*
+	// Set player height to terrain
+	Terrain* terrain = game->getLevelHandler()->getTerrain(0); // currently only works for one terrain
+	float height = terrain->getHeight(player->getPositionFloat3().x, player->getPositionFloat3().z);
+	player->setHeight(height);
+	*/
+}
+
 void GameState::handleInput(Game* game)
 {
 	DirectX::Keyboard::State kb = game->getInputController()->getKeyboardState();
@@ -27,29 +64,20 @@ void GameState::handleInput(Game* game)
 void GameState::update(Game* game)
 {
 	game->updateCameraBuffers();
-
-	// currently just moves player in the opposite direction until no collision. This also prevents player from "gliding along the surface" which isn't good.
-	// In order to fix not being able to slide along the surface one has to find the collision normal and push out that way
 	int nrOfObjects = game->getLevelHandler()->getNrOfGameObjects();
 	Player* player = game->getLevelHandler()->getPlayer();
-	bool colliding = false;
 
-	for (int i = 0; i < nrOfObjects && colliding == false; i++)
-		colliding = player->getBoundingVolume()->intersectsWithOBB(game->getLevelHandler()->getGameObject(i)->getBoundingVolume()).colliding; //Not safe, will crasch if you try to access gameobject outside of array.		
+	//Position update
+	updatePositions(game, player, nrOfObjects);
 
-	// if collision between player and object change travel direction
-	if (colliding)
-	{
-		player->move(-player->getAcceleration(), game->getClock()->getDeltaSeconds());
-	}
-	else
-		player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
-	
-	// Set player height to terrain
-	Terrain* terrain = game->getLevelHandler()->getTerrain(0); // currently only works for one terrain
-	float height = terrain->getHeight(player->getPositionFloat3().x, player->getPositionFloat3().z);
-	player->setHeight(height);
+	//Collision
+	//boundingCollision(game, player, nrOfObjects); //For later use
+	geometryCollision(game, player, nrOfObjects);
 
+	//Heightmap calculations
+	//heightmapCalculations(game, player);
+
+	//Update Camera
 	game->getCamera()->followObject(player->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
 }
 

@@ -5,16 +5,18 @@ void GameObject::updateTransformations(XMFLOAT3 position)
 	_model.updateTransformation(position);
 }
 
-GameObject::GameObject(ObjectType objectType, DirectX::XMVECTOR startingPosition)
+GameObject::GameObject(ObjectType objectType, Geometry geometryType, DirectX::XMVECTOR startingPosition)
 {
 	_position = startingPosition;
 	_objectType = objectType;
+	_geometryType = geometryType;
 }
 
-GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, DirectX::XMVECTOR position, std::string modelFile)
+GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType, DirectX::XMVECTOR position, std::string modelFile)
 {
 	_position = position;
 	_objectType = objType;
+	_geometryType = geometryType;
 	createModel(device, deviceContext, modelFile);
 } 
 
