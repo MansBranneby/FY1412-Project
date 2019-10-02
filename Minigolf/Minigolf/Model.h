@@ -58,7 +58,7 @@ private:
 
 	//Loading models
 	void processNode(ID3D11Device* device, aiNode* node);
-	Mesh* processMesh(ID3D11Device* device, aiMesh* mesh);
+	Mesh* processMesh(ID3D11Device* device, aiMatrix4x4 transformation, aiMesh* mesh);
 
 	//Process textures
 	std::vector<Texture> loadTextures(aiMaterial* material, aiTextureType textureType, std::string typeName);

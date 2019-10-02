@@ -164,30 +164,23 @@ UINT Model::findPosition(float animationTime, const aiNodeAnim * nodeAnimation)
 
 void Model::processNode(ID3D11Device* device, aiNode * node)
 {
-	//// Cycle all meshes for current node
-	//for (size_t i = 0; i < node->mNumMeshes; i++)
-	//{
-	//	aiMesh* tempAiMesh = _scene->mMeshes[node->mMeshes[i]];
-	//	_meshes.push_back(this->processMesh(device, tempAiMesh));
-	//}
-
-	//// Go down tree and process all nodes
-	//for (size_t i = 0; i < node->mNumChildren; i++)
-	//	this->processNode(device, node->mChildren[i]);
-
-
-	// Glenn: I have a tough time understanding nodes
-	// so i'm going with this instead
-	for (size_t i = 0; i < _scene->mNumMeshes; i++)
+	// Cycle all meshes for current node
+	for (size_t i = 0; i < node->mNumMeshes; i++)
 	{
-		aiMesh* tempAiMesh = _scene->mMeshes[i];
-		_meshes.push_back(processMesh(device, tempAiMesh));
+		aiMesh* tempAiMesh = _scene->mMeshes[node->mMeshes[i]];
+		_meshes.push_back(this->processMesh(device, node->mTransformation, tempAiMesh));
+	}
+
+	// Go down tree and process all nodes
+	for (size_t i = 0; i < node->mNumChildren; i++)
+	{
+		this->processNode(device, node->mChildren[i]);
 	}
 }
 
 std::string texType;
 
-Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
+Mesh* Model::processMesh(ID3D11Device* device, aiMatrix4x4 transformation, aiMesh * mesh)
 {
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
@@ -209,7 +202,7 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
 	for (size_t i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
-
+		mesh->mVertices[i] *= transformation;
 		// Vertex pos
 		vertex._position.x = mesh->mVertices[i].x;
 		vertex._position.y = mesh->mVertices[i].y;
@@ -224,7 +217,7 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
 		if (mesh->mTextureCoords[0])
 		{
 			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x; //Jag antar att diffuse texture ligger på index 0.
-			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].y; //Så när vi vill ha normal map ligger den troligen på ett annat index.
+			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y; //Så när vi vill ha normal map ligger den troligen på ett annat index.
 		}
 
 		//Save vertex
