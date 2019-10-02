@@ -5,15 +5,29 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0 commit date:2017-09-11, commit time:10:43, hash:5bd8ac9</authoring_tool>
     </contributor>
-    <created>2019-10-02T11:51:29</created>
-    <modified>2019-10-02T11:51:29</modified>
+    <created>2019-10-02T12:00:48</created>
+    <modified>2019-10-02T12:00:48</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
-  <library_images/>
+  <library_images>
+    <image id="grass_jpg" name="grass_jpg">
+      <init_from>grass.jpg</init_from>
+    </image>
+  </library_images>
   <library_effects>
     <effect id="Material_001-effect">
       <profile_COMMON>
+        <newparam sid="grass_jpg-surface">
+          <surface type="2D">
+            <init_from>grass_jpg</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="grass_jpg-sampler">
+          <sampler2D>
+            <source>grass_jpg-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <phong>
             <emission>
@@ -23,7 +37,7 @@
               <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0.089646 0.1280225 0.003703858 1</color>
+              <texture texture="grass_jpg-sampler"/>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
