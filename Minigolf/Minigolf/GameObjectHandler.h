@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "Enemy.h"
 #include "StaticObject.h"
 #include "Terrain.h"
 #include "GraphicResources.h"

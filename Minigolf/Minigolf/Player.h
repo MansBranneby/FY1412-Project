@@ -1,9 +1,9 @@
 #pragma once
-#include "Robot.h"
+#include "DynamicObject.h"
 #include <Keyboard.h>
 #include <GamePad.h>
 
-class Player : public Robot
+class Player : public DynamicObject
 {
 public:
 	Player(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX::XMVECTOR startingPosition, std::string modelFile);
