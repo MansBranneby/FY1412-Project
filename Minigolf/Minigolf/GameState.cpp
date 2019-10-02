@@ -2,6 +2,8 @@
 
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
+	player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
+	player->setHeight(1.0f);
 }
 
 void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)
