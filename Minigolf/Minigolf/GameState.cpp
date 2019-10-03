@@ -2,6 +2,15 @@
 
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
+	player->setPosition(player->calculateMovement(game));
+	
+	//float deltaSeconds = game->getClock()->getDeltaSeconds();
+	//player->setPosition(player->getPositionVector() + (player->getVelocity() * deltaSeconds));
+
+	for (int i = 0; i < nrOfObjects; i++)
+	{
+		//Update postion of all dynamic objects
+	}
 }
 
 void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)

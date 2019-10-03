@@ -3,7 +3,7 @@
 Player::Player(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Geometry geometryType,DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:DynamicObject(device, deviceContext, PLAYER, Geometry(geometryType),startingPosition, modelFile)
 {
-
+	this->setVelocity(DirectX::XMVectorSet(0.0, 1.0, 0.0, 1.0));
 }
 
 Player::~Player()

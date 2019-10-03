@@ -10,6 +10,14 @@
 #include <Keyboard.h>
 #include <vector>
 
+struct Environment
+{
+	float airDensity;
+	DirectX::XMVECTOR windVelocity;
+
+	DirectX::XMVECTOR gravForce;
+};
+
 class State; //Forward declare https://stackoverflow.com/questions/6515143/user-created-header-causing-c2061-syntax-error-identifier-classname
 class Game
 {
