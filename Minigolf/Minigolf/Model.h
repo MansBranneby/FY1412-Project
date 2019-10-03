@@ -18,6 +18,8 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include "BoundingVolume.h"
+#include "BoundingPlane.h"
+#include "BoundingSphere.h"
 #include "OBB.h"
 
 struct BoneInfo
@@ -36,7 +38,7 @@ private:
 	std::vector<Texture> _loadedTextures;
 	Assimp::Importer _importer;
 	const aiScene* _scene;
-
+	BoundingType _boundingType;
 	//Animation
 	float  _testTime = 0.07f;
 	float _incrementTime = 0.001f;
@@ -73,7 +75,7 @@ public:
 	Model();
 	~Model();
 	
-	bool loadModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string filename);
+	bool loadModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string filename, BoundingType boundingType);
 	void updateTransformation(DirectX::XMFLOAT3 position);
 	void animate(float timeInSec);
 	void draw(GraphicResources* graphicResources);

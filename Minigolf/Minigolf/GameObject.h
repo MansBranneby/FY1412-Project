@@ -11,28 +11,23 @@ enum ObjectType //Troligtvis ett tillfälligt sätt att hantera detta.
 	TERRAIN
 };
 
-enum Geometry
-{
-	SPHERE, PLANE
-};
-
 class GameObject
 {
 private:
 	Model _model;
 	ObjectType _objectType;
-	Geometry _geometryType;
+	BoundingType _boundingType;
 	std::string _modelDirectory = ".\\Resources\\Models\\";
 	XMVECTOR _position;
 	
-
 protected:
 	XMVECTOR _lookAt;
 	void updateTransformations(XMFLOAT3 position);
 
 public:
-	GameObject(ObjectType objectType, Geometry geometryType, DirectX::XMVECTOR startingPosition);
-	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType, DirectX::XMVECTOR position, std::string modelFile);
+	float height = 100.0f;
+	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
+	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType _boundingType, DirectX::XMVECTOR position, std::string modelFile);
 	virtual ~GameObject() = 0;
 
 	Model* getModel();
@@ -48,5 +43,4 @@ public:
 	DirectX::XMFLOAT3 getPositionFloat3();
 
 	virtual BoundingVolume* getBoundingVolume();
-
 };

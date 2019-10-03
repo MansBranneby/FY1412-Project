@@ -40,7 +40,7 @@ BoundingVolume::BoundingVolume(DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOA
 {
 	//Center which is the same as position
 	_world = DirectX::XMMatrixIdentity();
-	_center =
+	_pos =
 	{
 		(maxCoordinates.x + minCoordinates.x) / 2,
 		(maxCoordinates.y + minCoordinates.y) / 2,
@@ -58,9 +58,9 @@ BoundingVolume::~BoundingVolume()
 		_indexBuffer->Release();
 }
 
-DirectX::XMVECTOR BoundingVolume::getCenter()
+DirectX::XMVECTOR BoundingVolume::getPos()
 {
-	return _center;
+	return _pos;
 }
 
 DirectX::XMMATRIX BoundingVolume::getWorldMatrix()
@@ -78,14 +78,14 @@ std::vector<int>* BoundingVolume::getIndices()
 	return &_indices;
 }
 
-void BoundingVolume::setCenter(DirectX::XMVECTOR center)
+void BoundingVolume::setPos(DirectX::XMVECTOR pos)
 {
-	_center = center;
+	_pos = pos;
 }
 
 void BoundingVolume::move(DirectX::XMVECTOR speed)
 {
-	_center = DirectX::XMVectorAdd(_center, speed);
+	_pos = DirectX::XMVectorAdd(_pos, speed);
 }
 
 void BoundingVolume::draw(GraphicResources* graphicResources)

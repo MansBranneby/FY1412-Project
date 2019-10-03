@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include <vector>
 
-enum BoundingVolumes { ORIENTED_BOUNDING_BOX};
+enum BoundingType { BOUNDING_SPHERE, BOUNDING_PLANE, ORIENTED_BOUNDING_BOX };
 
 struct BoundingVolumeVertex
 {
@@ -32,7 +32,7 @@ private:
 	ID3D11Buffer* _vertexBuffer;
 	ID3D11Buffer* _indexBuffer;
 
-	DirectX::XMVECTOR _center;
+	DirectX::XMVECTOR _pos;
 
 	bool drawBoundingVolume;
 
@@ -43,15 +43,16 @@ public:
 	BoundingVolume();
 	BoundingVolume(DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates);
 	virtual ~BoundingVolume();
-	virtual DirectX::XMVECTOR getCenter();
+	virtual DirectX::XMVECTOR getPos();
 	DirectX::XMMATRIX getWorldMatrix();
 	std::vector<BoundingVolumeVertex>* getVertices();
 	std::vector<int>* getIndices();
 
-	virtual void setCenter(DirectX::XMVECTOR center);
+	virtual void setPos(DirectX::XMVECTOR pos);
 	virtual void move(DirectX::XMVECTOR speed);
 
 	virtual void draw(GraphicResources* graphicResources);
 	
+	virtual CollisionInfo intersectsWithPlane(BoundingVolume* other) = 0;
 	virtual CollisionInfo intersectsWithOBB(BoundingVolume* other) = 0;
 };

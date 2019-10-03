@@ -1,7 +1,7 @@
 #include "OBB.h"
 
 OBB::OBB(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates)
-	:BoundingVolume(maxCoordinates, minCoordinates)
+	:BoundingVolume(minCoordinates, maxCoordinates)
 {
 	using namespace DirectX;
 
@@ -61,6 +61,12 @@ OBB::OBB(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOA
 	createBuffers(device, *getVertices(), *getIndices());
 }
 
+CollisionInfo OBB::intersectsWithPlane(BoundingVolume * other)
+{
+	CollisionInfo info;
+	return info;
+}
+
 CollisionInfo OBB::intersectsWithOBB(BoundingVolume * other)
 {
 	using namespace DirectX;
@@ -71,8 +77,8 @@ CollisionInfo OBB::intersectsWithOBB(BoundingVolume * other)
 	{
 		// Convert otherOBB center to this local space
 		XMMATRIX inverseWorldMatrix = XMMatrixInverse(nullptr, getWorldMatrix());
-		XMVECTOR otherCenter = XMVector4Transform(otherOBB->getCenter(), inverseWorldMatrix);
-		XMVECTOR vectorToOBB = otherCenter - getCenter();
+		XMVECTOR otherCenter = XMVector4Transform(otherOBB->getPos(), inverseWorldMatrix);
+		XMVECTOR vectorToOBB = otherCenter - getPos();
 
 		// Testing face normals and edge combinations
 		// 3 * 2 = 6 normal faces

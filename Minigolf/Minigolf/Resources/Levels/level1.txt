@@ -1,2 +1,2 @@
-0 0 0.0 0.0 0.0 two-piece.dae
+0 0 0.0 100.0 0.0 two-piece.dae
 2 1 0.0 0.0 0.0 plane.dae
