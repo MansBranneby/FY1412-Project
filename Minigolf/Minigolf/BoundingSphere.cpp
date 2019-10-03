@@ -19,12 +19,13 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 		DirectX::XMVECTOR planeToSphere = DirectX::XMVectorSubtract(getPos(), plane->getPos());
 		DirectX::XMVECTOR planeNormal = plane->getNormal();
 
-		float d = DirectX::XMVectorGetX(DirectX::XMVector3Dot(planeToSphere, planeNormal));
+		float distanceToPlane = DirectX::XMVectorGetX(DirectX::XMVector3Dot(planeToSphere, planeNormal));
 
-		if (d <= _radius)
+		if (distanceToPlane <= _radius)
 			info.colliding = true;
 	}
 	return info;
+
 }
 
 CollisionInfo BoundingSphere::intersectsWithOBB(BoundingVolume * other)

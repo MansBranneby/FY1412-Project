@@ -42,7 +42,6 @@ DirectX::XMVECTOR BoundingPlane::getNormal()
 	DirectX::XMVECTOR vec1 = DirectX::XMVectorSubtract(pos1, pos2);
 	DirectX::XMVECTOR vec2 = DirectX::XMVectorSubtract(pos1, pos3);
 
-	
 	return DirectX::XMVector3Normalize(DirectX::XMVector3Cross(vec2, vec1));
 }
 
