@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Game.h"
+//#include "Game.h"
 
 enum MeansOfMovement
 {
@@ -18,12 +18,12 @@ private:
 	DirectX::XMVECTOR _acceleration; //Ska vi nog inte ha i fysikspelet
 	float _friction; //Ska vi nog inte ha i denna form i fysikspelet?
 
-	DirectX::XMVECTOR calcProjectile(Game * game, float deltaSeconds);
-	DirectX::XMVECTOR calcGliding(Game * game, float deltaSeconds);
-	DirectX::XMVECTOR calcRolling(Game * game, float deltaSeconds);
+	DirectX::XMVECTOR calcProjectile(float deltaSeconds);
+	DirectX::XMVECTOR calcGliding(float deltaSeconds);
+	DirectX::XMVECTOR calcRolling(float deltaSeconds);
 
 public:
-	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile);
+	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
 	virtual ~DynamicObject();
 
 	virtual void setVelocity(DirectX::XMVECTOR velocity);
@@ -34,5 +34,5 @@ public:
 	void move(DirectX::XMVECTOR acceleration, float deltaSeconds);
 
 	//Physics
-	DirectX::XMVECTOR calculateMovement(Game * game); //Calculate new positions of dynamic objects based on physics
+	DirectX::XMVECTOR calculateMovement(float deltaSeconds); //Calculate new positions of dynamic objects based on physics
 };

@@ -2,9 +2,9 @@
 
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
-	player->setPosition(player->calculateMovement(game));
+	float deltaSeconds = game->getClock()->getDeltaSeconds();
+	player->setPosition(player->calculateMovement(deltaSeconds));
 	
-	//float deltaSeconds = game->getClock()->getDeltaSeconds();
 	//player->setPosition(player->getPositionVector() + (player->getVelocity() * deltaSeconds));
 
 	for (int i = 0; i < nrOfObjects; i++)
@@ -37,9 +37,14 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 	// SPHERE VS PLANE
 	if (player->getBoundingVolume()->intersectsWithPlane(game->getLevelHandler()->getGameObject(0)->getBoundingVolume()).colliding == false)
 	{
-		player->height -= 9.82f * game->getClock()->getDeltaSeconds() * 4;
-		player->setHeight(player->height);
+		//player->height -= 9.82f * game->getClock()->getDeltaSeconds() * 4;
+		//player->setHeight(player->height);
 	}
+	//if collision
+		//if N > mg
+			//player->calculatenewVel(game, collidingObj)
+		//else
+			//set gliding(MYgliding)
 
 }
 

@@ -1,22 +1,20 @@
 #include "DynamicObject.h"
 
-DirectX::XMVECTOR DynamicObject::calcProjectile(Game * game, float deltaSeconds)
+DirectX::XMVECTOR DynamicObject::calcProjectile(float deltaSeconds)
 {
 	return DirectX::XMVECTOR();
 }
 
-DirectX::XMVECTOR DynamicObject::calcGliding(Game * game, float deltaSeconds)
+DirectX::XMVECTOR DynamicObject::calcGliding(float deltaSeconds)
 {
 	return DirectX::XMVECTOR();
 }
 
-DirectX::XMVECTOR DynamicObject::calcRolling(Game * game, float deltaSeconds)
+DirectX::XMVECTOR DynamicObject::calcRolling(float deltaSeconds)
 {
 	return DirectX::XMVECTOR();
 }
 
-DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType,DirectX::XMVECTOR startingPosition, std::string modelFile)
-	:GameObject(device, deviceContext, objType, Geometry(geometryType),startingPosition, modelFile)
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, objType, BoundingType(boundingType), startingPosition, modelFile)
 {
@@ -40,21 +38,20 @@ void DynamicObject::move(DirectX::XMVECTOR acceleration, float deltaSeconds)
 	getBoundingVolume()->move(acceleration);
 }
 
-DirectX::XMVECTOR DynamicObject::calculateMovement(Game * game)
+DirectX::XMVECTOR DynamicObject::calculateMovement(float deltaSeconds)
 {
 	DirectX::XMVECTOR newPosition;
-	float deltaSeconds = game->getClock()->getDeltaSeconds(); //delta seconds
 
 	switch (_meansOfMovement) // Means of movement
 	{
 	case PROJECTILE:
-		newPosition = calcProjectile(game, deltaSeconds);
+		newPosition = calcProjectile(deltaSeconds);
 		break;
 	case GLIDING:
-		newPosition = calcGliding(game, deltaSeconds);
+		newPosition = calcGliding(deltaSeconds);
 		break;
 	case ROLLING:
-		newPosition = calcRolling(game, deltaSeconds);
+		newPosition = calcRolling(deltaSeconds);
 		break;
 	default:
 		break;
