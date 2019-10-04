@@ -34,6 +34,13 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
+	// SPHERE VS PLANE
+	if (player->getBoundingVolume()->intersectsWithPlane(game->getLevelHandler()->getGameObject(0)->getBoundingVolume()).colliding == false)
+	{
+		player->height -= 9.82f * game->getClock()->getDeltaSeconds() * 4;
+		player->setHeight(player->height);
+	}
+
 }
 
 void GameState::heightmapCalculations(Game * game, Player * player)

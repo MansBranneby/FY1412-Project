@@ -164,30 +164,23 @@ UINT Model::findPosition(float animationTime, const aiNodeAnim * nodeAnimation)
 
 void Model::processNode(ID3D11Device* device, aiNode * node)
 {
-	//// Cycle all meshes for current node
-	//for (size_t i = 0; i < node->mNumMeshes; i++)
-	//{
-	//	aiMesh* tempAiMesh = _scene->mMeshes[node->mMeshes[i]];
-	//	_meshes.push_back(this->processMesh(device, tempAiMesh));
-	//}
-
-	//// Go down tree and process all nodes
-	//for (size_t i = 0; i < node->mNumChildren; i++)
-	//	this->processNode(device, node->mChildren[i]);
-
-
-	// Glenn: I have a tough time understanding nodes
-	// so i'm going with this instead
-	for (size_t i = 0; i < _scene->mNumMeshes; i++)
+	// Cycle all meshes for current node
+	for (size_t i = 0; i < node->mNumMeshes; i++)
 	{
-		aiMesh* tempAiMesh = _scene->mMeshes[i];
-		_meshes.push_back(processMesh(device, tempAiMesh));
+		aiMesh* tempAiMesh = _scene->mMeshes[node->mMeshes[i]];
+		_meshes.push_back(this->processMesh(device, node->mTransformation, tempAiMesh));
+	}
+
+	// Go down tree and process all nodes
+	for (size_t i = 0; i < node->mNumChildren; i++)
+	{
+		this->processNode(device, node->mChildren[i]);
 	}
 }
 
 std::string texType;
 
-Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
+Mesh* Model::processMesh(ID3D11Device* device, aiMatrix4x4 transformation, aiMesh * mesh)
 {
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
@@ -209,7 +202,7 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
 	for (size_t i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
-
+		mesh->mVertices[i] *= transformation;
 		// Vertex pos
 		vertex._position.x = mesh->mVertices[i].x;
 		vertex._position.y = mesh->mVertices[i].y;
@@ -223,8 +216,8 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
 		// Vertex texture coordinates
 		if (mesh->mTextureCoords[0])
 		{
-			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x; //Jag antar att diffuse texture ligger på index 0.
-			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].y; //Så när vi vill ha normal map ligger den troligen på ett annat index.
+			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x * 15.0f; //Jag antar att diffuse texture ligger på index 0.
+			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y * 15.0f; //Så när vi vill ha normal map ligger den troligen på ett annat index.
 		}
 
 		//Save vertex
@@ -241,7 +234,18 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMesh * mesh)
 		minCoordinates.z = std::min(minCoordinates.z, vertex._position.z);
 	}
 	// Create bounding volume
-	_boundingVolume = new OBB(device, minCoordinates, maxCoordinates);
+	switch (_boundingType)
+	{
+		case BOUNDING_SPHERE:
+			_boundingVolume = new BoundingSphere(device, minCoordinates, maxCoordinates);
+			break;
+		case BOUNDING_PLANE:
+			_boundingVolume = new BoundingPlane(device, minCoordinates, maxCoordinates);
+			break;
+		case ORIENTED_BOUNDING_BOX:
+			_boundingVolume = new OBB(device, minCoordinates, maxCoordinates);
+			break;
+	}
 
 	//Loop faces
 	for (size_t i = 0; i < mesh->mNumFaces; i++)
@@ -457,7 +461,7 @@ Model::~Model()
 }
 
 
-bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, std::string filename)
+bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext, std::string filename, BoundingType boundingType)
 {
 	// Load model from file
 	_scene = _importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded); // aiProcessPreset_TargetRealtime_Quality kanske denna för optimisering
@@ -473,6 +477,7 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	_fileDirectory = filename.substr(0, filename.find_last_of('\\'));
 	_device = device;
 	_deviceContext = deviceContext;
+	_boundingType = boundingType;
 
 	// Start processing all the nodes in the model
 	processNode(device, _scene->mRootNode);

@@ -115,6 +115,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingPlane.h" />
+    <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="BoundingVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
@@ -165,6 +167,8 @@
     <ClInclude Include="ViewFrustum.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoundingPlane.cpp" />
+    <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="BoundingVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />

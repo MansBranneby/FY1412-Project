@@ -23,7 +23,7 @@ private:
 	DirectX::XMVECTOR calcRolling(Game * game, float deltaSeconds);
 
 public:
-	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType,DirectX::XMVECTOR startingPosition, std::string modelFile);
+	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile);
 	virtual ~DynamicObject();
 
 	virtual void setVelocity(DirectX::XMVECTOR velocity);

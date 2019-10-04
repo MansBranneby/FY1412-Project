@@ -17,6 +17,8 @@ DirectX::XMVECTOR DynamicObject::calcRolling(Game * game, float deltaSeconds)
 
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, Geometry geometryType,DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, objType, Geometry(geometryType),startingPosition, modelFile)
+DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile)
+	:GameObject(device, deviceContext, objType, BoundingType(boundingType), startingPosition, modelFile)
 {
 	_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };

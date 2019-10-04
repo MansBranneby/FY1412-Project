@@ -13,5 +13,7 @@ private:
 
 public:
 	OBB(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates);
+
+	CollisionInfo intersectsWithPlane(BoundingVolume* other);
 	CollisionInfo intersectsWithOBB(BoundingVolume* other);
 };
