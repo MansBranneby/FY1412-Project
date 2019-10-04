@@ -34,5 +34,5 @@ public:
 	void move(DirectX::XMVECTOR acceleration, float deltaSeconds);
 
 	//Physics
-	DirectX::XMVECTOR calculateMovement(float deltaSeconds); //Calculate new positions of dynamic objects based on physics
+	virtual DirectX::XMVECTOR calculateMovement(float deltaSeconds); //Calculate new positions of dynamic objects based on physics
 };

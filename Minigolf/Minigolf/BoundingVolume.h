@@ -31,10 +31,13 @@ private:
 	DirectX::XMMATRIX _world;
 	ID3D11Buffer* _vertexBuffer;
 	ID3D11Buffer* _indexBuffer;
-
+	
 	DirectX::XMVECTOR _pos;
 
 	bool drawBoundingVolume;
+
+	virtual CollisionInfo intersectsWithPlane(BoundingVolume* other) = 0;
+	virtual CollisionInfo intersectsWithOBB(BoundingVolume* other) = 0;
 
 protected:
 	virtual void createBuffers(ID3D11Device* device, std::vector<BoundingVolumeVertex> vertices, std::vector<int> indices);
@@ -53,6 +56,5 @@ public:
 
 	virtual void draw(GraphicResources* graphicResources);
 	
-	virtual CollisionInfo intersectsWithPlane(BoundingVolume* other) = 0;
-	virtual CollisionInfo intersectsWithOBB(BoundingVolume* other) = 0;
+	virtual CollisionInfo intersects(BoundingVolume* other) = 0; 
 };

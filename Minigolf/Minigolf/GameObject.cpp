@@ -84,8 +84,8 @@ void GameObject::setPosition(DirectX::XMVECTOR position)
 
 void GameObject::setHeight(float height)
 {
-	_position = DirectX::XMVectorSet(DirectX::XMVectorGetX(_position), height + 1.5f, DirectX::XMVectorGetZ(_position), 1.0f);
-	getBoundingVolume()->setPos(DirectX::XMVectorSet(DirectX::XMVectorGetX(_position), height + 1.5f, DirectX::XMVectorGetZ(_position), 1.0f));
+	_position = DirectX::XMVectorSet(DirectX::XMVectorGetX(_position), height, DirectX::XMVectorGetZ(_position), 1.0f);
+	getBoundingVolume()->setPos(DirectX::XMVectorSet(DirectX::XMVectorGetX(_position), height, DirectX::XMVectorGetZ(_position), 1.0f));
 }
 
 BoundingVolume * GameObject::getBoundingVolume()

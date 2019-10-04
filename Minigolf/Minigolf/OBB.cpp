@@ -1,4 +1,6 @@
 #include "OBB.h"
+#include "BoundingPlane.h"
+#include "BoundingSphere.h"
 
 OBB::OBB(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates)
 	:BoundingVolume(minCoordinates, maxCoordinates)
@@ -224,4 +226,16 @@ CollisionInfo OBB::intersectsWithOBB(BoundingVolume * other)
 
 	collInfo.colliding = true;
 	return collInfo;;
+}
+
+CollisionInfo OBB::intersects(BoundingVolume * other)
+{
+	CollisionInfo info;
+
+	if (dynamic_cast<OBB*> (other))
+		info = intersectsWithOBB(other);
+	else if (dynamic_cast<BoundingPlane*> (other))
+		info = intersectsWithPlane(other);
+
+	return info;
 }

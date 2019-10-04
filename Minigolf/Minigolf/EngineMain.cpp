@@ -72,8 +72,8 @@ Clock* gClock;
 GameState gGameState;
 
 // IMGUI VARIABLES //
-float gSmoothSpeed = 1.0f;
-float gLookAtSpeed = 1.0f;
+float gSmoothSpeed = 10.0f;
+float gLookAtSpeed = 10.0f;
 bool drawBoundingVolume = false;
 
 void initializeResources(HWND wndHandle)
