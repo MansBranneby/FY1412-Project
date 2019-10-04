@@ -3,9 +3,7 @@
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
-	player->setPosition(player->calculateMovement(deltaSeconds));
-	
-	//player->setPosition(player->getPositionVector() + (player->getVelocity() * deltaSeconds));
+	player->setPosition(player->calculateMovement(deltaSeconds)); //OBS. Var uppdateras boundingBoxes position
 
 	for (int i = 0; i < nrOfObjects; i++)
 	{
@@ -13,24 +11,24 @@ void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 	}
 }
 
-void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)
-{
-	// currently just moves player in the opposite direction until no collision. This also prevents player from "gliding along the surface" which isn't good.
-	// In order to fix not being able to slide along the surface one has to find the collision normal and push out that way
-
-	bool colliding = false;
-
-	for (int i = 0; i < nrOfObjects && colliding == false; i++)
-		colliding = player->getBoundingVolume()->intersectsWithOBB(game->getLevelHandler()->getGameObject(i)->getBoundingVolume()).colliding; //Not safe, will crasch if you try to access gameobject outside of array.		
-
-	// if collision between player and object change travel direction
-	if (colliding)
-	{
-		player->move(-player->getAcceleration(), game->getClock()->getDeltaSeconds());
-	}
-	else
-		player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
-}
+//void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)
+//{
+//	// currently just moves player in the opposite direction until no collision. This also prevents player from "gliding along the surface" which isn't good.
+//	// In order to fix not being able to slide along the surface one has to find the collision normal and push out that way
+//
+//	bool colliding = false;
+//
+//	for (int i = 0; i < nrOfObjects && colliding == false; i++)
+//		colliding = player->getBoundingVolume()->intersectsWithOBB(game->getLevelHandler()->getGameObject(i)->getBoundingVolume()).colliding; //Not safe, will crasch if you try to access gameobject outside of array.		
+//
+//	// if collision between player and object change travel direction
+//	if (colliding)
+//	{
+//		player->move(-player->getAcceleration(), game->getClock()->getDeltaSeconds());
+//	}
+//	else
+//		player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
+//}
 
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {

@@ -2,7 +2,7 @@
 
 DirectX::XMVECTOR DynamicObject::calcProjectile(float deltaSeconds)
 {
-	return DirectX::XMVECTOR();
+	return getPositionVector() + (getVelocity() * deltaSeconds);
 }
 
 DirectX::XMVECTOR DynamicObject::calcGliding(float deltaSeconds)
@@ -18,9 +18,9 @@ DirectX::XMVECTOR DynamicObject::calcRolling(float deltaSeconds)
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, objType, BoundingType(boundingType), startingPosition, modelFile)
 {
-	_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };
-	_friction = 0.000000001f;
+	//_friction = 0.000000001f;
 }
 
 DynamicObject::~DynamicObject()
@@ -29,17 +29,19 @@ DynamicObject::~DynamicObject()
 
 void DynamicObject::move(DirectX::XMVECTOR acceleration, float deltaSeconds)
 {
-	_velocity += acceleration;
-	_velocity *= pow(_friction, deltaSeconds);
-	setPosition(getPositionVector() + _velocity);
-    
-	// Update transformation matrix
-	updateTransformations(getPositionFloat3());
-	getBoundingVolume()->move(acceleration);
+	//_velocity += acceleration;
+	//_velocity *= pow(_friction, deltaSeconds);
+	//setPosition(getPositionVector() + _velocity);
+ //   
+	//// Update transformation matrix
+	//updateTransformations(getPositionFloat3());
+	//getBoundingVolume()->move(acceleration);
 }
 
 DirectX::XMVECTOR DynamicObject::calculateMovement(float deltaSeconds)
 {
+	//Bättre att räkna ut analytiskt en gång för att sedan använda t och ursprunglig beräkning?
+
 	DirectX::XMVECTOR newPosition;
 
 	switch (_meansOfMovement) // Means of movement
@@ -57,7 +59,9 @@ DirectX::XMVECTOR DynamicObject::calculateMovement(float deltaSeconds)
 		break;
 	}
 
-	return DirectX::XMVECTOR();
+	//Update objects transformation matrix and return
+	updateTransformations(DirectX::XMFLOAT3(DirectX::XMVectorGetX(newPosition), DirectX::XMVectorGetY(newPosition), DirectX::XMVectorGetZ(newPosition)));
+	return newPosition;
 }
 
 void DynamicObject::setVelocity(DirectX::XMVECTOR velocity)
@@ -65,17 +69,42 @@ void DynamicObject::setVelocity(DirectX::XMVECTOR velocity)
 	_velocity = velocity;
 }
 
-void DynamicObject::setAcceleration(DirectX::XMVECTOR acceleration)
+void DynamicObject::setAngularVelocity(DirectX::XMVECTOR angularVelocity)
 {
-	_acceleration = acceleration;
+	_angularVelocity = angularVelocity;
 }
+
+void DynamicObject::setMeansOfMovement(MeansOfMovement meansOfMovement)
+{
+	_meansOfMovement = meansOfMovement;
+}
+
+void DynamicObject::setMass(float mass)
+{
+	_mass = mass;
+}
+
+//void DynamicObject::setAcceleration(DirectX::XMVECTOR acceleration)
+//{
+//	_acceleration = acceleration;
+//}
 
 DirectX::XMVECTOR DynamicObject::getVelocity()
 {
 	return _velocity;
 }
 
-DirectX::XMVECTOR DynamicObject::getAcceleration()
+MeansOfMovement DynamicObject::getMeansofMovement() const
 {
-	return _acceleration;
+	return _meansOfMovement;
 }
+
+float DynamicObject::getMass() const
+{
+	return _mass;
+}
+
+//DirectX::XMVECTOR DynamicObject::getAcceleration()
+//{
+//	return _acceleration;
+//}

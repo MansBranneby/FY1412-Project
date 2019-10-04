@@ -3,7 +3,11 @@
 Player::Player(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:DynamicObject(device, deviceContext, PLAYER, BoundingType(boundingType), startingPosition, modelFile)
 {
-	this->setVelocity(DirectX::XMVectorSet(0.0, 1.0, 0.0, 1.0));
+	this->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
+	this->setVelocity(DirectX::XMVectorSet(5.0, 5.0, 0.0, 1.0));
+
+	this->setMass(1);
+	this->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 }
 
 Player::~Player()
@@ -54,7 +58,7 @@ void Player::handleInput(Keyboard::State kb, GamePad::State gp, float deltaSecon
 	if (gp.IsLeftThumbStickDown() && gp.IsLeftThumbStickLeft()) // Diagonal backward left
 		acceleration = { -diagonalDeltaSpeed, 0.0f, -diagonalDeltaSpeed, 0.0f };
 
-	setAcceleration(acceleration);
+	//setAcceleration(acceleration);
 }
 
 
