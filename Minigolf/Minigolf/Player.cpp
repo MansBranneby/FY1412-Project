@@ -4,9 +4,9 @@ Player::Player(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Boundin
 	:DynamicObject(device, deviceContext, PLAYER, BoundingType(boundingType), startingPosition, modelFile)
 {
 	this->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
-	this->setVelocity(DirectX::XMVectorSet(5.0, 5.0, 0.0, 1.0));
+	this->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
 
-	this->setMass(1);
+	this->setMass(0.049f);
 	this->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 }
 

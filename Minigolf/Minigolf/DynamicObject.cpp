@@ -2,7 +2,9 @@
 
 DirectX::XMVECTOR DynamicObject::calcProjectile(float deltaSeconds)
 {
-	return getPositionVector() + (getVelocity() * deltaSeconds);
+	DirectX::XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+	setVelocity(getVelocity() + DirectX::XMVectorSet(0.0f, -9.82 * deltaSeconds, 0.0f, 1.0f)); //Måste ha tillgång till Environment från Game
+	return newPosition;
 }
 
 DirectX::XMVECTOR DynamicObject::calcGliding(float deltaSeconds)
