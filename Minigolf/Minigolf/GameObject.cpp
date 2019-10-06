@@ -12,10 +12,9 @@ GameObject::GameObject(ObjectType objectType, BoundingType boundingType, DirectX
 	_boundingType = boundingType;
 }
 
-GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile)
+GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile)
 {
 	_position = position;
-	_objectType = objType;
 	_boundingType = boundingType;
 	createModel(device, deviceContext, modelFile);
 } 
@@ -33,7 +32,7 @@ bool GameObject::createModel(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 {
 	switch (_objectType)
 	{
-	case PLAYER:
+	case DYNAMICOBJECT:
 		_model.loadModel(device, deviceContext, _modelDirectory + modelFile, _boundingType);
 		_model.updateTransformation(XMFLOAT3(XMVectorGetX(_position), XMVectorGetY(_position), XMVectorGetZ(_position)));
 		_model.getBoundingVolume()->move(getBoundingVolume()->getPos() + _position);

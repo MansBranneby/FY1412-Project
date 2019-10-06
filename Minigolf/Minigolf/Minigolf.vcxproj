@@ -154,6 +154,7 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ShaderHandler.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartOfGameState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StaticObject.h" />

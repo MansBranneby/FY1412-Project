@@ -280,7 +280,7 @@ void Terrain::createSRV(ID3D11Device* device)
 }
 
 Terrain::Terrain(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX::XMVECTOR startingPosition, std::string filename)
-	:StaticObject(TERRAIN, BoundingType(2), startingPosition)
+	:StaticObject(ObjectType(1), BoundingType(1), startingPosition)
 {
 	_cellsPerPatch = 64;
 	_cellSpacing = 1.0f;

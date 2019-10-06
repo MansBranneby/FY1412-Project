@@ -7,7 +7,7 @@ void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 
 	//player->setPosition(player->getPositionVector() + (player->getVelocity() * deltaSeconds));
 
-	for (int i = 0; i < nrOfObjects; i++)
+	for (UINT32 i = 0; i < nrOfObjects; i++)
 	{
 		//Update postion of all dynamic objects
 	}
@@ -20,12 +20,12 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
 	// SPHERE VS PLANE
-	player->move(player->getAcceleration(), game->getClock()->getDeltaSeconds());
-	if (player->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(0)->getBoundingVolume()).colliding == false)
+	if (player->getGeometry()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding == false)
 	{
-		player->height -= 9.82f * game->getClock()->getDeltaSeconds() * 4;
-		player->setHeight(player->height);
+		player->getGeometry()->height -= 9.82f * game->getClock()->getDeltaSeconds();
+		player->getGeometry()->setHeight(player->getGeometry()->height);
 	}
+	player->getGeometry()->move(DirectX::XMVECTOR{ 0.0, 0.0, 0.0f, 0.0f }, game->getClock()->getDeltaSeconds());
 	//if collision
 		//if N > mg
 			//player->calculatenewVel(game, collidingObj)
@@ -63,7 +63,7 @@ void GameState::update(Game* game)
 	geometryCollision(game, player, nrOfObjects);
 
 	//Update Camera
-	game->getCamera()->followObject(player->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
+	game->getCamera()->followObject(game->getLevelHandler()->getPlayer()->getGeometry()->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
 }
 
 void GameState::draw(Game* game)

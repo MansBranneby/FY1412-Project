@@ -27,14 +27,13 @@ public:
 	virtual~GameObjectHandler();
 
 	void addGameObject(ObjectType objType, BoundingType boundingType, XMVECTOR position, std::string modelFile);
+	void addPlayer();
 	int getNrOfObjects() const;
 	std::vector<Terrain*> getTerrain();
 	Player* getPlayer();
 
-	void drawPlayer(GraphicResources* graphicResources, float timeInSec);
 	void drawTerrain(GraphicResources* graphicResources);
 	void drawObjects(GraphicResources* graphicResources);
 
-	void drawPlayerBV(GraphicResources* graphicResources);
 	GameObject* getGameObject(int index) const;
 };
