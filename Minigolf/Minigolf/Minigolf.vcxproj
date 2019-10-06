@@ -120,6 +120,7 @@
     <ClInclude Include="BoundingVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="Club.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="DeviceHolder.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="BoundingVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Club.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="DomainShader.cpp" />
