@@ -1,13 +1,19 @@
 #pragma once
-#include "DynamicObject.h"
 #include <Keyboard.h>
 #include <GamePad.h>
+#include "Club.h"
+#include "DynamicObject.h"
 
-class Player : public DynamicObject
+class Player
 {
+private:
+	Club _club;
+	DynamicObject* _geometry;
 public:
-	Player(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
+	Player();
+	Player(DynamicObject* geometry);
 	virtual ~Player();
 
-	void handleInput(Keyboard::State kb, GamePad::State gp, float deltaSeconds);
+	void handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp, float deltaSeconds);
+	DynamicObject* getGeometry();
 };

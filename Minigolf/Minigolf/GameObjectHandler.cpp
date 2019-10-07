@@ -55,21 +55,20 @@ void GameObjectHandler::addGameObject(ObjectType objType, BoundingType boundingT
 		expand();
 	switch (objType)
 	{
-	case PLAYER:
-		_player = new Player(_device, _deviceContext, boundingType, position, modelFile);
-		break;
-	case ENEMY:
-		//_gameObjects[_nrOfObjects++] = new Enemy(_device, _deviceContext, position);
+	case DYNAMICOBJECT:
+		_gameObjects[_nrOfObjects++] = new DynamicObject(_device, _deviceContext, boundingType, position, modelFile);
 		break;
 	case STATICOBJECT:
 		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, boundingType, position, modelFile);
 		break;
-	case TERRAIN:
-		_terrain.push_back(new Terrain(_device, _deviceContext, position, modelFile));
-		break;
 	default:
 		break;
 	}
+}
+
+void GameObjectHandler::addPlayer()
+{
+	_player = new Player(dynamic_cast<DynamicObject*>(_gameObjects[0]));
 }
 
 int GameObjectHandler::getNrOfObjects() const
@@ -87,11 +86,6 @@ Player * GameObjectHandler::getPlayer()
 	return _player;
 }
 
-void GameObjectHandler::drawPlayer(GraphicResources* graphicResources, float timeInSec)
-{
-	_player->draw(graphicResources, timeInSec);
-}
-
 void GameObjectHandler::drawTerrain(GraphicResources* graphicResources)
 {
 	for (size_t i = 0; i < _terrain.size(); i++)
@@ -102,11 +96,6 @@ void GameObjectHandler::drawObjects(GraphicResources* graphicResources)
 {
 	for (size_t i = 0; i < _nrOfObjects; i++)
 		_gameObjects[i]->draw(graphicResources);
-}
-
-void GameObjectHandler::drawPlayerBV(GraphicResources* graphicResources)
-{
-	_player->drawBoundingVolume(graphicResources);
 }
 
 GameObject * GameObjectHandler::getGameObject(int index) const

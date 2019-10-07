@@ -5,10 +5,8 @@ using namespace DirectX;
 
 enum ObjectType //Troligtvis ett tillfälligt sätt att hantera detta.
 {
-	PLAYER,
-	ENEMY,
-	STATICOBJECT,
-	TERRAIN
+	DYNAMICOBJECT,
+	STATICOBJECT
 };
 
 class GameObject
@@ -25,10 +23,10 @@ protected:
 	void updateTransformations(XMFLOAT3 position);
 
 public:
-	float height = 100.0f;
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
-	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType _boundingType, DirectX::XMVECTOR position, std::string modelFile);
+	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType _boundingType, DirectX::XMVECTOR position, std::string modelFile);
 	virtual ~GameObject() = 0;
+	float height = 20;
 
 	Model* getModel();
 	bool createModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string modelFile); //Return true if everything works out

@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-//#include "Game.h"
 
 using namespace DirectX;
 
@@ -35,7 +34,7 @@ private:
 	XMVECTOR calcRolling(float deltaSeconds, XMVECTOR acceleration);
 
 public:
-	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, XMVECTOR startingPosition, std::string modelFile);
+	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
 	virtual ~DynamicObject();
 	
 	void move(XMVECTOR acceleration, float deltaSeconds);

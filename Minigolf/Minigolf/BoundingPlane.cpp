@@ -1,4 +1,6 @@
 #include "BoundingPlane.h"
+#include "OBB.h"
+#include "BoundingSphere.h"
 
 BoundingPlane::BoundingPlane(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates)
 	:BoundingVolume(minCoordinates, maxCoordinates)
@@ -43,6 +45,18 @@ DirectX::XMVECTOR BoundingPlane::getNormal()
 	DirectX::XMVECTOR vec2 = DirectX::XMVectorSubtract(pos1, pos3);
 
 	return DirectX::XMVector3Normalize(DirectX::XMVector3Cross(vec2, vec1));
+}
+
+CollisionInfo BoundingPlane::intersects(BoundingVolume * other)
+{
+	CollisionInfo info;
+
+	if (dynamic_cast<OBB*> (other))
+		info = intersectsWithOBB(other);
+	else if (dynamic_cast<BoundingPlane*> (other))
+		info = intersectsWithPlane(other);
+
+	return info;
 }
 
 CollisionInfo BoundingPlane::intersectsWithPlane(BoundingVolume * other)

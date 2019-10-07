@@ -72,8 +72,8 @@ Clock* gClock;
 GameState gGameState;
 
 // IMGUI VARIABLES //
-float gSmoothSpeed = 1.0f;
-float gLookAtSpeed = 1.0f;
+float gSmoothSpeed = 10.0f;
+float gLookAtSpeed = 10.0f;
 bool drawBoundingVolume = false;
 
 void initializeResources(HWND wndHandle)
@@ -115,7 +115,7 @@ void imGuiUpdate()
 	gGame->getCamera()->setSmoothSpeed(gSmoothSpeed);
 	gGame->getCamera()->setLookAtSpeed(gLookAtSpeed);
 
-	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getPositionFloat3();
+	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getGeometry()->getPositionFloat3();
 	ImGui::Text("Player position: X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
 
 	ImGui::Checkbox("Draw bounding volume", &drawBoundingVolume);
@@ -158,10 +158,6 @@ void render()
 	gGR->getDeviceContext()->PSSetSamplers(0, 0, nullptr);
 	if (drawBoundingVolume == true)
 	{
-
-		// Temporary solution to drawing bounding volumes (Drawing these in gamestate does not work because we have to set shaders (look above))
-		// draw player bounding volume
-		gGame->getLevelHandler()->getPlayer()->drawBoundingVolume(gGR);
 		// Loop through all the objects in levelhandler and draw their bounding volumes
 		for(int i = 0; i < gGame->getLevelHandler()->getNrOfGameObjects(); i++)
 			gGame->getLevelHandler()->getGameObject(i)->drawBoundingVolume(gGR);

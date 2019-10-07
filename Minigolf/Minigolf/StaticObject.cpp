@@ -6,7 +6,7 @@ StaticObject::StaticObject(ObjectType objectType, BoundingType boundingType, Dir
 }
 
 StaticObject::StaticObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
-	:GameObject(device, deviceContext, STATICOBJECT, BoundingType(boundingType), startingPosition, modelFile)
+	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
 {
 }
 

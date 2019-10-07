@@ -43,4 +43,6 @@ void LevelAI::createLevel(int levelNr, GameObjectHandler * objHandler)
 		//objHandler->addGameObject(XMVectorSet(5.0f, 0.0f, 0.0f, 1.0f), STATICOBJECT);
 		objHandler->addGameObject(ObjectType(objType), BoundingType(boundingType),XMVectorSet(x, y, z, 1.0f), modelFile);
 	}
+
+	objHandler->addPlayer();
 }
