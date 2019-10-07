@@ -2,16 +2,21 @@
 
 Player::Player()
 {
-	this->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
-	this->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
+	getGeometry()->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
+	getGeometry()->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
 
-	this->setMass(0.049f);
-	this->setMeansOfMovement(MeansOfMovement(PROJECTILE));
+	getGeometry()->setMass(0.049f);
+	getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
 }
 
 Player::Player(DynamicObject * geometry)
 {
 	_geometry = geometry;
+	getGeometry()->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
+	getGeometry()->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
+
+	getGeometry()->setMass(0.049f);
+	getGeometry()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 }
 
 Player::~Player()

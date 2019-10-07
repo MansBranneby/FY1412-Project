@@ -15,7 +15,8 @@ enum MeansOfMovement
 {
 	PROJECTILE,
 	GLIDING,
-	ROLLING
+	ROLLING,
+	REST
 };
 
 class DynamicObject : public GameObject

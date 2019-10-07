@@ -33,7 +33,7 @@ XMVECTOR DynamicObject::calculateDrag(Environment * environment)
 
 XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, XMVECTOR acceleration)
 {
-	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+	XMVECTOR newPosition = getPositionVector() +(getVelocity() * deltaSeconds);
 	//setVelocity(getVelocity() + XMVectorSet(0.0f, -9.82 * deltaSeconds, 0.0f, 1.0f));
 	setVelocity(getVelocity() + acceleration * deltaSeconds);
 	return newPosition;
@@ -49,9 +49,7 @@ XMVECTOR DynamicObject::calcRolling(float deltaSeconds, XMVECTOR acceleration)
 	return XMVECTOR();
 }
 
-DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, XMVECTOR startingPosition, std::string modelFile)
-	:GameObject(device, deviceContext, objType, BoundingType(boundingType), startingPosition, modelFile)
-DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType,DirectX::XMVECTOR startingPosition, std::string modelFile)
+DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
 {
 	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -77,15 +75,18 @@ void DynamicObject::move(XMVECTOR acceleration, float deltaSeconds)
 XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* environment)
 {
 	//Bättre att räkna ut analytiskt en gång för att sedan använda t och ursprunglig beräkning?
-	
-	//Forces
-	XMVECTOR dragForce = calculateDrag(environment); //Drag
-	XMVECTOR gForce = environment->gravAcc * 0.0459; //Gravity (*massa så länge environment har acc och inte force)
-	//Magnus force
-	XMVECTOR resForce = dragForce + gForce; //Resultant
+	XMVECTOR acceleration;
+	if (_meansOfMovement != REST)
+	{
+		//Forces
+		XMVECTOR dragForce = calculateDrag(environment); //Drag
+		XMVECTOR gForce = environment->gravAcc * 0.0459f; //Gravity (*massa så länge environment har acc och inte force)
+		//Magnus force
+		XMVECTOR resForce = dragForce + gForce; //Resultant
 
-	//Acceleration
-	XMVECTOR acceleration = resForce / 0.0459; // a = F/m. Ska massan finnas i geometry eller i gameobject?
+		//Acceleration
+		acceleration = resForce / 0.0459f; // a = F/m. Ska massan finnas i geometry eller i gameobject?
+	}
 
 	XMVECTOR newPosition; //Return value
 
@@ -99,6 +100,9 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 		break;
 	case ROLLING:
 		newPosition = calcRolling(deltaSeconds, acceleration);
+		break;
+	case REST:
+		newPosition = getPositionVector(); //No update
 		break;
 	default:
 		break;
