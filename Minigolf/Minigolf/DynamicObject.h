@@ -2,6 +2,16 @@
 #include "GameObject.h"
 //#include "Game.h"
 
+using namespace DirectX;
+
+struct Environment //Jag gillar inte att Dobject har Environment. Men eftersom include game.h inte fungerar...
+{
+	float airDensity;
+	XMVECTOR windVelocity;
+
+	XMVECTOR gravAcc;
+};
+
 enum MeansOfMovement
 {
 	PROJECTILE,
@@ -14,31 +24,32 @@ class DynamicObject : public GameObject
 private:
 	//Variables for physics calculations
 	MeansOfMovement _meansOfMovement;
-	DirectX::XMVECTOR _velocity; 
-	DirectX::XMVECTOR _angularVelocity; //Spinn 
+	XMVECTOR _velocity; 
+	XMVECTOR _angularVelocity; //Spinn 
 	
 	float _mass, _fricGlide, _fricRoll;
 
-	DirectX::XMVECTOR calcProjectile(float deltaSeconds);
-	DirectX::XMVECTOR calcGliding(float deltaSeconds);
-	DirectX::XMVECTOR calcRolling(float deltaSeconds);
+	XMVECTOR calculateDrag(Environment* environment);
+	XMVECTOR calcProjectile(float deltaSeconds, XMVECTOR acceleration);
+	XMVECTOR calcGliding(float deltaSeconds, XMVECTOR acceleration);
+	XMVECTOR calcRolling(float deltaSeconds, XMVECTOR acceleration);
 
 public:
-	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
+	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objType, BoundingType boundingType, XMVECTOR startingPosition, std::string modelFile);
 	virtual ~DynamicObject();
 	
-	void move(DirectX::XMVECTOR acceleration, float deltaSeconds);
+	void move(XMVECTOR acceleration, float deltaSeconds);
 
 	//Physics
-	DirectX::XMVECTOR calculateMovement(float deltaSeconds); //Calculate new positions of dynamic objects based on physics
+	XMVECTOR calculateMovement(float deltaSeconds, Environment* environment); //Calculate new positions of dynamic objects based on physics
 
 	//GET & SET
-	virtual void setVelocity(DirectX::XMVECTOR velocity);
-	virtual void setAngularVelocity(DirectX::XMVECTOR angularVelocity);
+	virtual void setVelocity(XMVECTOR velocity);
+	virtual void setAngularVelocity(XMVECTOR angularVelocity);
 	virtual void setMeansOfMovement(MeansOfMovement meansOfMovement);
 	virtual void setMass(float mass);
 	//virtual void setAcceleration(DirectX::XMVECTOR acceleration);
-	virtual DirectX::XMVECTOR getVelocity();
+	virtual XMVECTOR getVelocity();
 	virtual MeansOfMovement getMeansofMovement() const;
 	virtual float getMass() const;
 	//virtual DirectX::XMVECTOR getAcceleration();

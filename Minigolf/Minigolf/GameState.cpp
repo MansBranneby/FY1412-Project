@@ -3,8 +3,8 @@
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
-	player->setPosition(player->calculateMovement(deltaSeconds)); //OBS. Var uppdateras boundingBoxes position
-
+	player->setPosition(player->calculateMovement(deltaSeconds, game->getEnvironment())); //OBS. Var uppdateras boundingBoxes position
+	
 	for (int i = 0; i < nrOfObjects; i++)
 	{
 		//Update postion of all dynamic objects

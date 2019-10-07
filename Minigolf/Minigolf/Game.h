@@ -9,14 +9,6 @@
 #include <Keyboard.h>
 #include <vector>
 
-struct Environment
-{
-	float airDensity;
-	DirectX::XMVECTOR windVelocity;
-
-	DirectX::XMVECTOR gravForce;
-};
-
 class State; //Forward declare https://stackoverflow.com/questions/6515143/user-created-header-causing-c2061-syntax-error-identifier-classname
 class Game
 {
@@ -27,6 +19,8 @@ private:
 	Clock* _clock = nullptr; //Get delta seconds
 	std::vector<State*> _states; //Holds states that should be updated
 	LevelHandler* _levelHandler = nullptr;
+
+	Environment* _environment;
 	
 public:
 	Game(Clock* clock, InputController* inputController, GraphicResources* graphicResources);
@@ -40,11 +34,13 @@ public:
 	void update();													   //Calls update on current state
 	void draw();													   //Calls draw on current state
 
+	//GET & SET
 	GraphicResources* getGraphicResources();
 	Clock* getClock();
 	InputController* getInputController();
 	LevelHandler* getLevelHandler();
 	Camera* getCamera();
+	Environment* getEnvironment() const;
 	
 	void updateCameraBuffers();
 };
