@@ -26,7 +26,6 @@ public:
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
 	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType _boundingType, DirectX::XMVECTOR position, std::string modelFile);
 	virtual ~GameObject() = 0;
-	float height = 20;
 
 	Model* getModel();
 	bool createModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string modelFile); //Return true if everything works out
@@ -41,4 +40,5 @@ public:
 	DirectX::XMFLOAT3 getPositionFloat3();
 
 	virtual BoundingVolume* getBoundingVolume();
+	virtual void setBoundingPos(XMVECTOR positon);
 };

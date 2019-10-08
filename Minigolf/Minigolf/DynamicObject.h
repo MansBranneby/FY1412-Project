@@ -29,7 +29,7 @@ private:
 	
 	float _mass, _fricGlide, _fricRoll;
 
-	XMVECTOR calculateDrag(Environment* environment);
+	virtual XMVECTOR calculateDrag(Environment* environment) = 0;
 	XMVECTOR calcProjectile(float deltaSeconds, XMVECTOR acceleration);
 	XMVECTOR calcGliding(float deltaSeconds, XMVECTOR acceleration);
 	XMVECTOR calcRolling(float deltaSeconds, XMVECTOR acceleration);

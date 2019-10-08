@@ -19,17 +19,9 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
 	// SPHERE VS PLANE
-	if (player->getGeometry()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding == FALSE)
-	{
-		player->getGeometry()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
-		//player->getGeometry()->height -= 9.82f * game->getClock()->getDeltaSeconds();
-		//player->getGeometry()->setHeight(player->getGeometry()->height);
-	}
-	else
-	{
+	if (player->getGeometry()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding)
 		player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
-	}
-	//player->getGeometry()->move(DirectX::XMVECTOR{ 0.0, 0.0, 0.0f, 0.0f }, game->getClock()->getDeltaSeconds()); //Fråga Glenn om denna rad
+
 	//if collision
 		//if N > mg
 			//player->calculatenewVel(game, collidingObj)

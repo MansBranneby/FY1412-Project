@@ -56,7 +56,12 @@ void GameObjectHandler::addGameObject(ObjectType objType, BoundingType boundingT
 	switch (objType)
 	{
 	case DYNAMICOBJECT:
-		_gameObjects[_nrOfObjects++] = new DynamicObject(_device, _deviceContext, boundingType, position, modelFile);
+		switch (boundingType)
+		{
+		case BOUNDING_SPHERE:
+			_gameObjects[_nrOfObjects++] = new Sphere(_device, _deviceContext, boundingType, position, modelFile);
+			break;
+		}
 		break;
 	case STATICOBJECT:
 		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, boundingType, position, modelFile);

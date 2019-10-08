@@ -206,6 +206,7 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShaderHandler.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartOfGameState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StaticObject.cpp" />

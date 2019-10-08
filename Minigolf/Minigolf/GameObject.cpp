@@ -79,6 +79,7 @@ DirectX::XMFLOAT3 GameObject::getPositionFloat3()
 void GameObject::setPosition(DirectX::XMVECTOR position)
 {
 	_position = position;
+	setBoundingPos(position);
 }
 
 void GameObject::setHeight(float height)
@@ -90,4 +91,9 @@ void GameObject::setHeight(float height)
 BoundingVolume * GameObject::getBoundingVolume()
 {
 	return _model.getBoundingVolume();
+}
+
+void GameObject::setBoundingPos(XMVECTOR position)
+{
+	_model.getBoundingVolume()->setPos(position);
 }

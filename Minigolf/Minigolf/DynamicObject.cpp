@@ -1,5 +1,6 @@
 #include "DynamicObject.h"
 
+/*
 XMVECTOR DynamicObject::calculateDrag(Environment * environment)
 {
 	XMVECTOR drag;
@@ -30,6 +31,7 @@ XMVECTOR DynamicObject::calculateDrag(Environment * environment)
 
 	return drag;
 }
+*/
 
 XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, XMVECTOR acceleration)
 {
