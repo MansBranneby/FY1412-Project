@@ -4,7 +4,7 @@ void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
 	if(player->getGeometry()->getMeansofMovement() != REST)
-		player->getGeometry()->setPosition(player->getGeometry()->calculateMovement(deltaSeconds, game->getEnvironment())); //OBS. Var uppdateras boundingBoxes position
+		player->getGeometry()->setPosition(player->getGeometry()->calculateMovement(deltaSeconds, game->getEnvironment()));
 
 	for (UINT32 i = 0; i < nrOfObjects; i++)
 	{
@@ -20,7 +20,8 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 {
 	// SPHERE VS PLANE
 	if (player->getGeometry()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding)
-		player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
+		player->getGeometry()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
+		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
 
 	//if collision
 		//if N > mg

@@ -12,11 +12,11 @@ Player::Player()
 Player::Player(DynamicObject * geometry)
 {
 	_geometry = geometry;
-	getGeometry()->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
-	getGeometry()->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
+	_geometry->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
+	_geometry->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
 
-	getGeometry()->setMass(0.049f);
-	getGeometry()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
+	_geometry->setMass(0.0459f);
+	_geometry->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 }
 
 Player::~Player()

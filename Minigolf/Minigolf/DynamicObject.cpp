@@ -76,18 +76,17 @@ void DynamicObject::move(XMVECTOR acceleration, float deltaSeconds)
 
 XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* environment)
 {
-	//Bättre att räkna ut analytiskt en gång för att sedan använda t och ursprunglig beräkning?
 	XMVECTOR acceleration;
 	if (_meansOfMovement != REST)
 	{
 		//Forces
 		XMVECTOR dragForce = calculateDrag(environment); //Drag
-		XMVECTOR gForce = environment->gravAcc * 0.0459f; //Gravity (*massa så länge environment har acc och inte force)
+		XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
 		//Magnus force
 		XMVECTOR resForce = dragForce + gForce; //Resultant
 
 		//Acceleration
-		acceleration = resForce / 0.0459f; // a = F/m. Ska massan finnas i geometry eller i gameobject?
+		acceleration = resForce / _mass; // a = F/m.
 	}
 
 	XMVECTOR newPosition; //Return value

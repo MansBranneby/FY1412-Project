@@ -33,6 +33,7 @@ public:
 	void draw(GraphicResources* graphicResources, float timeInSec);
 	void drawBoundingVolume(GraphicResources* graphicResources);
 
+	//GET & SET
 	void setPosition(DirectX::XMVECTOR position);
 	void setHeight(float height);
 
@@ -41,4 +42,7 @@ public:
 
 	virtual BoundingVolume* getBoundingVolume();
 	virtual void setBoundingPos(XMVECTOR positon);
+
+	BoundingType getBoundingType() const;
+	ObjectType getObjectType() const;
 };

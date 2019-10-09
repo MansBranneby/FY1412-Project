@@ -97,3 +97,13 @@ void GameObject::setBoundingPos(XMVECTOR position)
 {
 	_model.getBoundingVolume()->setPos(position);
 }
+
+BoundingType GameObject::getBoundingType() const
+{
+	return _boundingType;
+}
+
+ObjectType GameObject::getObjectType() const
+{
+	return _objectType;
+}
