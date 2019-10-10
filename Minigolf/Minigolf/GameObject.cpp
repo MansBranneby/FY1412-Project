@@ -107,3 +107,8 @@ ObjectType GameObject::getObjectType() const
 {
 	return _objectType;
 }
+
+void GameObject::setObjectType(ObjectType objectType)
+{
+	_objectType = objectType;
+}

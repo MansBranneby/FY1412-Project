@@ -54,6 +54,7 @@ XMVECTOR DynamicObject::calcRolling(float deltaSeconds, XMVECTOR acceleration)
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
 {
+	this->setObjectType(DYNAMICOBJECT);
 	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };
 	//_friction = 0.000000001f;
@@ -116,7 +117,7 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 
 void DynamicObject::setVelocity(XMVECTOR velocity)
 {
-	_velocity = velocity;
+	_velocity = velocity; //Tvinga 4:e element till 1.0f??
 }
 
 void DynamicObject::setAngularVelocity(XMVECTOR angularVelocity)
