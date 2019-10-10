@@ -115,7 +115,7 @@ void imGuiUpdate()
 	gGame->getCamera()->setSmoothSpeed(gSmoothSpeed);
 	gGame->getCamera()->setLookAtSpeed(gLookAtSpeed);
 
-	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getGeometry()->getPositionFloat3();
+	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getBall()->getPositionFloat3();
 	ImGui::Text("Player position: X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
 
 	ImGui::Checkbox("Draw bounding volume", &drawBoundingVolume);

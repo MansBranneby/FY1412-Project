@@ -3,8 +3,8 @@
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
-	if(player->getGeometry()->getMeansofMovement() != REST)
-		player->getGeometry()->setPosition(player->getGeometry()->calculateMovement(deltaSeconds, game->getEnvironment()));
+	if(player->getBall()->getMeansofMovement() != REST)
+		player->getBall()->setPosition(player->getBall()->calculateMovement(deltaSeconds, game->getEnvironment()));
 
 	for (UINT32 i = 0; i < nrOfObjects; i++)
 	{
@@ -19,8 +19,8 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
 	// SPHERE VS PLANE
-	if (player->getGeometry()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding)
-		player->getGeometry()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
+	if (player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding)
+		player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
 		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
 
 	//if collision
@@ -60,7 +60,7 @@ void GameState::update(Game* game)
 	geometryCollision(game, player, nrOfObjects);
 
 	//Update Camera
-	game->getCamera()->followObject(game->getLevelHandler()->getPlayer()->getGeometry()->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
+	game->getCamera()->followObject(game->getLevelHandler()->getPlayer()->getBall()->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
 }
 
 void GameState::draw(Game* game)

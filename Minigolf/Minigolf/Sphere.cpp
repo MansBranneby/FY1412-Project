@@ -7,13 +7,10 @@ void Sphere::planeCol(GameObject * colObj)
 	float vp, vn, up, un;
 	if (colObj->getObjectType() == STATICOBJECT)
 	{
-		ep = XMVector3Normalize(static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal()); //Sphere on plane, so line-of-action is the normal of the plane
-		XMVectorSetW(ep, 1.0f);
+		ep = static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal(); //Sphere on plane, so line-of-action is the normal of the plane
 		
 		XMVECTOR test = XMVector3Normalize(XMVector3Cross(this->getVelocity(), ep));
-		XMVectorSetW(test, 1.0f);
 		en = XMVector3Cross(test, ep);
-		XMVectorSetW(en, 1.0f);
 
 		vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Component along line-of-action
 		vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en));
@@ -21,7 +18,7 @@ void Sphere::planeCol(GameObject * colObj)
 		up = -0.8 * vp;//Kolla upp krockkoeff i någon lista
 		//float MOI = (2 * this->getMass() * pow(0.0214, 2)) / 5;
 		//un = (vn * this->getMass() * pow(0.0214, 2)) / (this->getMass() * pow(0.0214, 2) * MOI);
-		un = (5 * vn) / 7;
+		un = (5.0f * vn) / 7.0f;
 
 		XMVECTOR newVelocity = up * ep + un * en; //New Velocity
 		this->setVelocity(XMVectorSet(XMVectorGetX(newVelocity), XMVectorGetY(newVelocity), XMVectorGetZ(newVelocity), 1.0f)); //Set w to 1.0f
