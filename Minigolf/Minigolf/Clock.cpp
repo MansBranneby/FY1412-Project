@@ -23,12 +23,15 @@ void Clock::reset()
 	_startTime = _currTime;
 }
 
-float Clock::getDeltaSeconds()
+void Clock::calculateDeltaSeconds()
 {
 	QueryPerformanceCounter(&_currTime);
 	_delta.QuadPart = _currTime.QuadPart - _startTime.QuadPart;
 	_deltaSeconds = (float)_delta.QuadPart / _clockFreq.QuadPart;
-	
+}
+
+float Clock::getDeltaSeconds()
+{
 	return _deltaSeconds;
 }
 

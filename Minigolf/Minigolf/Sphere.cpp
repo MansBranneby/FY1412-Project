@@ -20,6 +20,12 @@ void Sphere::planeCol(GameObject * colObj)
 
 		XMVECTOR newVelocity = up * ep + un * en; //New Velocity
 		this->setVelocity(XMVectorSet(XMVectorGetX(newVelocity), XMVectorGetY(newVelocity), XMVectorGetZ(newVelocity), 1.0f)); //Set w to 1.0f
+
+		if (XMVectorGetX(XMVector3Dot(newVelocity, ep)) < 10.0f)
+		{
+			setMeansOfMovement(GLIDING);
+			setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
+		}
 	}
 	else
 	{
@@ -54,7 +60,18 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		break;
 	}
 	case GLIDING:
+	{
+		XMVECTOR relVel = velocity - environment->windVelocity; //Velocity relative to wind
+		float absRelVel = sqrt(pow(XMVectorGetX(relVel), 2) + pow(XMVectorGetY(relVel), 2) + pow(XMVectorGetZ(relVel), 2)); //The length of vector relVel
+
+		float ballArea = XM_PI * pow(0.0214, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
+
+		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+
+		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
+	}
 	case ROLLING:
 		break;
 	default:

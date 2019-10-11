@@ -20,6 +20,7 @@ public:
 	~Clock();
 
 	void reset(); 
+	void calculateDeltaSeconds();
 	float getDeltaSeconds();
 	// time since the start of the program
 	float getTimeInSec();

@@ -186,6 +186,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		///////////////
 		while (WM_QUIT != msg.message)
 		{
+			gClock->calculateDeltaSeconds(); //Calculate delta seconds
 			if (PeekMessage(&msg, wndHandle, 0, 0, PM_REMOVE))
 			{
 				gInputCtrl->translateMessage(msg);

@@ -10,7 +10,19 @@ XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, XMVECTOR acceleration
 
 XMVECTOR DynamicObject::calcGliding(float deltaSeconds, XMVECTOR acceleration)
 {
-	return XMVECTOR();
+	//Ska göras: Lägga til drag
+	
+	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
+	
+	float yg = 0.25, yr = 0.025; //Ska ej finnas här
+	XMVectorSetY(_angularVelocity, (5 * yg * 9.82 *deltaSeconds) / (2 * 0.0214) - XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
+	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82 * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
+	_velocity = _velocity * lenghtFactor; //Update velocity
+
+
+	//if()
+	
+	return newPosition;
 }
 
 XMVECTOR DynamicObject::calcRolling(float deltaSeconds, XMVECTOR acceleration)
@@ -33,13 +45,6 @@ DynamicObject::~DynamicObject()
 
 void DynamicObject::move(XMVECTOR acceleration, float deltaSeconds)
 {
-	//_velocity += acceleration;
-	//_velocity *= pow(_friction, deltaSeconds);
-	//setPosition(getPositionVector() + _velocity);
- //   
-	//// Update transformation matrix
-	//updateTransformations(getPositionFloat3());
-	//getBoundingVolume()->move(acceleration);
 }
 
 XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* environment)
