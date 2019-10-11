@@ -15,14 +15,11 @@ void Sphere::planeCol(GameObject * colObj)
 		vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Component along line-of-action
 		vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en));
 
-		up = -0.8 * vp;//Kolla upp krockkoeff i någon lista
-		//float MOI = (2 * this->getMass() * pow(0.0214, 2)) / 5;
-		//un = (vn * this->getMass() * pow(0.0214, 2)) / (this->getMass() * pow(0.0214, 2) * MOI);
+		up = -0.8f * vp;//Kolla upp krockkoeff i någon lista
 		un = (5.0f * vn) / 7.0f;
 
 		XMVECTOR newVelocity = up * ep + un * en; //New Velocity
 		this->setVelocity(XMVectorSet(XMVectorGetX(newVelocity), XMVectorGetY(newVelocity), XMVectorGetZ(newVelocity), 1.0f)); //Set w to 1.0f
-		//this->setVelocity(this->getVelocity() + (up - vp) * (ep));// + 0.2*en)); //New velocity
 	}
 	else
 	{

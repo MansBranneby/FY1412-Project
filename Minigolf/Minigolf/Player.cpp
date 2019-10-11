@@ -21,20 +21,13 @@ void Player::hitBall(XMMATRIX rotationMat, float clubSpeed, ClubType clubType)
 
 Player::Player()
 {
-	/*getBall()->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
-	getBall()->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
-
-	getBall()->setMass(0.049f);
-	getBall()->setMeansOfMovement(MeansOfMovement(REST));*/
 }
 
 Player::Player(DynamicObject * ball)
 {
 	_ball = ball;
-	_ball->setAngularVelocity(DirectX::XMVectorSet(0.0, 0.0, 0.0, 1.0));
-	_ball->setVelocity(DirectX::XMVectorSet(20.0, 20.0, 0.0, 1.0));
-
 	_ball->setMass(0.0459f);
+
 	_ball->setMeansOfMovement(MeansOfMovement(REST));
 	hitBall(XMMatrixRotationY(0.0f), 40.0f, IRON_7);
 }
