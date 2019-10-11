@@ -36,7 +36,8 @@ private:
 	float _theta;
 	float _phi;
 	float _camDistance;
-	float _rotationGain; // radian/sec 
+	// radian/sec 
+	float _rotationGain; 
 
 	//XMMATRIX _world;
 	XMMATRIX _view;
@@ -45,15 +46,15 @@ private:
 
 	ViewFrustum _viewFrustum;
 
-	void updateWVP();
-	void updateDebugCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
-	void updateGameCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
+	void handleFreeCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
+	void handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
+	void handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition);
 
 	//Smooth cam
 	float t;
 	float _smoothSpeed;
 	float _lookAtSpeed;
-	XMVECTOR _offSet;
+	XMVECTOR _posOffset;
 	XMVECTOR lerp(XMVECTOR startPos, XMVECTOR endPos, float deltaSeconds);
 
 public:
@@ -75,7 +76,11 @@ public:
 
 	DirectX::XMVECTOR getPosition();
 	DirectX::XMMATRIX getViewProjection();
-	void update(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
+	void handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds);
+	void handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition);
 	void followObject(DirectX::XMVECTOR objPosition, float deltaSeconds);
+
+
+	float getPhi();
 
 };

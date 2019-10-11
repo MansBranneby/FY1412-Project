@@ -117,6 +117,7 @@ void imGuiUpdate()
 
 	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getBall()->getPositionFloat3();
 	ImGui::Text("Player position: X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
+	ImGui::Text("Camera Phi: X: %.2f", gGame->getCamera()->getPhi());
 
 	ImGui::Checkbox("Draw bounding volume", &drawBoundingVolume);
 	ImGui::Text("FPS: %.f", ImGui::GetIO().Framerate);

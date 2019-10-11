@@ -39,12 +39,17 @@ void GameState::handleInput(Game* game)
 {
 	DirectX::Keyboard::State kb = game->getInputController()->getKeyboardState();
 	DirectX::GamePad::State gp = game->getInputController()->getGamePadState();
+	DirectX::Mouse::State ms = game->getInputController()->getMouseState();
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
 
 	Player* player = game->getLevelHandler()->getPlayer();
-
-	// Handle input if there is no collison
+	Camera* camera = game->getCamera();
+	
+	// Handle player
 	player->handleInput(kb, gp, deltaSeconds);
+	// Handle camera
+	game->getInputController()->setMouseMode();
+	camera->handleInput(kb, ms, deltaSeconds, player->getBall()->getPositionVector());
 }
 
 void GameState::update(Game* game)
@@ -58,9 +63,6 @@ void GameState::update(Game* game)
 
 	//Collision
 	geometryCollision(game, player, nrOfObjects);
-
-	//Update Camera
-	game->getCamera()->followObject(game->getLevelHandler()->getPlayer()->getBall()->getPositionVector(), game->getClock()->getDeltaSeconds()); //Update camera based on player position
 }
 
 void GameState::draw(Game* game)
