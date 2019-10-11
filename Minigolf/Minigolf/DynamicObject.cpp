@@ -33,13 +33,6 @@ DynamicObject::~DynamicObject()
 
 void DynamicObject::move(XMVECTOR acceleration, float deltaSeconds)
 {
-	//_velocity += acceleration;
-	//_velocity *= pow(_friction, deltaSeconds);
-	//setPosition(getPositionVector() + _velocity);
- //   
-	//// Update transformation matrix
-	//updateTransformations(getPositionFloat3());
-	//getBoundingVolume()->move(acceleration);
 }
 
 XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* environment)

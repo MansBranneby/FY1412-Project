@@ -19,8 +19,12 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
 	// SPHERE VS PLANE
-	if (player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume()).colliding)
+	CollisionInfo colInfo = player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume());
+	if (colInfo.colliding)
+	{
+		player->getBall()->setPosition(colInfo.pointOfCollision);
 		player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
+	}
 		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
 
 	//if collision
