@@ -19,15 +19,26 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, XMVECTOR acceleration)
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	_velocity = _velocity * lenghtFactor; //Update velocity
 
+	if (XMVectorGetX(XMVector3Length(_velocity)) <= XMVectorGetY(_angularVelocity) * 0.0214) // v = w*r. Check start of roll-phase. //Ändra radius!
+		_meansOfMovement = ROLLING;
 
-	//if()
-	
 	return newPosition;
 }
 
 XMVECTOR DynamicObject::calcRolling(float deltaSeconds, XMVECTOR acceleration)
 {
-	return XMVECTOR();
+	//Lägg till drag
+
+	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+
+	float yr = 0.025;
+	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yr * 9.82 * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
+	_velocity = _velocity * lenghtFactor;
+
+	if (XMVectorGetX(XMVector3Length(_velocity)) < 0.001) //Check if at rest
+		_meansOfMovement = REST;
+
+	return newPosition;
 }
 
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
