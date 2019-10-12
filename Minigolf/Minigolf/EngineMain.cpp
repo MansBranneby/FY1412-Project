@@ -136,6 +136,26 @@ void imGuiUpdate()
 		if (ImGui::Button("Reset position"))
 			player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
 
+		const char* meansofMovement = "";
+		switch (player->getBall()->getMeansofMovement())
+		{
+		case PROJECTILE:
+			meansofMovement = "PROJECTILE";
+			break;
+		case GLIDING:
+			meansofMovement = "GLIDING";
+			break;
+		case ROLLING:
+			meansofMovement = "ROLLING";
+			break;
+		case REST:
+			meansofMovement = "REST";
+			break;
+		default:
+			break;
+		}
+
+		ImGui::Text("State: %s", meansofMovement);
 		ImGui::Text("Position  : X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
 		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());
 		ImGui::Combo("Selected club", &clubChoice, clubNames, 14);
