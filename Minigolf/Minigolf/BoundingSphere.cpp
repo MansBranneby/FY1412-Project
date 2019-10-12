@@ -54,7 +54,7 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 		{
 			info.colliding = true;
 			DirectX::XMVECTOR planeToSphere = DirectX::XMVectorSubtract(getPos(), plane->getPos());
-			info.pointOfCollision = DirectX::operator*(_radius - (distance - 0.001f), plane->getNormal());
+			info.pointOfCollision = DirectX::operator+(planeToSphere, DirectX::operator*(_radius - (distance - 0.001f), plane->getNormal()));
 		}
 	}
 

@@ -22,7 +22,7 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 	CollisionInfo colInfo = player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume());
 	if (colInfo.colliding)
 	{
-		player->getBall()->setPosition(player->getBall()->getPositionVector() + colInfo.pointOfCollision);
+		player->getBall()->setPosition(colInfo.pointOfCollision);
 		player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
 	}
 		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));
