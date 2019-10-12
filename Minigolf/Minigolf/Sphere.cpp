@@ -54,7 +54,7 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		float ballArea = XM_PI * pow(0.0214f, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
 
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
-		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
 
 		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
@@ -67,7 +67,7 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		float ballArea = XM_PI * pow(0.0214f, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
 
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
-		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
 
 		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
