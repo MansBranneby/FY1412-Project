@@ -49,10 +49,10 @@ void GameState::handleInput(Game* game)
 	Player* player = game->getLevelHandler()->getPlayer();
 	Camera* camera = game->getCamera();
 	
-	// Handle player
-	player->handleInput(kb, gp, deltaSeconds);
-	// Handle camera
 	game->getInputController()->setMouseMode();
+	// Handle player
+	player->handleInput(kb, gp, ms, deltaSeconds);
+	// Handle camera
 	camera->handleInput(kb, ms, deltaSeconds, player->getBall()->getPositionVector());
 }
 

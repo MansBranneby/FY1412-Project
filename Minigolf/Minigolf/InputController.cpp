@@ -36,6 +36,10 @@ void InputController::translateMessage(MSG message)
 		DirectX::Keyboard::ProcessMessage(message.message, message.wParam, message.lParam);
 	case WM_MOUSEMOVE:
 		DirectX::Mouse::ProcessMessage(message.message, message.wParam, message.lParam);
+	case WM_LBUTTONDOWN:
+		DirectX::Mouse::ProcessMessage(message.message, message.wParam, message.lParam);
+	case WM_LBUTTONUP:
+		DirectX::Mouse::ProcessMessage(message.message, message.wParam, message.lParam);
 	case WM_RBUTTONDOWN:
 		DirectX::Mouse::ProcessMessage(message.message, message.wParam, message.lParam);
 	case WM_RBUTTONUP:
