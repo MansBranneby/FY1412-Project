@@ -14,9 +14,9 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, XMVECTOR acceleration)
 	
 	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
 	
-	float yg = 0.25, yr = 0.025; //Ska ej finnas här
-	XMVectorSetY(_angularVelocity, (5 * yg * 9.82 *deltaSeconds) / (2 * 0.0214) - XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
-	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82 * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
+	float yg = 0.25f, yr = 0.025f; //Ska ej finnas här
+	XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) - XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
+	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	_velocity = _velocity * lenghtFactor; //Update velocity
 
 

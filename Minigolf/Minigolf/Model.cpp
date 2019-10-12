@@ -487,8 +487,9 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 void Model::updateTransformation(DirectX::XMFLOAT3 position)
 {
-	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1, 1, 1), aiQuaternion(0, 0, 0), aiVector3D(position.x, position.y, position.z));
+	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion(1.0f, 0.5f, 0.0f), aiVector3D(position.x, position.y, position.z));
 	_world = _scene->mRootNode->mTransformation;
+	_boundingVolume->setWorldMatrix(_world);
 }
 
 

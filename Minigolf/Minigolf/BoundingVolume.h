@@ -35,7 +35,8 @@ private:
 	ID3D11Buffer* _indexBuffer;
 	
 	DirectX::XMVECTOR _pos;
-
+	DirectX::XMFLOAT3 _minCoordinates;
+	DirectX::XMFLOAT3 _maxCoordinates;
 	bool drawBoundingVolume;
 
 	virtual CollisionInfo intersectsWithPlane(BoundingVolume* other) = 0;
@@ -55,6 +56,9 @@ public:
 
 	virtual void setPos(DirectX::XMVECTOR pos);
 	virtual void move(DirectX::XMVECTOR speed);
+	virtual void setWorldMatrix(aiMatrix4x4 world);
+	virtual DirectX::XMFLOAT3 getMinCoordinates();
+	virtual DirectX::XMFLOAT3 getMaxCoordinates();
 
 	virtual void draw(GraphicResources* graphicResources);
 	
