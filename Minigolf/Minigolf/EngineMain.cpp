@@ -104,22 +104,43 @@ void initializeResources(HWND wndHandle)
 
 void imGuiUpdate()
 {
+	Player* player = gGame->getLevelHandler()->getPlayer();
+	static const char* clubNames[]{ "WOOD_1", "WOOD_3", "WOOD_5", "IRON_2", "IRON_3", "IRON_4", "IRON_5", "IRON_6", "IRON_7", "IRON_8", "IRON_9", "P_WEDGE", "S_WEDGE", "PUTTER" };
+	static int clubChoice = 0;
+	DirectX::XMFLOAT3 playerPos = player->getBall()->getPositionFloat3();
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-
-	ImGui::Begin("Hello, world!");
-	ImGui::Text("Camera");
-	ImGui::SliderFloat("Smoothspeed", &gSmoothSpeed, 0.0f, 20.0f);
-	ImGui::SliderFloat("LookAtSpeed", &gLookAtSpeed, 0.0f, 20.0f);
+	ImGui::Begin("Mini golf...?");
+	if (ImGui::CollapsingHeader("Game instructions", 2))
+	{
+		ImGui::Text("RightMouse: rotate camera");
+		ImGui::Text("WASD      : rotate camera");
+		ImGui::Text("LeftMouse : club speed");
+		ImGui::Text("Spacebar  : swing club");
+	}
+	if (ImGui::CollapsingHeader("Interface editor", 2))
+	{
+		ImGui::ShowStyleEditor();
+	}
+	if (ImGui::CollapsingHeader("Camera", 2))
+	{
+		ImGui::SliderFloat("Smoothspeed", &gSmoothSpeed, 0.0f, 20.0f);
+		ImGui::SliderFloat("LookAtSpeed", &gLookAtSpeed, 0.0f, 20.0f);
+	}
 	gGame->getCamera()->setSmoothSpeed(gSmoothSpeed);
 	gGame->getCamera()->setLookAtSpeed(gLookAtSpeed);
+	if (ImGui::CollapsingHeader("Player", 32))
+	{
+		ImGui::Text("Position  : X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
+		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());
+		ImGui::Combo("Selected club", &clubChoice, clubNames, 14);
+		player->setClubChoice((ClubType)clubChoice);
+	}
 
-	DirectX::XMFLOAT3 playerPos = gGame->getLevelHandler()->getPlayer()->getBall()->getPositionFloat3();
-	ImGui::Text("Player position: X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
 
-	ImGui::Checkbox("Draw bounding volume", &drawBoundingVolume);
-	ImGui::Text("FPS: %.f", ImGui::GetIO().Framerate);
+	ImGui::Text("Framerate: %.f", ImGui::GetIO().Framerate);
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
