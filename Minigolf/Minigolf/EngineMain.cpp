@@ -116,6 +116,7 @@ void imGuiUpdate()
 	if (ImGui::CollapsingHeader("Game instructions", 2))
 	{
 		ImGui::Text("RightMouse: rotate camera");
+		ImGui::Text("WASD      : rotate camera");
 		ImGui::Text("LeftMouse : club speed");
 		ImGui::Text("Spacebar  : swing club");
 	}

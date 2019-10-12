@@ -47,6 +47,13 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 	if (ms.positionMode == Mouse::MODE_RELATIVE)
 		_yRotation += XMConvertToRadians((float)ms.x * deltaSeconds * 500);
 
+	//Get current state of keyboard, mouse and gamepad, update the cameras position based on this input.
+	if (kb.A) //Left
+		_yRotation -= 2.0f * deltaSeconds;
+	if (kb.D) //Right
+		_yRotation += 2.0f * deltaSeconds;
+
+
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationY(_yRotation - (XM_PI * 0.5f));
 
 	if(ms.leftButton)
@@ -58,6 +65,7 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 
 		_clubSpeed += _clubSpeedIncrement * deltaSeconds;
 	}
+	kb.IsKeyUp(DirectX::Keyboard::Space);
 
 	if(kb.Space)
 		hitBall(rotationMatrix, _clubSpeed, _clubChoice);

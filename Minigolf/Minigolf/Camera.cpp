@@ -155,7 +155,7 @@ Camera::Camera(ID3D11Device* device, float width, float height)
 	_pitch = 0;
 	_theta = -XM_PI / 2;
 	_phi = XM_PI / 4;
-	_rotationGain = 5.0f;
+	_rotationGain = 2.0f;
 
 	//Smoothspeed of camera, dictates how fast the it will interpolate
 	_smoothSpeed = 2.0f;
