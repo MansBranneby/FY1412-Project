@@ -30,11 +30,12 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 	CollisionInfo info;
 	if (BoundingPlane* plane = dynamic_cast<BoundingPlane*> (other))
 	{
-		// transform sphere to plane's local space
+		// Transform sphere to plane's local space
 		DirectX::XMVECTOR spherePos = DirectX::XMVector3Transform(getPos(), plane->getWorldMatrix());
+		// Convert xmvector to xmfloat3
 		DirectX::XMFLOAT3 sphere;
 		DirectX::XMStoreFloat3(&sphere, spherePos);
-
+		// Get min and max coordinates
 		DirectX::XMFLOAT3 planeMin = plane->getMinCoordinates();
 		DirectX::XMFLOAT3 planeMax = plane->getMaxCoordinates();
 
@@ -43,7 +44,7 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 		float y = max(planeMin.y, min(sphere.y, planeMax.y));
 		float z = max(planeMin.z, min(sphere.z, planeMax.z));
 		
-		// Distance between closest point and sphere
+		// Distance between closest point and sphere (pythagorean theorem)
 		x = pow(x - sphere.x, 2);
 		y = pow(y - sphere.y, 2);
 		z = pow(z - sphere.z, 2);
@@ -53,8 +54,7 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 		if (distance <= _radius)
 		{
 			info.colliding = true;
-			DirectX::XMVECTOR planeToSphere = DirectX::XMVectorSubtract(getPos(), plane->getPos());
-			info.pointOfCollision = DirectX::operator+(planeToSphere, DirectX::operator*(_radius - (distance - 0.001f), plane->getNormal()));
+			info.pointOfCollision = DirectX::operator+(getPos(), DirectX::operator*(_radius - (distance - 0.001f), plane->getNormal()));
 		}
 	}
 
