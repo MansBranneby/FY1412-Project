@@ -23,20 +23,14 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 	if (colInfo.colliding)
 	{
 		player->getBall()->setPosition(colInfo.pointOfCollision);
-		player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
+		if (player->getBall()->getMeansofMovement() == PROJECTILE)
+			player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
 	}
 	else
 	{
 		player->getBall()->setSurfaceNormal(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+		player->getBall()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 	}
-		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));	
-
-	//if collision
-		//if N > mg
-			//player->calculatenewVel(game, collidingObj)
-		//else
-			//set gliding(MYgliding)
-
 }
 
 void GameState::heightmapCalculations(Game * game, Player * player)

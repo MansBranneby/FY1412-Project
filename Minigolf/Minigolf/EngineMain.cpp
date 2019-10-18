@@ -108,6 +108,11 @@ void imGuiUpdate()
 	static const char* clubNames[]{ "WOOD_1", "WOOD_3", "WOOD_5", "IRON_2", "IRON_3", "IRON_4", "IRON_5", "IRON_6", "IRON_7", "IRON_8", "IRON_9", "P_WEDGE", "S_WEDGE", "PUTTER" };
 	static int clubChoice = 0;
 	DirectX::XMFLOAT3 playerPos = player->getBall()->getPositionFloat3();
+	DirectX::XMFLOAT3 angularVelocity;
+	DirectX::XMFLOAT3 velocity;
+	DirectX::XMStoreFloat3(&velocity, player->getBall()->getVelocity());
+	DirectX::XMStoreFloat3(&angularVelocity, player->getBall()->getAngularVelocity());
+	float angularVelocity2 = DirectX::XMVectorGetX(DirectX::XMVector3Length(player->getBall()->getVelocity())) / 0.0214f;
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -156,7 +161,10 @@ void imGuiUpdate()
 		}
 
 		ImGui::Text("State: %s", meansofMovement);
-		ImGui::Text("Position  : X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
+		ImGui::Text("Position   : X: %.2f, Y: %.2f, Z: %.2f", playerPos.x, playerPos.y, playerPos.z);
+		ImGui::Text("Velocity   : X: %.2f, Y: %.2f, Z: %.2f", velocity.x, velocity.y, velocity.z);
+		ImGui::Text("AngularVel : X: %.2f, Y: %.2f, Z: %.2f", angularVelocity.x, angularVelocity.y, angularVelocity.z);
+		ImGui::Text("AngularVel2: %.2f", angularVelocity2);
 		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());
 		ImGui::Combo("Selected club", &clubChoice, clubNames, 14);
 		player->setClubChoice((ClubType)clubChoice);

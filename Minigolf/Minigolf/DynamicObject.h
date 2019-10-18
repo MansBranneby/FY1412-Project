@@ -27,7 +27,7 @@ private:
 	XMVECTOR _velocity; 
 	XMVECTOR _angularVelocity; //Spinn 
 	XMVECTOR _surfaceNormal;
-	
+
 	float _mass, _fricGlide, _fricRoll;
 
 	virtual XMVECTOR calculateDrag(Environment* environment) = 0;
@@ -53,6 +53,7 @@ public:
 	virtual void setMass(float mass);
 	//virtual void setAcceleration(DirectX::XMVECTOR acceleration);
 	virtual XMVECTOR getVelocity();
+	virtual XMVECTOR getAngularVelocity();
 	virtual XMVECTOR getSurfaceNormal() const;
 	virtual MeansOfMovement getMeansofMovement() const;
 	virtual float getMass() const;

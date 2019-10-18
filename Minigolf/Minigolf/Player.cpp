@@ -15,7 +15,7 @@ void Player::hitBall(XMMATRIX rotationMat, float clubSpeed, ClubType clubType)
 	un = (2.0f * club.mass * sin(club.loft) * clubSpeed) / (7 * (club.mass + _ball->getMass()));
 	
 	_ball->setVelocity(up * ep + un * en); //Set velocity of ball
-	_ball->setAngularVelocity((un / 0.0214f) * XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)); //Set backspinn //Ersätt med _ball->getRadius() när det fungerar
+	_ball->setAngularVelocity((un / 0.0214f) * XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f)); //Set backspinn //Ersätt med _ball->getRadius() när det fungerar
 	_ball->setMeansOfMovement(MeansOfMovement(PROJECTILE)); //Hit the ball
 }
 

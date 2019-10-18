@@ -36,10 +36,9 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, Environment *environment
 	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
 	
 	float yg = 0.25f, yr = 0.025f; //Ska ej finnas här
-	XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) - XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
+	_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
-	float test = XMVectorGetX(XMVector3Length(_velocity));
 	if (XMVectorGetX(XMVector3Length(_velocity)) <= XMVectorGetY(_angularVelocity) * 0.0214f) // v = w*r. Check start of roll-phase. //Ändra radius!
 		_meansOfMovement = ROLLING;
 
@@ -149,6 +148,11 @@ void DynamicObject::setMass(float mass)
 XMVECTOR DynamicObject::getVelocity()
 {
 	return _velocity;
+}
+
+XMVECTOR DynamicObject::getAngularVelocity()
+{
+	return _angularVelocity;
 }
 
 XMVECTOR DynamicObject::getSurfaceNormal() const
