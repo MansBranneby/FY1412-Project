@@ -25,6 +25,10 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 		player->getBall()->setPosition(colInfo.pointOfCollision);
 		player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
 	}
+	else
+	{
+		player->getBall()->setSurfaceNormal(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+	}
 		//player->getGeometry()->setMeansOfMovement(MeansOfMovement(REST));	
 
 	//if collision

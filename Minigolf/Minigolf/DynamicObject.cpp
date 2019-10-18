@@ -26,21 +26,20 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, Environment *environment
 	//Forces
 	XMVECTOR dragForce = calculateDrag(environment); //Drag
 	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
-	//XMVECTOR normalForce = //Normal force
+	XMVECTOR normalForce = _surfaceNormal * abs(XMVectorGetX(XMVector3Dot(_surfaceNormal, gForce)));//Normal force
 	
-	
-	XMVECTOR resForce = dragForce + gForce; //Resultant
+	XMVECTOR resForce = gForce + normalForce; //Resultant
 
 	//Acceleration
 	acceleration = resForce / _mass; // a = F/m.
-	
+
 	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
 	
 	float yg = 0.25f, yr = 0.025f; //Ska ej finnas här
 	XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) - XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
-	_velocity = _velocity * lenghtFactor; //Update velocity
-
+	_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
+	float test = XMVectorGetX(XMVector3Length(_velocity));
 	if (XMVectorGetX(XMVector3Length(_velocity)) <= XMVectorGetY(_angularVelocity) * 0.0214f) // v = w*r. Check start of roll-phase. //Ändra radius!
 		_meansOfMovement = ROLLING;
 
@@ -78,6 +77,7 @@ DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	this->setObjectType(DYNAMICOBJECT);
 	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };
+	_surfaceNormal = { 0.0f, 0.0f, 0.0f, 0.0f };
 	//_friction = 0.000000001f;
 }
 

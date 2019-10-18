@@ -25,7 +25,10 @@ void Sphere::planeCol(GameObject * colObj)
 		{
 			setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
 			if (getMeansofMovement() == GLIDING || getMeansofMovement() == ROLLING) //If two surfaces
-				setSurfaceNormal(XMVector3Normalize(getSurfaceNormal() + ep));
+			{
+				XMVECTOR newSurfaceNormal = getSurfaceNormal() + ep;
+				setSurfaceNormal(XMVector3Normalize(newSurfaceNormal));
+			}
 			else
 				setSurfaceNormal(ep);//Surface normal
 
