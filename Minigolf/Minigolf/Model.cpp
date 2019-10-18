@@ -487,7 +487,14 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 void Model::updateTransformation(DirectX::XMFLOAT3 position)
 {
-	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion(1.0f, 0.5f, 0.0f), aiVector3D(position.x, position.y, position.z));
+	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion(0.0f, 0.0f, 0.0f), aiVector3D(position.x, position.y, position.z));
+	_world = _scene->mRootNode->mTransformation;
+	_boundingVolume->setWorldMatrix(_world);
+}
+
+void Model::updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation)
+{
+	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, aiVector3D(position.x, position.y, position.z));
 	_world = _scene->mRootNode->mTransformation;
 	_boundingVolume->setWorldMatrix(_world);
 }
@@ -604,4 +611,13 @@ std::vector<Texture>* Model::getLoadedTextures()
 BoundingVolume * Model::getBoundingVolume()
 {
 	return _boundingVolume;
+}
+
+DirectX::XMVECTOR Model::getRotation()
+{	
+	aiVector3D rotation, position, scaling;
+	_scene->mRootNode->mTransformation.Decompose(scaling, rotation, position);
+	DirectX::XMVECTOR XMRotation{ rotation.x, rotation.y, rotation.z };
+
+	return XMRotation;
 }

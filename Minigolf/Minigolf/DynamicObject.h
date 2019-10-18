@@ -26,13 +26,14 @@ private:
 	MeansOfMovement _meansOfMovement;
 	XMVECTOR _velocity; 
 	XMVECTOR _angularVelocity; //Spinn 
+	XMVECTOR _surfaceNormal;
 	
 	float _mass, _fricGlide, _fricRoll;
 
 	virtual XMVECTOR calculateDrag(Environment* environment) = 0;
-	XMVECTOR calcProjectile(float deltaSeconds, XMVECTOR acceleration);
-	XMVECTOR calcGliding(float deltaSeconds, XMVECTOR acceleration);
-	XMVECTOR calcRolling(float deltaSeconds, XMVECTOR acceleration);
+	XMVECTOR calcProjectile(float deltaSeconds, Environment *environment);
+	XMVECTOR calcGliding(float deltaSeconds, Environment *environment);
+	XMVECTOR calcRolling(float deltaSeconds, Environment *environment);
 
 public:
 	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
@@ -47,10 +48,12 @@ public:
 	//GET & SET
 	virtual void setVelocity(XMVECTOR velocity);
 	virtual void setAngularVelocity(XMVECTOR angularVelocity);
+	virtual void setSurfaceNormal(XMVECTOR surfaceNormal);
 	virtual void setMeansOfMovement(MeansOfMovement meansOfMovement);
 	virtual void setMass(float mass);
 	//virtual void setAcceleration(DirectX::XMVECTOR acceleration);
 	virtual XMVECTOR getVelocity();
+	virtual XMVECTOR getSurfaceNormal() const;
 	virtual MeansOfMovement getMeansofMovement() const;
 	virtual float getMass() const;
 	//virtual DirectX::XMVECTOR getAcceleration();

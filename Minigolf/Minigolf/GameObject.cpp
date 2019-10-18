@@ -5,6 +5,12 @@ void GameObject::updateTransformations(XMFLOAT3 position)
 	_model.updateTransformation(position);
 }
 
+void GameObject::updateTransformations(XMFLOAT3 position, XMFLOAT3 rotation)
+{
+	aiQuaternion aiRotation = aiQuaternion(rotation.x, rotation.y, rotation.z);
+	_model.updateTransformation(position, aiRotation);
+}
+
 GameObject::GameObject(ObjectType objectType, BoundingType boundingType, DirectX::XMVECTOR startingPosition)
 {
 	_position = startingPosition;
@@ -74,6 +80,11 @@ DirectX::XMFLOAT3 GameObject::getPositionFloat3()
 	DirectX::XMStoreFloat3(&position, _position);
 
 	return position;
+}
+
+DirectX::XMVECTOR GameObject::getRotation()
+{
+	return _model.getRotation();
 }
 
 void GameObject::setPosition(DirectX::XMVECTOR position)

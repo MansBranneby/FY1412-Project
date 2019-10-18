@@ -21,6 +21,7 @@ private:
 protected:
 	XMVECTOR _lookAt;
 	void updateTransformations(XMFLOAT3 position);
+	void updateTransformations(XMFLOAT3 position, XMFLOAT3 rotation);
 
 public:
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
@@ -39,6 +40,7 @@ public:
 
 	DirectX::XMVECTOR getPositionVector();
 	DirectX::XMFLOAT3 getPositionFloat3();
+	DirectX::XMVECTOR getRotation();
 
 	virtual BoundingVolume* getBoundingVolume();
 	virtual void setBoundingPos(XMVECTOR positon);

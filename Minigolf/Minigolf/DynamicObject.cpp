@@ -1,16 +1,38 @@
 #include "DynamicObject.h"
 
-XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, XMVECTOR acceleration)
+XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, Environment *environment)
 {
+	XMVECTOR acceleration;
+
+	//Forces
+	XMVECTOR dragForce = calculateDrag(environment); //Drag
+	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
+	//Magnus force
+	XMVECTOR resForce = dragForce + gForce; //Resultant
+
+	//Acceleration
+	acceleration = resForce / _mass; // a = F/m.
+
 	XMVECTOR newPosition = getPositionVector() +(getVelocity() * deltaSeconds);
 	//setVelocity(getVelocity() + XMVectorSet(0.0f, -9.82 * deltaSeconds, 0.0f, 1.0f));
 	setVelocity(getVelocity() + acceleration * deltaSeconds);
 	return newPosition;
 }
 
-XMVECTOR DynamicObject::calcGliding(float deltaSeconds, XMVECTOR acceleration)
+XMVECTOR DynamicObject::calcGliding(float deltaSeconds, Environment *environment)
 {
-	//Ska göras: Lägga til drag
+	XMVECTOR acceleration;
+
+	//Forces
+	XMVECTOR dragForce = calculateDrag(environment); //Drag
+	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
+	//XMVECTOR normalForce = //Normal force
+	
+	
+	XMVECTOR resForce = dragForce + gForce; //Resultant
+
+	//Acceleration
+	acceleration = resForce / _mass; // a = F/m.
 	
 	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
 	
@@ -25,9 +47,18 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, XMVECTOR acceleration)
 	return newPosition;
 }
 
-XMVECTOR DynamicObject::calcRolling(float deltaSeconds, XMVECTOR acceleration)
+XMVECTOR DynamicObject::calcRolling(float deltaSeconds, Environment *environment)
 {
-	//Lägg till drag
+	XMVECTOR acceleration;
+
+	//Forces
+	XMVECTOR dragForce = calculateDrag(environment); //Drag
+	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
+	//Magnus force
+	XMVECTOR resForce = dragForce + gForce; //Resultant
+
+	//Acceleration
+	acceleration = resForce / _mass; // a = F/m.
 
 	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
 
@@ -60,31 +91,18 @@ void DynamicObject::move(XMVECTOR acceleration, float deltaSeconds)
 
 XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* environment)
 {
-	XMVECTOR acceleration;
-	if (_meansOfMovement != REST)
-	{
-		//Forces
-		XMVECTOR dragForce = calculateDrag(environment); //Drag
-		XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
-		//Magnus force
-		XMVECTOR resForce = dragForce + gForce; //Resultant
-
-		//Acceleration
-		acceleration = resForce / _mass; // a = F/m.
-	}
-
 	XMVECTOR newPosition; //Return value
 
 	switch (_meansOfMovement) // Means of movement
 	{
 	case PROJECTILE:
-		newPosition = calcProjectile(deltaSeconds, acceleration);
+		newPosition = calcProjectile(deltaSeconds, environment);
 		break;
 	case GLIDING:
-		newPosition = calcGliding(deltaSeconds, acceleration);
+		newPosition = calcGliding(deltaSeconds, environment);
 		break;
 	case ROLLING:
-		newPosition = calcRolling(deltaSeconds, acceleration);
+		newPosition = calcRolling(deltaSeconds, environment);
 		break;
 	case REST:
 		newPosition = getPositionVector(); //No update
@@ -108,6 +126,11 @@ void DynamicObject::setAngularVelocity(XMVECTOR angularVelocity)
 	_angularVelocity = angularVelocity;
 }
 
+void DynamicObject::setSurfaceNormal(XMVECTOR surfaceNormal)
+{
+	_surfaceNormal = surfaceNormal;
+}
+
 void DynamicObject::setMeansOfMovement(MeansOfMovement meansOfMovement)
 {
 	_meansOfMovement = meansOfMovement;
@@ -126,6 +149,11 @@ void DynamicObject::setMass(float mass)
 XMVECTOR DynamicObject::getVelocity()
 {
 	return _velocity;
+}
+
+XMVECTOR DynamicObject::getSurfaceNormal() const
+{
+	return _surfaceNormal;
 }
 
 MeansOfMovement DynamicObject::getMeansofMovement() const

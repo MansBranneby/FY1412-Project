@@ -77,6 +77,7 @@ public:
 	
 	bool loadModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string filename, BoundingType boundingType);
 	void updateTransformation(DirectX::XMFLOAT3 position);
+	void updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation); 
 	void animate(float timeInSec);
 	void draw(GraphicResources* graphicResources);
 	void draw(GraphicResources* graphicResources, float timeInSec);
@@ -85,4 +86,5 @@ public:
 	std::vector<Mesh*>* getMeshes();
 	std::vector<Texture>* getLoadedTextures();
 	BoundingVolume* getBoundingVolume();
+	DirectX::XMVECTOR getRotation();
 };
