@@ -51,10 +51,11 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 		float distance = sqrt(x + y + z);
 
 		// Collision if sphere radius is longer than shortest distance to plane
-		if (distance <= _radius)
+		if (distance <= _radius + 0.001f)
 		{
 			info.colliding = true;
 			info.pointOfCollision = DirectX::operator+(getPos(), DirectX::operator*(_radius - distance, plane->getNormal()));
+			info.normal = plane->getNormal();
 		}
 	}
 

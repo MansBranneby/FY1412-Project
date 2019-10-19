@@ -39,6 +39,7 @@ XMVECTOR DynamicObject::calcGliding(float deltaSeconds, Environment *environment
 	_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
+	_velocity = _velocity - XMVectorGetX(XMVector3Dot(_velocity, _surfaceNormal)) * _surfaceNormal; //Set velocity along plane
 	if (XMVectorGetX(XMVector3Length(_velocity)) <= XMVectorGetY(_angularVelocity) * 0.0214f) // v = w*r. Check start of roll-phase. //Ändra radius!
 		_meansOfMovement = ROLLING;
 
@@ -52,8 +53,9 @@ XMVECTOR DynamicObject::calcRolling(float deltaSeconds, Environment *environment
 	//Forces
 	XMVECTOR dragForce = calculateDrag(environment); //Drag
 	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
-	//Magnus force
-	XMVECTOR resForce = dragForce + gForce; //Resultant
+	XMVECTOR normalForce = _surfaceNormal * abs(XMVectorGetX(XMVector3Dot(_surfaceNormal, gForce)));//Normal force
+
+	XMVECTOR resForce = gForce + normalForce; //Resultant
 
 	//Acceleration
 	acceleration = resForce / _mass; // a = F/m.
@@ -62,8 +64,8 @@ XMVECTOR DynamicObject::calcRolling(float deltaSeconds, Environment *environment
 
 	float yr = 0.025f;
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yr * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
-	_velocity = _velocity * lenghtFactor;
-
+	_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds;
+	_velocity = _velocity - XMVectorGetX(XMVector3Dot(_velocity, _surfaceNormal)) * _surfaceNormal; //Set velocity along plane
 	if (XMVectorGetX(XMVector3Length(_velocity)) < 0.001) //Check if at rest
 		_meansOfMovement = REST;
 
@@ -109,6 +111,8 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 	default:
 		break;
 	}
+
+
 
 	//Update objects transformation matrix and return
 	updateTransformations(XMFLOAT3(XMVectorGetX(newPosition), XMVectorGetY(newPosition), XMVectorGetZ(newPosition)));

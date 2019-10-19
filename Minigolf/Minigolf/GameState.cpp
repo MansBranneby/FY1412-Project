@@ -23,7 +23,9 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 	if (colInfo.colliding)
 	{
 		player->getBall()->setPosition(colInfo.pointOfCollision);
-		if (player->getBall()->getMeansofMovement() == PROJECTILE)
+		float typeOfCollision = XMVectorGetX(XMVector3Dot(player->getBall()->getVelocity(), colInfo.normal));
+
+		if(typeOfCollision < -0.1f)
 			player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
 	}
 	else

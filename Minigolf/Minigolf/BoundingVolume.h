@@ -17,11 +17,12 @@ struct CollisionInfo
 {
 	bool colliding;
 	DirectX::XMVECTOR pointOfCollision; //0-vec if no collision, Point of collision if true (center of object at collision).
-
+	DirectX::XMVECTOR normal;
 	CollisionInfo()
 	{
 		colliding = false;
 		pointOfCollision = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		normal = DirectX::XMVectorSet( 0.0f, 0.0f, 0.0f, 0.0f);
 	}
 };
 
