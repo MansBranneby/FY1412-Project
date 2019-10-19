@@ -8,14 +8,14 @@ void Player::hitBall(XMMATRIX rotationMat, float clubSpeed, ClubType clubType)
 	float up, un;
 	float e = 0.78f; //TWO-PIECE
 
-	ep = XMVector2Transform(XMVectorSet(cos(club.loft), sin(club.loft), 0.0f, 0.0f), rotationMat);
-	en = XMVector2Transform(XMVectorSet(sin(club.loft), -cos(club.loft), 0.0f, 0.0f), rotationMat);
+	ep = XMVector3Transform(XMVectorSet(cos(club.loft), sin(club.loft), 0.0f, 0.0f), rotationMat);
+	en = XMVector3Transform(XMVectorSet(sin(club.loft), -cos(club.loft), 0.0f, 0.0f), rotationMat);
 
 	up = ((1.0f + e) * club.mass * cos(club.loft) * clubSpeed) / (club.mass + _ball->getMass());
 	un = (2.0f * club.mass * sin(club.loft) * clubSpeed) / (7 * (club.mass + _ball->getMass()));
 	
 	_ball->setVelocity(up * ep + un * en); //Set velocity of ball
-	_ball->setAngularVelocity((un / 0.0214f) * XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f)); //Set backspinn //Ersätt med _ball->getRadius() när det fungerar
+	_ball->setAngularVelocity((un / 0.0214f) * XMVector3Transform(XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f), rotationMat)); //Set backspinn //Ersätt med _ball->getRadius() när det fungerar
 	_ball->setMeansOfMovement(MeansOfMovement(PROJECTILE)); //Hit the ball
 }
 
