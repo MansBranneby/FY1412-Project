@@ -136,6 +136,58 @@ void Sphere::planeCol(GameObject * colObj)
 	
 }
 
+void Sphere::obbCol(GameObject * colObj, XMVECTOR normal)
+{
+	if (colObj->getObjectType() == STATICOBJECT)
+	{
+		XMVECTOR ep = normal;
+   		float vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Initial velocity along line-of-action
+		float up = -0.2f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
+
+		float collisionTime = 0.01f; //Based on surface?
+		float dt = 0.001f; //Affects number of iterations
+		float impulse = getMass() * (up - vp);
+		float Fp = impulse / collisionTime;
+		float I = (2.0f / 5.0f) * getMass() * pow(0.0214f, 2.0f);
+
+		XMVECTOR r = -ep * 0.0214f; //Center to poiint of collision
+		XMVECTOR un = getVelocity() - (vp * ep);
+		XMVECTOR uw = getAngularVelocity();
+
+		for (float f = 0.0f; f < collisionTime; f += dt)
+		{
+			XMVECTOR ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
+			XMVECTOR Fn = 0.2f * Fp * ef; //Force of friction along plane, based on velocity and spin
+			XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
+
+			un = un + ef * (XMVectorGetX(XMVector3Length(Fn)) / getMass()) * dt; //Updated velocity
+			uw = uw + ew * (XMVectorGetX(XMVector3Length(Fn)) * 0.0214f / I) * dt; //Updated angular velocity
+		}
+
+		setVelocity(up*ep + un); //New velocity
+		setAngularVelocity(uw); //New angular velocity
+
+		if (XMVectorGetX(XMVector3Dot(getVelocity(), ep)) < 1.0f) // ARE WE GLIDING?
+		{
+			setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
+			float dot = XMVectorGetX(XMVector3Dot(getVelocity(), ep));
+			if (getMeansofMovement() == GLIDING || getMeansofMovement() == ROLLING) //If two surfaces
+			{
+				XMVECTOR newSurfaceNormal = getSurfaceNormal() + ep;
+				setSurfaceNormal(XMVector3Normalize(newSurfaceNormal));
+			}
+			else
+				setSurfaceNormal(ep);//Surface normal
+
+			setMeansOfMovement(GLIDING);
+		}
+	}
+	else
+	{
+	//Här ska colObj också få en ny vel
+	}
+}
+
 Sphere::Sphere(ID3D11Device * device, ID3D11DeviceContext * deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:DynamicObject(device, deviceContext, boundingType, startingPosition, modelFile)
 {
@@ -195,7 +247,7 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 	return drag;
 }
 
-void Sphere::calculateAfterColVel(GameObject * colObj)
+void Sphere::calculateAfterColVel(GameObject * colObj, XMVECTOR normal)
 {
 	switch (colObj->getBoundingType())
 	{
@@ -205,6 +257,7 @@ void Sphere::calculateAfterColVel(GameObject * colObj)
 		planeCol(colObj);
 		break;
 	case ORIENTED_BOUNDING_BOX:
+		obbCol(colObj, normal);
 		break;
 	default:
 		break;

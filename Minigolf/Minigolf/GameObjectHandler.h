@@ -35,6 +35,7 @@ public:
 
 	void drawTerrain(GraphicResources* graphicResources);
 	void drawObjects(GraphicResources* graphicResources);
+	void drawObjects(GraphicResources* graphicResources, float timeInSec);
 
 	GameObject* getGameObject(int index) const;
 };

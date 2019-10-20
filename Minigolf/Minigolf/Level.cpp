@@ -22,7 +22,6 @@ void Level::drawLevel(GraphicResources* graphicResources, float timeInSec)
 	graphicResources->getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	graphicResources->getDeviceContext()->IASetInputLayout(&graphicResources->getShaderHandler()->getObjectVS()->getVertexLayout());
 
-	//_objHandler->drawPlayer(graphicResources, timeInSec);
 	_objHandler->drawObjects(graphicResources);
 	
 	graphicResources->getDeviceContext()->VSSetShader(&graphicResources->getShaderHandler()->getTerrainVS()->getVertexShader(), nullptr, 0);

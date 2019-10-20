@@ -43,7 +43,7 @@ public:
 
 	//Physics
 	XMVECTOR calculateMovement(float deltaSeconds, Environment* environment); //Calculate new positions of dynamic objects based on physics
-	virtual void calculateAfterColVel(GameObject* colObj) = 0;
+	virtual void calculateAfterColVel(GameObject* colObj, XMVECTOR normal) = 0;
 
 	//GET & SET
 	virtual void setVelocity(XMVECTOR velocity);

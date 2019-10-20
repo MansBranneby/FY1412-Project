@@ -103,6 +103,12 @@ void GameObjectHandler::drawObjects(GraphicResources* graphicResources)
 		_gameObjects[i]->draw(graphicResources);
 }
 
+void GameObjectHandler::drawObjects(GraphicResources * graphicResources, float timeInSec)
+{
+	for (size_t i = 0; i < _nrOfObjects; i++)
+		_gameObjects[i]->draw(graphicResources, timeInSec);
+}
+
 GameObject * GameObjectHandler::getGameObject(int index) const
 {
 	return _gameObjects[index];
