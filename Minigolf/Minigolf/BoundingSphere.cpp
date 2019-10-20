@@ -76,10 +76,13 @@ CollisionInfo BoundingSphere::intersectsWithOBB(BoundingVolume * other)
 		DirectX::XMFLOAT3 obbMin = obb->getMinCoordinates();
 		DirectX::XMFLOAT3 obbMax = obb->getMaxCoordinates();
 
-		// Point on plane closest to sphere
+		// Point on OBB closest to sphere
 		float x = max(obbMin.x, min(sphere.x, obbMax.x));
 		float y = max(obbMin.y, min(sphere.y, obbMax.y));
 		float z = max(obbMin.z, min(sphere.z, obbMax.z));
+
+		// Collision normal (vector from closest point on OBB to sphere)
+		DirectX::XMVECTOR collisionNormal = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(spherePos, DirectX::XMVECTOR{ x, y, z }));
 
 		// Distance between closest point and sphere (pythagorean theorem)
 		x = pow(x - sphere.x, 2);
@@ -90,19 +93,6 @@ CollisionInfo BoundingSphere::intersectsWithOBB(BoundingVolume * other)
 		// Collision if sphere radius is longer than shortest distance to plane
 		if (distance <= _radius + 0.001f)
 		{
-			// Does not work
-			float dot = -INFINITY;
-			DirectX::XMVECTOR collisionNormal;
-			for (UINT32 i = 0; i < obb->getAxes().size(); ++i)
-			{
-				if (DirectX::XMVectorGetX(DirectX::XMVector3Dot(obb->getAxes()[i], spherePos)) > dot)
-				{
-					dot = DirectX::XMVectorGetX(DirectX::XMVector3Dot(obb->getAxes()[i], spherePos));
-					collisionNormal = obb->getAxes()[i];
-				}
-
-			}
-
 			info.colliding = true;
 			info.pointOfCollision = DirectX::operator+(getPos(), DirectX::operator*(_radius - distance, collisionNormal));
 			info.normal = collisionNormal;
