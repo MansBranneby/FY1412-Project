@@ -19,20 +19,26 @@ void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects
 void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects)
 {
 	// SPHERE VS PLANE
-	CollisionInfo colInfo = player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(1)->getBoundingVolume());
-	if (colInfo.colliding)
+	bool isColliding = false;
+	for (UINT32 i = 1; i < nrOfObjects; ++i)
 	{
-		player->getBall()->setPosition(colInfo.pointOfCollision);
-		float typeOfCollision = XMVectorGetX(XMVector3Dot(player->getBall()->getVelocity(), colInfo.normal));
+		CollisionInfo colInfo = player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(i)->getBoundingVolume());
+		if (colInfo.colliding)
+		{
+			isColliding = true;
+			player->getBall()->setPosition(colInfo.pointOfCollision);
+			float typeOfCollision = XMVectorGetX(XMVector3Dot(player->getBall()->getVelocity(), colInfo.normal));
 
-		if(typeOfCollision < -0.1f)
-			player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(1));
+			if(typeOfCollision < -0.1f)
+				player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(i));
+		}
+		else if (isColliding == false)
+		{
+			player->getBall()->setSurfaceNormal(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+			player->getBall()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
+		}
 	}
-	else
-	{
-		player->getBall()->setSurfaceNormal(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
-		player->getBall()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
-	}
+
 }
 
 void GameState::heightmapCalculations(Game * game, Player * player)

@@ -91,14 +91,15 @@ void BoundingVolume::move(DirectX::XMVECTOR speed)
 
 void BoundingVolume::setWorldMatrix(aiMatrix4x4 world)
 {	
-	_world = DirectX::XMMATRIX(DirectX::XMVECTOR{world.a1, world.a2, world.a3, world.a4}, 
-							   DirectX::XMVECTOR{world.b1, world.b2, world.b3, world.b4}, 
-		                       DirectX::XMVECTOR{world.c1, world.c2, world.c3, world.c4}, 
-					           DirectX::XMVECTOR{world.d1, world.d2, world.d3, world.d4});
+	_world = DirectX::XMMATRIX(DirectX::XMVECTOR{world.a1, world.b1, world.c1, world.d1}, 
+					      	   DirectX::XMVECTOR{world.a2, world.b2, world.c2, world.d2}, 
+		                       DirectX::XMVECTOR{world.a3, world.b3, world.c3, world.d3}, 
+					           DirectX::XMVECTOR{world.a4, world.b4, world.c4, world.d4});
+
 	for (UINT32 i = 0; i < _vertices.size(); ++i)
 	{
 		DirectX::XMVECTOR pos{ _vertices[i].x, _vertices[i].y, _vertices[i].z};
-		pos = DirectX::XMVector3Transform(pos, DirectX::XMMatrixTranspose(_world));
+		pos = DirectX::XMVector3Transform(pos,_world);
 		_vertices[i].x = DirectX::XMVectorGetX(pos);
 		_vertices[i].y = DirectX::XMVectorGetY(pos);
 		_vertices[i].z = DirectX::XMVectorGetZ(pos);

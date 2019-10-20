@@ -11,7 +11,12 @@ OBB::OBB(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOA
 	_xAxis = { 1.0f, 0.0f, 0.0f, 0.0f };
 	_yAxis = { 0.0f, 1.0f, 0.0f, 0.0f };
 	_zAxis = { 0.0f, 0.0f, 1.0f, 0.0f };
-
+	_axes.push_back(_xAxis);
+	_axes.push_back(_yAxis);
+	_axes.push_back(_zAxis);
+	_axes.push_back(-_xAxis);
+	_axes.push_back(-_yAxis);
+	_axes.push_back(-_zAxis);
 	//Half width, height and length
 	_halfXYZ =
 	{
@@ -238,4 +243,9 @@ CollisionInfo OBB::intersects(BoundingVolume * other)
 		info = intersectsWithPlane(other);
 
 	return info;
+}
+
+std::vector<DirectX::XMVECTOR> OBB::getAxes()
+{
+	return _axes;
 }

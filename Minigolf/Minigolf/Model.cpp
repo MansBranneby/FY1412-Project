@@ -216,8 +216,8 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMatrix4x4 transformation, aiMes
 		// Vertex texture coordinates
 		if (mesh->mTextureCoords[0])
 		{
-			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x * 15.0f; //Jag antar att diffuse texture ligger på index 0.
-			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y * 15.0f; //Så när vi vill ha normal map ligger den troligen på ett annat index.
+			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x * 150.0f; //Jag antar att diffuse texture ligger på index 0.
+			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y * 150.0f; //Så när vi vill ha normal map ligger den troligen på ett annat index.
 		}
 
 		//Save vertex
@@ -481,6 +481,7 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	// Start processing all the nodes in the model
 	processNode(device, _scene->mRootNode);
+	_boundingVolume->setWorldMatrix(_scene->mRootNode->mChildren[0]->mTransformation);
 
 	return true;
 }
@@ -494,7 +495,7 @@ void Model::updateTransformation(DirectX::XMFLOAT3 position)
 
 void Model::updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation)
 {
-	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, aiVector3D(position.x, position.y, position.z));
+	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, aiVector3D(position.x, position.y, position.z)) ;
 	_world = _scene->mRootNode->mTransformation;
 	_boundingVolume->setWorldMatrix(_world);
 }

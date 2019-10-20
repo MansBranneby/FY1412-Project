@@ -89,7 +89,7 @@ void Sphere::planeCol(GameObject * colObj)
 		//en = XMVector3Cross(test, ep);
 		vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Initial velocity along line-of-action
 		//vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en)); //Initial velocity along plane
-		up = -0.8f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
+		up = -0.3f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
 
 		float collisionTime = 0.01f; //Based on surface?
 		float dt = 0.001f; //Affects number of iterations
@@ -103,8 +103,8 @@ void Sphere::planeCol(GameObject * colObj)
 
 		for (float f = 0.0f; f < collisionTime; f += dt)
 		{
-			XMVECTOR ef = XMVector3Normalize(XMVector3Cross(getAngularVelocity(), r) - un); //direction of friction
-			XMVECTOR Fn = 0.25f * Fp * ef; //Force of friction along plane, based on velocity and spin
+			XMVECTOR ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
+			XMVECTOR Fn = 0.35f * Fp * ef; //Force of friction along plane, based on velocity and spin
 			XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
 			
 			un = un + ef * (XMVectorGetX(XMVector3Length(Fn)) / getMass()) * dt; //Updated velocity
@@ -114,7 +114,7 @@ void Sphere::planeCol(GameObject * colObj)
 		setVelocity(up*ep + un); //New velocity
 		setAngularVelocity(uw); //New angular velocity
 
-		if (XMVectorGetX(XMVector3Dot(getVelocity(), ep)) < 10.0f) // ARE WE GLIDING?
+		if (XMVectorGetX(XMVector3Dot(getVelocity(), ep)) < 1.0f) // ARE WE GLIDING?
 		{
 			setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
 			float dot = XMVectorGetX(XMVector3Dot(getVelocity(), ep));
