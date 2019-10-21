@@ -3,6 +3,11 @@
 void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
+
+	// position before update
+	player->getBall()->setPrevPos(player->getBall()->getPositionVector());
+
+	// position after update
 	if(player->getBall()->getMeansofMovement() != REST)
 		player->getBall()->setPosition(player->getBall()->calculateMovement(deltaSeconds, game->getEnvironment()));
 

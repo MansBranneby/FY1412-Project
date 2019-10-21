@@ -97,10 +97,6 @@ void Camera::handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State m
 
 XMVECTOR Camera::lerp(XMVECTOR startPos, XMVECTOR endPos, float deltaSeconds)
 {
-	t += deltaSeconds;
-	if (t > 1.0f)
-		t = 0;
-
 	return XMVectorLerp(startPos, endPos, deltaSeconds);
 }
 

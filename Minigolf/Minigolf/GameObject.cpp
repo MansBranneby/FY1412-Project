@@ -64,6 +64,10 @@ void GameObject::draw(GraphicResources* graphicResources)
 	_model.draw(graphicResources);
 }
 
+DirectX::XMVECTOR GameObject::getPrevPos()
+{
+	return _prevPos;
+}
 void GameObject::drawBoundingVolume(GraphicResources* graphicResources)
 {
 	_model.drawBoundingVolume(graphicResources);
@@ -93,6 +97,12 @@ void GameObject::setPosition(DirectX::XMVECTOR position)
 	setBoundingPos(position);
 }
 
+void GameObject::setPrevPos(DirectX::XMVECTOR prevPos)
+{
+	_prevPos = prevPos;
+	setBoundingPrevPos(prevPos);
+}
+
 void GameObject::setHeight(float height)
 {
 	_position = DirectX::XMVectorSet(DirectX::XMVectorGetX(_position), height, DirectX::XMVectorGetZ(_position), 1.0f);
@@ -107,6 +117,11 @@ BoundingVolume * GameObject::getBoundingVolume()
 void GameObject::setBoundingPos(XMVECTOR position)
 {
 	_model.getBoundingVolume()->setPos(position);
+}
+
+void GameObject::setBoundingPrevPos(XMVECTOR prevPositon)
+{
+	_model.getBoundingVolume()->setPrevPos(prevPositon);
 }
 
 BoundingType GameObject::getBoundingType() const

@@ -16,7 +16,7 @@ private:
 	ObjectType _objectType;
 	BoundingType _boundingType;
 	std::string _modelDirectory = ".\\Resources\\Models\\";
-	XMVECTOR _position;
+	XMVECTOR _position, _prevPos;
 	
 protected:
 	XMVECTOR _lookAt;
@@ -35,17 +35,21 @@ public:
 	void drawBoundingVolume(GraphicResources* graphicResources);
 
 	//GET & SET
-	void setPosition(DirectX::XMVECTOR position);
+	virtual void setPosition(DirectX::XMVECTOR position);
+	virtual void setPrevPos(DirectX::XMVECTOR prevPos);
 	void setHeight(float height);
 
-	DirectX::XMVECTOR getPositionVector();
+	virtual DirectX::XMVECTOR getPrevPos();
+	virtual	DirectX::XMVECTOR getPositionVector();
 	DirectX::XMFLOAT3 getPositionFloat3();
 	DirectX::XMVECTOR getRotation();
 
 	virtual BoundingVolume* getBoundingVolume();
 	virtual void setBoundingPos(XMVECTOR positon);
+	virtual void setBoundingPrevPos(XMVECTOR prevPositon);
 
 	BoundingType getBoundingType() const;
 	ObjectType getObjectType() const;
 	void setObjectType(ObjectType objectType);
+
 };

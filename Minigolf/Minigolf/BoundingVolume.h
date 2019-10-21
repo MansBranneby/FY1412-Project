@@ -35,7 +35,7 @@ private:
 	ID3D11Buffer* _vertexBuffer;
 	ID3D11Buffer* _indexBuffer;
 	
-	DirectX::XMVECTOR _pos;
+	DirectX::XMVECTOR _pos, _prevPos;
 	DirectX::XMFLOAT3 _minCoordinates;
 	DirectX::XMFLOAT3 _maxCoordinates;
 	bool drawBoundingVolume;
@@ -51,11 +51,13 @@ public:
 	BoundingVolume(DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates);
 	virtual ~BoundingVolume();
 	virtual DirectX::XMVECTOR getPos();
+	virtual DirectX::XMVECTOR getPrevPos();
 	DirectX::XMMATRIX getWorldMatrix();
 	std::vector<BoundingVolumeVertex>* getVertices();
 	std::vector<int>* getIndices();
 
 	virtual void setPos(DirectX::XMVECTOR pos);
+	virtual void setPrevPos(DirectX::XMVECTOR prevPos);
 	virtual void move(DirectX::XMVECTOR speed);
 	virtual void setWorldMatrix(aiMatrix4x4 world);
 	virtual DirectX::XMFLOAT3 getMinCoordinates();
