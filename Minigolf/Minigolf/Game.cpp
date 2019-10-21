@@ -24,7 +24,7 @@ Game::Game(Clock* clock, InputController* inputController, GraphicResources* gra
 	//Environment
 	_environment = new Environment;
 	_environment->airDensity = 1.22f;
-	_environment->windVelocity = DirectX::XMVectorSet(0.0f, 0.0f, 4.0f, 0.0f);
+	_environment->windVelocity = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	_environment->gravAcc = DirectX::XMVectorSet(0.0f, -9.82f, 0.0f, 0.0f); //Vill vi kalla denna gravForce måste vi multiplicera med massan här. Vet i nuläget inte vart den kommer befinna sig.
 
 	_levelHandler = new LevelHandler(_graphicResources->getDevice(), _graphicResources->getDeviceContext());
