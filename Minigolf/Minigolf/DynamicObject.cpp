@@ -26,67 +26,6 @@ XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, Environment *environm
 	return newPosition;
 }
 
-XMVECTOR DynamicObject::calcGliding(float deltaSeconds, Environment *environment)
-{
-	XMVECTOR acceleration;
-
-	//Forces
-	XMVECTOR dragForce = calculateDrag(environment); //Drag
-	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
-	XMVECTOR normalForce = _surfaceNormal * abs(XMVectorGetX(XMVector3Dot(_surfaceNormal, gForce)));//Normal force
-	
-	XMVECTOR resForce = gForce + normalForce; //Resultant
-
-	//Acceleration
-	acceleration = resForce / _mass; // a = F/m.
-	
-	XMVECTOR ef = XMVector3Normalize(XMVector3Cross(_angularVelocity, -_surfaceNormal * 0.0214f) - _velocity);
-
-	XMVECTOR newPosition = getPositionVector() + (_velocity * deltaSeconds);
-	
-	float yg = 0.35f, yr = 0.025f; //Ska ej finnas här
-	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
-	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
-	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
-	_velocity += deltaSeconds * yg * 9.82f * ef + acceleration *deltaSeconds;
-	_angularVelocity += (5.0f * yg * 9.82f * deltaSeconds / (2.0f * 0.0214f)) * XMVector3Cross(_surfaceNormal, ef);
-
-	_velocity = _velocity - XMVectorGetX(XMVector3Dot(_velocity, _surfaceNormal)) * _surfaceNormal; //Set velocity along plane
-	
-	XMVECTOR wr = XMVector3Cross(_angularVelocity * 0.0214f, _surfaceNormal);
-	float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(_velocity)));
-	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(_velocity)) <= XMVectorGetX(XMVector3Length(wr))) // v = w*r. Check start of roll-phase. //Ändra radius!
-		_meansOfMovement = ROLLING;
-
-	return newPosition;
-}
-
-XMVECTOR DynamicObject::calcRolling(float deltaSeconds, Environment *environment)
-{
-	XMVECTOR acceleration;
-
-	//Forces
-	XMVECTOR dragForce = calculateDrag(environment); //Drag
-	XMVECTOR gForce = environment->gravAcc * _mass; //Gravity
-	XMVECTOR normalForce = _surfaceNormal * abs(XMVectorGetX(XMVector3Dot(_surfaceNormal, gForce)));//Normal force
-
-	XMVECTOR resForce = gForce + normalForce; //Resultant
-
-	//Acceleration
-	acceleration = resForce / _mass; // a = F/m.
-
-	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
-
-	float yr = 0.16f;
-	float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yr * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
-	_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds;
-	_velocity = _velocity - XMVectorGetX(XMVector3Dot(_velocity, _surfaceNormal)) * _surfaceNormal; //Set velocity along plane
-	if (XMVectorGetX(XMVector3Length(_velocity)) < 0.001) //Check if at rest
-		_meansOfMovement = REST;
-
-	return newPosition;
-}
-
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
 	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
 {

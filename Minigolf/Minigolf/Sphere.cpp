@@ -119,11 +119,17 @@ void Sphere::planeCol(GameObject * colObj)
 
 			for (float f = 0.0f; f < collisionTime && notRolling; f += dt)
 			{
+
+				if (f == 0.001)
+				{
+					int a = 0;
+				}
 				ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
 				XMVECTOR Fn = 0.35f * Fp * ef; //Force of friction along plane, based on velocity and spin
 				XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
 
 				directionAfter = XMVectorSet(XMVectorGetX(ef) / abs(XMVectorGetX(ef)), XMVectorGetY(ef) / abs(XMVectorGetY(ef)), XMVectorGetZ(ef) / abs(XMVectorGetZ(ef)), 0.0f);
+
 				if (XMVectorGetX(directionBefore) + XMVectorGetX(directionAfter) != 0.0f && XMVectorGetY(directionBefore) + XMVectorGetY(directionAfter) != 0.0f && XMVectorGetZ(directionBefore) + XMVectorGetZ(directionAfter) != 0.0f)
 				{
 					un = un + ef * ((XMVectorGetX(XMVector3Length(Fn)) / getMass()) * dt); //Updated velocity
@@ -267,6 +273,68 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 	}
 
 	return drag;
+}
+
+XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
+{
+	XMVECTOR acceleration;
+
+	//Forces
+	XMVECTOR dragForce = calculateDrag(environment); //Drag
+	XMVECTOR gForce = environment->gravAcc * getMass(); //Gravity
+	XMVECTOR normalForce = getSurfaceNormal() * abs(XMVectorGetX(XMVector3Dot(getSurfaceNormal(), gForce)));//Normal force
+
+	XMVECTOR resForce = gForce + normalForce; //Resultant
+
+	//Acceleration
+	acceleration = resForce / getMass(); // a = F/m.
+
+	XMVECTOR ef = XMVector3Normalize(XMVector3Cross(getAngularVelocity(), -getSurfaceNormal() * 0.0214f) - getVelocity());
+
+	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+
+	float yg = 0.9f, yr = 0.025f; //Ska ej finnas här
+	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
+	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
+	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
+	setVelocity(getVelocity() + deltaSeconds * yg * 9.82f * ef + acceleration * deltaSeconds);
+	setAngularVelocity(getAngularVelocity() + (5.0f * yg * 9.82f * deltaSeconds / (2.0f * 0.0214f)) * XMVector3Cross(getSurfaceNormal(), ef));
+
+	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), getSurfaceNormal())) * getSurfaceNormal()); //Set velocity along plane
+
+	XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, getSurfaceNormal());
+	float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
+	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(wr)) - XMVectorGetX(XMVector3Length(getVelocity())) <= 0.001) // v = w*r. Check start of roll-phase. //Ändra radius!
+		setMeansOfMovement(ROLLING);
+
+	return newPosition;
+}
+
+XMVECTOR Sphere::calcRolling(float deltaSeconds, Environment *environment)
+{
+	XMVECTOR acceleration;
+
+	//Forces
+	XMVECTOR dragForce = calculateDrag(environment); //Drag
+	XMVECTOR gForce = environment->gravAcc * getMass(); //Gravity
+	XMVECTOR normalForce = getSurfaceNormal() * abs(XMVectorGetX(XMVector3Dot(getSurfaceNormal(), gForce)));//Normal force
+
+	XMVECTOR resForce = gForce + normalForce; //Resultant
+
+	//Acceleration
+	acceleration = resForce / getMass(); // a = F/m.
+
+	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+
+	float yr = 0.16f;
+	float lenghtFactor = (XMVectorGetX(XMVector3Length(getVelocity())) - yr * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(getVelocity()));
+	setVelocity(getVelocity() * lenghtFactor + acceleration * deltaSeconds);
+	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), getSurfaceNormal())) * getSurfaceNormal()); //Set velocity along plane
+	//getAngularVelocity() = getVelocity() / _radius;
+	if (XMVectorGetX(XMVector3Length(getVelocity())) < 0.001) //Check if at rest
+		setMeansOfMovement(REST);
+
+	return newPosition;
 }
 
 void Sphere::calculateAfterColVel(GameObject * colObj, XMVECTOR normal)

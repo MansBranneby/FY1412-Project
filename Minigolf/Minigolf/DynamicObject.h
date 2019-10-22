@@ -32,8 +32,8 @@ private:
 
 	virtual XMVECTOR calculateDrag(Environment* environment) = 0;
 	XMVECTOR calcProjectile(float deltaSeconds, Environment *environment);
-	XMVECTOR calcGliding(float deltaSeconds, Environment *environment);
-	XMVECTOR calcRolling(float deltaSeconds, Environment *environment);
+	virtual XMVECTOR calcGliding(float deltaSeconds, Environment *environment) = 0;
+	virtual XMVECTOR calcRolling(float deltaSeconds, Environment *environment) = 0;
 
 public:
 	DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile);
