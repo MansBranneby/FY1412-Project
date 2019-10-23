@@ -17,6 +17,8 @@ void Player::hitBall(XMMATRIX rotationMat, float clubSpeed, ClubType clubType)
 	_ball->setVelocity(up * ep + un * en); //Set velocity of ball
 	_ball->setAngularVelocity((un / 0.0214f) * XMVector3Transform(XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f), rotationMat)); //Set backspinn //Ersätt med _ball->getRadius() när det fungerar
 	_ball->setMeansOfMovement(MeansOfMovement(PROJECTILE)); //Hit the ball
+
+	_nrOfHits++;
 }
 
 Player::Player()
@@ -30,6 +32,8 @@ Player::Player(DynamicObject * ball)
 	_yRotation = 0.0f;
 	_clubSpeedIncrement = 20.0f;
 	_ball->setMeansOfMovement(MeansOfMovement(REST));
+	_nrOfHits = 0;
+	_prevNrOfHits = 0;
 	//hitBall(XMMatrixRotationY(0.0f), 40.0f, IRON_7);
 }
 
@@ -42,8 +46,21 @@ void Player::setClubChoice(ClubType clubChoice)
 	_clubChoice = clubChoice;
 }
 
+void Player::setPrevNrOfHits(int prevNrOfHits)
+{
+	_prevNrOfHits = prevNrOfHits;
+}
+
+void Player::setNrOfHits(int nrOfHits)
+{
+	_nrOfHits = nrOfHits;
+}
+
 void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp, DirectX::Mouse::State ms, float deltaSeconds)
 {
+	Keyboard::KeyboardStateTracker tracker;
+	tracker.Update(kb);
+
 	if (ms.positionMode == Mouse::MODE_RELATIVE)
 		_yRotation += XMConvertToRadians((float)ms.x * deltaSeconds * 500);
 
@@ -52,7 +69,6 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 		_yRotation -= 2.0f * deltaSeconds;
 	if (kb.D) //Right
 		_yRotation += 2.0f * deltaSeconds;
-
 
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationY(_yRotation - (XM_PI * 0.5f));
 
@@ -65,10 +81,17 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 
 		_clubSpeed += _clubSpeedIncrement * deltaSeconds;
 	}
-	kb.IsKeyUp(DirectX::Keyboard::Space);
-
-	if(kb.Space)
-		hitBall(rotationMatrix, _clubSpeed, _clubChoice);
+;
+	if (kb.Space && _ball->getMeansofMovement() == REST)
+	{
+		if (!keyPressed)
+		{
+			hitBall(rotationMatrix, _clubSpeed, _clubChoice);
+			keyPressed = true;
+		}
+	}
+	else
+		keyPressed = false;
 }
 
 DynamicObject * Player::getBall()
@@ -79,6 +102,16 @@ DynamicObject * Player::getBall()
 float Player::getClubSpeed()
 {
 	return _clubSpeed;
+}
+
+int Player::getNrOfHits()
+{
+	return _nrOfHits;
+}
+
+int Player::getPrevNrOfHits()
+{
+	return _prevNrOfHits;
 }
 
 

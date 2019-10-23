@@ -291,7 +291,8 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 
 	XMVECTOR ef = XMVector3Normalize(XMVector3Cross(getAngularVelocity(), -getSurfaceNormal() * 0.0214f) - getVelocity());
 
-	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
+	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
 	float yg = 0.9f, yr = 0.025f; //Ska ej finnas här
 	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
@@ -327,10 +328,12 @@ XMVECTOR Sphere::calcRolling(float deltaSeconds, Environment *environment)
 	//Acceleration
 	acceleration = resForce / getMass(); // a = F/m.
 
-	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds);
+	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
+	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
 	float yr = 0.16f;
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(getVelocity())) - yr * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(getVelocity()));
+	setAngularVelocity(getVelocity() / _radius);
 	setVelocity(getVelocity() * lenghtFactor + acceleration * deltaSeconds);
 	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), getSurfaceNormal())) * getSurfaceNormal()); //Set velocity along plane
 	//getAngularVelocity() = getVelocity() / _radius;

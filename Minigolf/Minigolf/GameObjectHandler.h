@@ -27,7 +27,7 @@ public:
 	GameObjectHandler(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int capacity = 10);
 	virtual~GameObjectHandler();
 
-	void addGameObject(ObjectType objType, BoundingType boundingType, XMVECTOR position, std::string modelFile);
+	void addGameObject(ObjectType objType, BoundingType boundingType, int goal, XMVECTOR position, std::string modelFile);
 	void addPlayer();
 	int getNrOfObjects() const;
 	std::vector<Terrain*> getTerrain();

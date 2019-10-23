@@ -136,10 +136,10 @@ void imGuiUpdate()
 	}
 	gGame->getCamera()->setSmoothSpeed(gSmoothSpeed);
 	gGame->getCamera()->setLookAtSpeed(gLookAtSpeed);
-	if (ImGui::CollapsingHeader("Player", 32))
+	if (ImGui::CollapsingHeader("Player", 2))
 	{
 		if (ImGui::Button("Reset position"))
-			player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
+			player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
 
 		const char* meansofMovement = "";
 		switch (player->getBall()->getMeansofMovement())
@@ -165,6 +165,14 @@ void imGuiUpdate()
 		ImGui::Text("Velocity   : X: %.2f, Y: %.2f, Z: %.2f", velocity.x, velocity.y, velocity.z);
 		ImGui::Text("AngularVel : X: %.2f, Y: %.2f, Z: %.2f", angularVelocity.x, angularVelocity.y, angularVelocity.z);
 		ImGui::Text("AngularVel2: %.2f", angularVelocity2);
+		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());
+		ImGui::Combo("Selected club", &clubChoice, clubNames, 14);
+		player->setClubChoice((ClubType)clubChoice);
+	}
+	if (ImGui::CollapsingHeader("Scoreboard", 32))
+	{
+		ImGui::Text("Score     : %d", player->getNrOfHits());
+		ImGui::Text("Prev Score: %d", player->getPrevNrOfHits());
 		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());
 		ImGui::Combo("Selected club", &clubChoice, clubNames, 14);
 		player->setClubChoice((ClubType)clubChoice);

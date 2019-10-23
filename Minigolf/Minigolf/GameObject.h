@@ -17,11 +17,14 @@ private:
 	BoundingType _boundingType;
 	std::string _modelDirectory = ".\\Resources\\Models\\";
 	XMVECTOR _position, _prevPos;
+
+	// Game variables
+	bool _cup;
 	
 protected:
 	XMVECTOR _lookAt;
 	void updateTransformations(XMFLOAT3 position);
-	void updateTransformations(XMFLOAT3 position, XMFLOAT3 rotation);
+	void updateTransformations(XMFLOAT3 position, float angle, XMFLOAT3 rotation);
 
 public:
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
@@ -51,5 +54,6 @@ public:
 	BoundingType getBoundingType() const;
 	ObjectType getObjectType() const;
 	void setObjectType(ObjectType objectType);
-
+	void setCup(bool cup);
+	bool getCup();
 };

@@ -49,7 +49,7 @@ GameObjectHandler::~GameObjectHandler()
 	freeMemory();
 }
 
-void GameObjectHandler::addGameObject(ObjectType objType, BoundingType boundingType, XMVECTOR position, std::string modelFile)
+void GameObjectHandler::addGameObject(ObjectType objType, BoundingType boundingType, int goal, XMVECTOR position, std::string modelFile)
 {
 	if (_nrOfObjects == _capacity)
 		expand();
@@ -64,7 +64,7 @@ void GameObjectHandler::addGameObject(ObjectType objType, BoundingType boundingT
 		}
 		break;
 	case STATICOBJECT:
-		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, boundingType, position, modelFile);
+		_gameObjects[_nrOfObjects++] = new StaticObject(_device, _deviceContext, boundingType, goal, position, modelFile);
 		break;
 	default:
 		break;

@@ -36,12 +36,11 @@ void LevelAI::createLevel(int levelNr, GameObjectHandler * objHandler)
 	while (std::getline(infile, line))
 	{
 		std::istringstream iss(line);
-		int objType, boundingType;
+		int objType, boundingType, goal;
 		float x, y, z;
 		std::string modelFile;
-		if (!(iss >> objType >> boundingType >> x >> y >> z >> modelFile)) { break; }
-		//objHandler->addGameObject(XMVectorSet(5.0f, 0.0f, 0.0f, 1.0f), STATICOBJECT);
-		objHandler->addGameObject(ObjectType(objType), BoundingType(boundingType),XMVectorSet(x, y, z, 1.0f), modelFile);
+		if (!(iss >> objType >> boundingType >> goal >> x >> y >> z >> modelFile)) { break; }
+		objHandler->addGameObject(ObjectType(objType), BoundingType(boundingType), goal, XMVectorSet(x, y, z, 1.0f), modelFile);
 	}
 
 	objHandler->addPlayer();

@@ -5,9 +5,11 @@ void GameObject::updateTransformations(XMFLOAT3 position)
 	_model.updateTransformation(position);
 }
 
-void GameObject::updateTransformations(XMFLOAT3 position, XMFLOAT3 rotation)
+void GameObject::updateTransformations(XMFLOAT3 position, float angle, XMFLOAT3 rotation)
 {
-	aiQuaternion aiRotation = aiQuaternion(rotation.x, rotation.y, rotation.z);
+	aiMatrix3x3 rotMatrix;
+	rotMatrix.Rotation(angle, aiVector3D(rotation.x, rotation.y, rotation.z), rotMatrix);
+	aiQuaternion aiRotation = aiQuaternion(rotMatrix);
 	_model.updateTransformation(position, aiRotation);
 }
 
@@ -140,4 +142,14 @@ ObjectType GameObject::getObjectType() const
 void GameObject::setObjectType(ObjectType objectType)
 {
 	_objectType = objectType;
+}
+
+void GameObject::setCup(bool cup)
+{
+	_cup = cup;
+}
+
+bool GameObject::getCup()
+{
+	return _cup;
 }

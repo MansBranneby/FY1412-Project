@@ -109,7 +109,7 @@ Camera::Camera(ID3D11Device* device, float width, float height)
 	_distancePerSec = 5.0f;
 
 	// Distance from camera
-	_camDistance = 2.0f;
+	_camDistance = 10.0f;
 
 	// Rotation
 	_yaw = 0;

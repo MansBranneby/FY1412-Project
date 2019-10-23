@@ -24,7 +24,8 @@ class DynamicObject : public GameObject
 private:
 	//Variables for physics calculations
 	MeansOfMovement _meansOfMovement;
-	XMVECTOR _velocity; 
+	XMVECTOR _velocity;
+	XMVECTOR _rotation;
 	XMVECTOR _angularVelocity; //Spinn 
 	XMVECTOR _surfaceNormal;
 
@@ -47,12 +48,14 @@ public:
 
 	//GET & SET
 	virtual void setVelocity(XMVECTOR velocity);
+	virtual void setRotation(XMVECTOR rotation);
 	virtual void setAngularVelocity(XMVECTOR angularVelocity);
 	virtual void setSurfaceNormal(XMVECTOR surfaceNormal);
 	virtual void setMeansOfMovement(MeansOfMovement meansOfMovement);
 	virtual void setMass(float mass);
 	//virtual void setAcceleration(DirectX::XMVECTOR acceleration);
 	virtual XMVECTOR getVelocity();
+	virtual XMVECTOR getRotation() const;
 	virtual XMVECTOR getAngularVelocity();
 	virtual XMVECTOR getSurfaceNormal() const;
 	virtual MeansOfMovement getMeansofMovement() const;

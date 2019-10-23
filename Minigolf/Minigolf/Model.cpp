@@ -495,6 +495,7 @@ void Model::updateTransformation(DirectX::XMFLOAT3 position)
 
 void Model::updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation)
 {
+	
 	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, aiVector3D(position.x, position.y, position.z)) ;
 	_world = _scene->mRootNode->mTransformation;
 	_boundingVolume->setWorldMatrix(_world);

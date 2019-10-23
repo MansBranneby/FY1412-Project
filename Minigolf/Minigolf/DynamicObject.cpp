@@ -21,6 +21,7 @@ XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, Environment *environm
 	//Acceleration
 	acceleration = resForce / _mass; // a = F/m.
 
+	_rotation += _angularVelocity * deltaSeconds;
 	XMVECTOR newPosition = getPositionVector() +(getVelocity() * deltaSeconds);
 	setVelocity(getVelocity() + acceleration * deltaSeconds);
 	return newPosition;
@@ -30,6 +31,7 @@ DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
 {
 	this->setObjectType(DYNAMICOBJECT);
+	setCup(false);
 	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_surfaceNormal = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -70,12 +72,18 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 
 	//Update objects transformation matrix and return
 	updateTransformations(XMFLOAT3(XMVectorGetX(newPosition), XMVectorGetY(newPosition), XMVectorGetZ(newPosition)));
+	//updateTransformations(XMFLOAT3(XMVectorGetX(newPosition), XMVectorGetY(newPosition), XMVectorGetZ(newPosition)), XMVectorGetX(XMVector3Length(_rotation)), XMFLOAT3(XMVectorGetX(_rotation), XMVectorGetY(_rotation), XMVectorGetZ(_rotation)));
 	return newPosition;
 }
 
 void DynamicObject::setVelocity(XMVECTOR velocity)
 {
 	_velocity = velocity; //Tvinga 4:e element till 1.0f??
+}
+
+void DynamicObject::setRotation(XMVECTOR rotation)
+{
+	_rotation = rotation;
 }
 
 void DynamicObject::setAngularVelocity(XMVECTOR angularVelocity)
@@ -106,6 +114,11 @@ void DynamicObject::setMass(float mass)
 XMVECTOR DynamicObject::getVelocity()
 {
 	return _velocity;
+}
+
+XMVECTOR DynamicObject::getRotation() const
+{
+	return _rotation;
 }
 
 XMVECTOR DynamicObject::getAngularVelocity()

@@ -22,17 +22,24 @@ private:
 	float _clubSpeedIncrement;
 	ClubType _clubChoice;
 
+	// Game variables
+	int _nrOfHits, _prevNrOfHits;
+	bool keyPressed;
 	void hitBall(XMMATRIX rotationMat, float clubSpeed, ClubType clubType);
+
 public:
 	Player();
 	Player(DynamicObject* ball);
 	virtual ~Player();
 
 	void setClubChoice(ClubType clubChoice);
+	void setPrevNrOfHits(int prevNrOfHits);
+	void setNrOfHits(int nrOfHits);
 
 	DynamicObject* getBall();
 	float getClubSpeed();
-
+	int getNrOfHits();
+	int getPrevNrOfHits();
 	void handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp, DirectX::Mouse::State ms, float deltaSeconds);
 
 };
