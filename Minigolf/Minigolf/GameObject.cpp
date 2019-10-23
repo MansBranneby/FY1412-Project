@@ -17,9 +17,10 @@ GameObject::GameObject(ObjectType objectType, BoundingType boundingType, DirectX
 	_boundingType = boundingType;
 }
 
-GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile)
+GameObject::GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objectType, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile)
 {
 	_position = position;
+	_objectType = objectType;
 	_boundingType = boundingType;
 	createModel(device, deviceContext, modelFile);
 } 

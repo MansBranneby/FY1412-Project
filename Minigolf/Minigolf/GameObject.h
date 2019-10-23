@@ -28,7 +28,7 @@ protected:
 
 public:
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);
-	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile);
+	GameObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ObjectType objectType, BoundingType boundingType, DirectX::XMVECTOR position, std::string modelFile);
 	virtual ~GameObject() = 0;
 
 	Model* getModel();

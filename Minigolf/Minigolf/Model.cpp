@@ -481,6 +481,12 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	// Start processing all the nodes in the model
 	processNode(device, _scene->mRootNode);
+	aiMatrix4x4 mat = _scene->mRootNode->mChildren[0]->mTransformation;
+	DirectX::XMMATRIX world = DirectX::XMMATRIX(DirectX::XMVECTOR{ mat.a1, mat.a2, mat.a3, mat.a4 },
+		DirectX::XMVECTOR{ mat.b1, mat.b2, mat.b3, mat.b4 },
+		DirectX::XMVECTOR{ mat.c1, mat.c2, mat.c3, mat.c4 },
+		DirectX::XMVECTOR{ mat.d1, mat.d2, mat.d3, mat.d4 });
+	_boundingVolume->setWorldMatrix(world);
 
 	return true;
 }
@@ -496,10 +502,7 @@ void Model::updateTransformation(DirectX::XMFLOAT3 position)
 
 void Model::updateTransformation(DirectX::XMMATRIX world)
 {
-	
-
 	_world = world;
-;
 	_boundingVolume->setWorldMatrix(world);
 }
 

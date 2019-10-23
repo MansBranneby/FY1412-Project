@@ -96,11 +96,8 @@ void BoundingVolume::setPrevPos(DirectX::XMVECTOR prevPos)
 
 void BoundingVolume::setWorldMatrix(DirectX::XMMATRIX world)
 {	
-	/*_world = DirectX::XMMATRIX(DirectX::XMVECTOR{world.a1, world.b1, world.c1, world.d1}, 
-					      	   DirectX::XMVECTOR{world.a2, world.b2, world.c2, world.d2}, 
-		                       DirectX::XMVECTOR{world.a3, world.b3, world.c3, world.d3}, 
-					           DirectX::XMVECTOR{world.a4, world.b4, world.c4, world.d4});*/
 	_world = world;
+
 	for (UINT32 i = 0; i < _vertices.size(); ++i)
 	{
 		DirectX::XMVECTOR pos{ _vertices[i].x, _vertices[i].y, _vertices[i].z};

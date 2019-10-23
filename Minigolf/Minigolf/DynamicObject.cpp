@@ -28,14 +28,11 @@ XMVECTOR DynamicObject::calcProjectile(float deltaSeconds, Environment *environm
 }
 
 DynamicObject::DynamicObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext, BoundingType boundingType, DirectX::XMVECTOR startingPosition, std::string modelFile)
-	:GameObject(device, deviceContext, BoundingType(boundingType), startingPosition, modelFile)
+	:GameObject(device, deviceContext, DYNAMICOBJECT, BoundingType(boundingType), startingPosition, modelFile)
 {
-	this->setObjectType(DYNAMICOBJECT);
 	setCup(false);
-	//_acceleration = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_velocity = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_surfaceNormal = { 0.0f, 0.0f, 0.0f, 0.0f };
-	//_friction = 0.000000001f;
 }
 
 DynamicObject::~DynamicObject()
