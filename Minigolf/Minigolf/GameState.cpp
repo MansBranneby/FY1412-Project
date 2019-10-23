@@ -4,17 +4,15 @@ void GameState::updatePositions(Game * game, Player* player, UINT32 nrOfObjects)
 {
 	float deltaSeconds = game->getClock()->getDeltaSeconds();
 
-	// position before update
-	player->getBall()->setPrevPos(player->getBall()->getPositionVector());
-
-	// position after update
-	if(player->getBall()->getMeansofMovement() != REST)
-		player->getBall()->setPosition(player->getBall()->calculateMovement(deltaSeconds, game->getEnvironment()));
-
-	for (UINT32 i = 0; i < nrOfObjects; i++)
+	if (player->getBall()->getMeansofMovement() != REST)
 	{
-		//Update postion of all dynamic objects
+		player->getBall()->setPosition(player->getBall()->calculateMovement(deltaSeconds, game->getEnvironment()));
 	}
+
+	//for (UINT32 i = 0; i < nrOfObjects; i++)
+	//{
+	//	//Update postion of all dynamic objects
+	//}
 }
 
 void GameState::boundingCollision(Game* game, Player* player, UINT32 nrOfObjects)
@@ -33,14 +31,15 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 			player->getBall()->setPosition(colInfo.pointOfCollision);
 			float typeOfCollision = XMVectorGetX(XMVector3Dot(player->getBall()->getVelocity(), colInfo.normal));
 
-			if (typeOfCollision < -0.1f)
-				player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(i), colInfo.normal);
+			if (typeOfCollision < 0.0f)
+				player->getBall()->calculateAfterColVel(game->getLevelHandler()->getGameObject(i), colInfo.normal);	
 		}
 	}
 	if (isColliding == false)
 	{
 		player->getBall()->setSurfaceNormal(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
 		player->getBall()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
+		player->getBall()->setPrevPos(player->getBall()->getPositionVector());
 	}
 }
 

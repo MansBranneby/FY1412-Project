@@ -58,7 +58,6 @@ public:
 
 	virtual void setPos(DirectX::XMVECTOR pos);
 	virtual void setPrevPos(DirectX::XMVECTOR prevPos);
-	virtual void move(DirectX::XMVECTOR speed);
 	virtual void setWorldMatrix(aiMatrix4x4 world);
 	virtual DirectX::XMFLOAT3 getMinCoordinates();
 	virtual DirectX::XMFLOAT3 getMaxCoordinates();

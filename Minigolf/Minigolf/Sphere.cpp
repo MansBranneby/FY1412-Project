@@ -306,6 +306,9 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 	float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
 	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(wr)) - XMVectorGetX(XMVector3Length(getVelocity())) <= 0.001) // v = w*r. Check start of roll-phase. //Ändra radius!
 		setMeansOfMovement(ROLLING);
+	
+	if (dot == 0.0f)
+		setMeansOfMovement(REST);
 
 	return newPosition;
 }

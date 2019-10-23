@@ -94,11 +94,6 @@ void BoundingVolume::setPrevPos(DirectX::XMVECTOR prevPos)
 	_prevPos = prevPos;
 }
 
-void BoundingVolume::move(DirectX::XMVECTOR speed)
-{
-	_pos = DirectX::XMVectorAdd(_pos, speed);
-}
-
 void BoundingVolume::setWorldMatrix(aiMatrix4x4 world)
 {	
 	_world = DirectX::XMMATRIX(DirectX::XMVECTOR{world.a1, world.b1, world.c1, world.d1}, 

@@ -43,30 +43,6 @@ void Camera::handleFreeCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms
 	_lookAt += _position;
 }
 
-void Camera::handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds)
-{
-	_lookAt = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-
-	if (ms.positionMode == Mouse::MODE_RELATIVE)
-	{
-		_phi += XMConvertToRadians((float)ms.y * deltaSeconds * 500);
-		_theta += XMConvertToRadians((float)ms.x * deltaSeconds * 500);
-	}
-
-	//Get current state of keyboard, mouse and gamepad, update the cameras position based on this input.
-	if (kb.W) //Forward
-		_phi += _rotationGain * deltaSeconds;
-	if (kb.S) //Backwards
-		_phi -= _rotationGain * deltaSeconds;
-	if (kb.A) //Left
-		_theta -= _rotationGain * deltaSeconds;
-	if (kb.D) //Right
-		_theta += _rotationGain * deltaSeconds;
-
-	// Calculate position based on spherical coordinates
-	_position = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
-}
-
 void Camera::handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition)
 {
 	if (ms.positionMode == Mouse::MODE_RELATIVE)
@@ -95,22 +71,11 @@ void Camera::handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State m
 	followObject(objPosition, deltaSeconds);
 }
 
-XMVECTOR Camera::lerp(XMVECTOR startPos, XMVECTOR endPos, float deltaSeconds)
-{
-	return XMVectorLerp(startPos, endPos, deltaSeconds);
-}
-
 void Camera::followObject(DirectX::XMVECTOR objPosition, float deltaSeconds)
 {
 	//Smooth camera
-	 _lookAt = lerp(_lookAt, objPosition, deltaSeconds * _lookAtSpeed);
-	_position = lerp(_position, objPosition + _posOffset, deltaSeconds * _smoothSpeed);
-
-	//Update camera matrices	
-	_view = XMMatrixLookAtLH(_position, _lookAt, _up);
-	_view = XMMatrixTranspose(_view);
-	_viewProjection = XMMatrixMultiply(_projection, _view);
-	_viewFrustum = ViewFrustum(_viewProjection);
+	_lookAt	  = XMVectorLerp(_lookAt, objPosition, _lookAtSpeed * deltaSeconds);
+	_position = XMVectorLerp(_position, objPosition + _posOffset, deltaSeconds * _smoothSpeed);
 }
 
 float Camera::getPhi()
@@ -218,31 +183,6 @@ DirectX::XMMATRIX Camera::getViewProjection()
 	return _viewProjection;
 }
 
-void Camera::handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds)
-{
-	if (_cameraMode == DEBUG)
-	{
-		// FIRST PERSON CAM
-		handleFreeCam(kb, ms, deltaSeconds);
-	}
-	else if(_cameraMode == GAME)
-	{
-		// ORBIT CAM
-		handleOrbitCam(kb, ms, deltaSeconds);
-	}
-
-	//Update camera matrices	
-	//_view = XMMatrixLookAtLH(_position, _lookAt, _up);
-	//_view = XMMatrixTranspose(_view);
-	//_WVP = XMMatrixMultiply(_projection, XMMatrixMultiply(_view, _world));
-
-	//_transMatrices.world = _world;
-	//_transMatrices.view = _view;
-	//_transMatrices.projection = _projection;
-	//_transMatrices.WVP = _WVP;
-	////_transMatrices.camPos = _position;
-}
-
 void Camera::handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition)
 {
 	if (_cameraMode == DEBUG)
@@ -255,4 +195,10 @@ void Camera::handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, 
 		// ORBIT CAM
 		handleOrbitCam(kb, ms, deltaSeconds, objPosition);
 	}
+
+	//Update camera matrices	
+	_view = XMMatrixLookAtLH(_position, _lookAt, _up);
+	_view = XMMatrixTranspose(_view);
+	_viewProjection = XMMatrixMultiply(_projection, _view);
+	_viewFrustum = ViewFrustum(_viewProjection);
 }
