@@ -119,8 +119,8 @@ Camera::Camera(ID3D11Device* device, float width, float height)
 	_rotationGain = 2.0f;
 
 	//Smoothspeed of camera, dictates how fast the it will interpolate
-	_smoothSpeed = 2.0f;
-	_lookAtSpeed = 2.0f;
+	_smoothSpeed = 10.0f;
+	_lookAtSpeed = 10.0f;
 	_position = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
 	_posOffset = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
 
@@ -173,6 +173,11 @@ void Camera::setLookAtSpeed(float lookAtSpeed)
 	_lookAtSpeed = lookAtSpeed;
 }
 
+void Camera::setCamDistance(float camDistance)
+{
+	_camDistance = camDistance;
+}
+
 DirectX::XMVECTOR Camera::getPosition()
 {
 	return _position;
@@ -181,6 +186,21 @@ DirectX::XMVECTOR Camera::getPosition()
 DirectX::XMMATRIX Camera::getViewProjection()
 {
 	return _viewProjection;
+}
+
+float Camera::getSmoothSpeed()
+{
+	return _smoothSpeed;
+}
+
+float Camera::getLookAtSpeed()
+{
+	return _lookAtSpeed;
+}
+
+float Camera::getCamDistance()
+{
+	return _camDistance;
 }
 
 void Camera::handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition)

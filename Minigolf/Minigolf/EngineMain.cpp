@@ -72,8 +72,6 @@ Clock* gClock;
 GameState gGameState;
 
 // IMGUI VARIABLES //
-float gSmoothSpeed = 10.0f;
-float gLookAtSpeed = 10.0f;
 bool drawBoundingVolume = false;
 
 void initializeResources(HWND wndHandle)
@@ -130,11 +128,20 @@ void imGuiUpdate()
 	}
 	if (ImGui::CollapsingHeader("Camera", 2))
 	{
-		ImGui::SliderFloat("Smoothspeed", &gSmoothSpeed, 0.0f, 20.0f);
-		ImGui::SliderFloat("LookAtSpeed", &gLookAtSpeed, 0.0f, 20.0f);
+		float camDistance = gGame->getCamera()->getCamDistance();
+		float SmoothSpeed = gGame->getCamera()->getSmoothSpeed();
+		float LookAtSpeed = gGame->getCamera()->getLookAtSpeed();
+
+		ImGui::SliderFloat("CamDistance", &camDistance, 0.0f, 20.0f);
+		ImGui::SliderFloat("Smoothspeed", &SmoothSpeed, 0.0f, 20.0f);
+		ImGui::SliderFloat("LookAtSpeed", &LookAtSpeed, 0.0f, 20.0f);
+
+		gGame->getCamera()->setCamDistance(camDistance);
+		gGame->getCamera()->setSmoothSpeed(SmoothSpeed);
+		gGame->getCamera()->setLookAtSpeed(LookAtSpeed);
+
 	}
-	gGame->getCamera()->setSmoothSpeed(gSmoothSpeed);
-	gGame->getCamera()->setLookAtSpeed(gLookAtSpeed);
+
 	if (ImGui::CollapsingHeader("Player", 2))
 	{
 		if (ImGui::Button("Reset position"))

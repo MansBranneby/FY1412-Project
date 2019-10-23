@@ -53,7 +53,6 @@ private:
 	float _smoothSpeed;
 	float _lookAtSpeed;
 	XMVECTOR _posOffset;
-	XMVECTOR lerp(XMVECTOR startPos, XMVECTOR endPos, float deltaSeconds);
 
 public:
 	Camera();
@@ -71,9 +70,13 @@ public:
 	void setMode(cameraMode cameraMode);
 	void setSmoothSpeed(float smoothSpeed);
 	void setLookAtSpeed(float lookAtSpeed);
+	void setCamDistance(float camDistance);
 
 	DirectX::XMVECTOR getPosition();
 	DirectX::XMMATRIX getViewProjection();
+	float getSmoothSpeed();
+	float getLookAtSpeed();
+	float getCamDistance();
 	void handleInput(DirectX::Keyboard::State kb, DirectX::Mouse::State ms, float deltaSeconds, DirectX::XMVECTOR objPosition);
 	void followObject(DirectX::XMVECTOR objPosition, float deltaSeconds);
 
