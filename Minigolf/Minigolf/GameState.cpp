@@ -27,7 +27,7 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 		CollisionInfo colInfo = player->getBall()->getBoundingVolume()->intersects(game->getLevelHandler()->getGameObject(i)->getBoundingVolume());
 		if (colInfo.colliding)
 		{
-			if(game->getLevelHandler()->getGameObject(i)->getCup())
+ 			if(game->getLevelHandler()->getGameObject(i)->getCup())
 			{
 				player->setPrevNrOfHits(player->getNrOfHits());
 				player->setNrOfHits(0);

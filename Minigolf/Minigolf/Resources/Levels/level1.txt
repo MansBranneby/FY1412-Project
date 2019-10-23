@@ -1,5 +1,5 @@
 0 0 0 0.0 10.0 0.0 animationTest.dae
-1 1 0 0.0 0.0 0.0 plane.dae
+1 1 0 0.0 0.0 50.0 plane.dae
 1 1 1 0.0 0.0 50.0 plane1.dae
 1 2 0 0.0 0.0 20.0 animationTest.dae
 1 2 0 10.0 0.0 20.0 animationTest.dae
