@@ -23,8 +23,8 @@ struct PerFrameData
 
 struct PerObjectData
 {
-	aiMatrix4x4 world;
-	aiMatrix4x4 boneMatrices[MAX_BONES];
+	DirectX::XMMATRIX world;
+	DirectX::XMMATRIX boneMatrices[MAX_BONES];
 	bool hasAnimation;
 	bool padding1[3];
 	DirectX::XMFLOAT3 padding2; 

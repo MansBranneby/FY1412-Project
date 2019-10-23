@@ -333,10 +333,11 @@ XMVECTOR Sphere::calcRolling(float deltaSeconds, Environment *environment)
 
 	float yr = 0.16f;
 	float lenghtFactor = (XMVectorGetX(XMVector3Length(getVelocity())) - yr * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(getVelocity()));
-	setAngularVelocity(getVelocity() / _radius);
+	setAngularVelocity(getAngularVelocity() / _radius);
 	setVelocity(getVelocity() * lenghtFactor + acceleration * deltaSeconds);
 	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), getSurfaceNormal())) * getSurfaceNormal()); //Set velocity along plane
-	//getAngularVelocity() = getVelocity() / _radius;
+	setAngularVelocity(DirectX::XMVector3Cross(getVelocity(), getSurfaceNormal() / _radius));
+
 	if (XMVectorGetX(XMVector3Length(getVelocity())) < 0.001) //Check if at rest
 		setMeansOfMovement(REST);
 

@@ -24,7 +24,7 @@ private:
 protected:
 	XMVECTOR _lookAt;
 	void updateTransformations(XMFLOAT3 position);
-	void updateTransformations(XMFLOAT3 position, float angle, XMFLOAT3 rotation);
+	void updateTransformations(DirectX::XMMATRIX world);
 
 public:
 	GameObject(ObjectType objectType, BoundingType _boundingType, DirectX::XMVECTOR startingPosition);

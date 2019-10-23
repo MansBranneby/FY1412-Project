@@ -68,11 +68,13 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 		break;
 	}
 
-
-
 	//Update objects transformation matrix and return
-	updateTransformations(XMFLOAT3(XMVectorGetX(newPosition), XMVectorGetY(newPosition), XMVectorGetZ(newPosition)));
-	//updateTransformations(XMFLOAT3(XMVectorGetX(newPosition), XMVectorGetY(newPosition), XMVectorGetZ(newPosition)), XMVectorGetX(XMVector3Length(_rotation)), XMFLOAT3(XMVectorGetX(_rotation), XMVectorGetY(_rotation), XMVectorGetZ(_rotation)));
+	DirectX::XMMATRIX rotMat = DirectX::XMMatrixRotationRollPitchYawFromVector(_angularVelocity - _rotation);
+	DirectX::XMMATRIX tranMat = DirectX::XMMatrixTranslation(getPositionFloat3().x, getPositionFloat3().y, getPositionFloat3().z);
+	DirectX::XMMATRIX world = DirectX::XMMatrixMultiply(DirectX::XMMatrixTranspose(tranMat), DirectX::XMMatrixTranspose(rotMat));
+	// Update world matrices for models
+	updateTransformations(world);
+
 	return newPosition;
 }
 

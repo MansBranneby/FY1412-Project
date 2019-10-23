@@ -481,24 +481,26 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 
 	// Start processing all the nodes in the model
 	processNode(device, _scene->mRootNode);
-	_boundingVolume->setWorldMatrix(_scene->mRootNode->mChildren[0]->mTransformation);
 
 	return true;
 }
 
 void Model::updateTransformation(DirectX::XMFLOAT3 position)
 {
-	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion(0.0f, 0.0f, 0.0f), aiVector3D(position.x, position.y, position.z));
-	_world = _scene->mRootNode->mTransformation;
-	_boundingVolume->setWorldMatrix(_world);
+	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+	DirectX::XMMATRIX transposedTranslation = DirectX::XMMatrixTranspose(translation);
+
+	_world = transposedTranslation;
+	_boundingVolume->setWorldMatrix(translation);
 }
 
-void Model::updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation)
+void Model::updateTransformation(DirectX::XMMATRIX world)
 {
 	
-	_scene->mRootNode->mTransformation = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, aiVector3D(position.x, position.y, position.z)) ;
-	_world = _scene->mRootNode->mTransformation;
-	_boundingVolume->setWorldMatrix(_world);
+
+	_world = world;
+;
+	_boundingVolume->setWorldMatrix(world);
 }
 
 
@@ -573,8 +575,13 @@ void Model::draw(GraphicResources* graphicResources, float timeInSec)
 		std::vector<aiMatrix4x4> transforms;
 		boneTransform(timeInSec, transforms);
 
-		for(int i = 0; i < transforms.size(); ++i)
-			graphicResources->getPerObjectData()->boneMatrices[i] = transforms[i];
+		for (int i = 0; i < transforms.size(); ++i)
+		{
+			graphicResources->getPerObjectData()->boneMatrices[i] = DirectX::XMMATRIX(DirectX::XMVECTOR{ transforms[i].a1, transforms[i].a2, transforms[i].a3, transforms[i].a4 },
+																					  DirectX::XMVECTOR{ transforms[i].b1, transforms[i].b2, transforms[i].b3, transforms[i].b4 },
+																					  DirectX::XMVECTOR{ transforms[i].c1, transforms[i].c2, transforms[i].c3, transforms[i].c4 },
+																					  DirectX::XMVECTOR{ transforms[i].d1, transforms[i].d2, transforms[i].d3, transforms[i].d4 });
+		}
 
 		graphicResources->getPerObjectData()->hasAnimation = true;
 	}

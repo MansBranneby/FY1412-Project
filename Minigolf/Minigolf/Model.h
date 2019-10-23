@@ -56,7 +56,7 @@ private:
 	UINT findPosition(float animationTime, const aiNodeAnim* nodeAnimation);
 
 	// Moving
-	aiMatrix4x4 _world;
+	DirectX::XMMATRIX _world;
 
 	//Loading models
 	void processNode(ID3D11Device* device, aiNode* node);
@@ -77,7 +77,7 @@ public:
 	
 	bool loadModel(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::string filename, BoundingType boundingType);
 	void updateTransformation(DirectX::XMFLOAT3 position);
-	void updateTransformation(DirectX::XMFLOAT3 position, aiQuaternion rotation); 
+	void updateTransformation(DirectX::XMMATRIX world); 
 	void animate(float timeInSec);
 	void draw(GraphicResources* graphicResources);
 	void draw(GraphicResources* graphicResources, float timeInSec);

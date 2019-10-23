@@ -113,7 +113,6 @@ void imGuiUpdate()
 	DirectX::XMStoreFloat3(&velocity, player->getBall()->getVelocity());
 	DirectX::XMStoreFloat3(&angularVelocity, player->getBall()->getAngularVelocity());
 	float angularVelocity2 = DirectX::XMVectorGetX(DirectX::XMVector3Length(player->getBall()->getVelocity())) / 0.0214f;
-
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
