@@ -294,7 +294,7 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
 	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
-	float yg = 0.9f, yr = 0.025f; //Ska ej finnas här
+	float yg = 0.4f, yr = 0.025f; //Ska ej finnas här
 	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity

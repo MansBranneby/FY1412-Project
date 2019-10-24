@@ -1,3 +1,9 @@
 0 0 0 0.0 10.0 0.0 two-piece.dae
-1 2 0 0.0 0.0 0.0 l2_startplane.dae
-1 1 0 0.0 -3.0 10.0 l3_plane1.dae
+1 1 0 0.0 0.0 0.0 l3_startingplane.dae
+1 1 0 0.0 -10.0 0.0 l3_ground.dae
+1 2 0 0.0 0.0 100.0 l3_bigcube.dae
+1 2 0 30.0 0.0 90.0 l3_cube1.dae
+1 2 0 20.0 -10.0 80.0 l3_cube2.dae
+1 2 0 0.0 -15.0 70.0 l3_cube3.dae
+1 2 0 10.0 22.0 110.0 l3_pin.dae
+1 2 0 10.0 24.0 111.0 l3_flag.dae

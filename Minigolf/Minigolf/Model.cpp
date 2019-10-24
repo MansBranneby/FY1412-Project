@@ -216,8 +216,8 @@ Mesh* Model::processMesh(ID3D11Device* device, aiMatrix4x4 transformation, aiMes
 		// Vertex texture coordinates
 		if (mesh->mTextureCoords[0])
 		{
-			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x * 150.0f; //Jag antar att diffuse texture ligger på index 0.
-			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y * 150.0f; //Så när vi vill ha normal map ligger den troligen på ett annat index.
+			vertex._textureCoords.x = (float)mesh->mTextureCoords[0][i].x; //Jag antar att diffuse texture ligger på index 0.
+			vertex._textureCoords.y = (float)mesh->mTextureCoords[0][i].y; //Så när vi vill ha normal map ligger den troligen på ett annat index.
 		}
 
 		//Save vertex

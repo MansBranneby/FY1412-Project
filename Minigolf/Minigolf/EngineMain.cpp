@@ -88,7 +88,7 @@ void initializeResources(HWND wndHandle)
 	gGame = new Game(gClock, gInputCtrl, gGR);
 	gGame->pushState(&gGameState); // Change which state the game is in, not done yet.
 
-	Light lit = Light(gGR->getDevice(), gGR->getDeviceContext(), XMFLOAT4(0.0f, 40.0f, 0.0f, 0.0f), XMFLOAT4(1.0, 1.0f, 1.0f, 0.0f));
+	Light lit = Light(gGR->getDevice(), gGR->getDeviceContext(), XMFLOAT4(-50.0f, -100.0f, -100.0f, 0.0f), XMFLOAT4(1.0, 1.0f, 1.0f, 0.0f));
 	gGR->getDeviceContext()->PSSetConstantBuffers(0, 1, ConstantBuffer(gGR->getDevice(), &lit, sizeof(lit)).getConstantBuffer());
 
 	//IMGUI
@@ -276,7 +276,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			{
 				// RENDER //
 				gGR->getDeviceContext()->RSSetState(gGR->getRasterizerState());
-				float clearColour[] = {0.0f,0.0f,0.0f};
+				float clearColour[] = {0.04f,0.4f,0.8f};
 
 				gGR->getDeviceContext()->ClearRenderTargetView(*gGR->getBackBuffer(), clearColour);
 				gGR->getDeviceContext()->OMSetRenderTargets(1, gGR->getBackBuffer(), gGR->getDepthStencilView());
