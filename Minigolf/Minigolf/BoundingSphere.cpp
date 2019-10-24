@@ -40,7 +40,7 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 			// LERP between previous and current position
 			pos = DirectX::XMVectorLerp(getPrevPos(), getPos(), t);
 			// Transform sphere to plane's local space
-			spherePos = DirectX::XMVector3Transform(pos, DirectX::XMMatrixInverse(nullptr, plane->getWorldMatrix()));
+			spherePos = DirectX::XMVector4Transform(pos, DirectX::XMMatrixInverse(nullptr, plane->getWorldMatrix()));
 			//// Convert xmvector to xmfloat3
 			DirectX::XMStoreFloat3(&sphere, spherePos);
 			// Get min and max coordinates
@@ -84,43 +84,36 @@ CollisionInfo BoundingSphere::intersectsWithOBB(BoundingVolume * other)
 		DirectX::XMFLOAT3 obbF, obbMin, obbMax;
 		float x, y, z, distance;
 
-		for (float t = 0.0f; t < 1.0f && !info.colliding; t += 0.025f)
+		// LERP between previous and current position
+		//pos = DirectX::XMVectorLerp(getPrevPos(), getPos(), t);
+		// Transform sphere to obb's local space
+		obbV = DirectX::XMVector4Transform(getPos(), DirectX::XMMatrixInverse(nullptr, obb->getWorldMatrix()));
+		// Convert xmvector to xmfloat3
+		DirectX::XMStoreFloat3(&obbF, obbV);
+		// Get min and max coordinates
+		obbMin = obb->getMinCoordinates();
+		obbMax = obb->getMaxCoordinates();
+
+		// Point on obb closest to sphere
+		x = max(obbMin.x, min(obbF.x, obbMax.x));
+		y = max(obbMin.y, min(obbF.y, obbMax.y));
+		z = max(obbMin.z, min(obbF.z, obbMax.z));
+
+		// Collision normal (vector from closest point on OBB to sphere)
+		DirectX::XMVECTOR collisionNormal = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(obbV, DirectX::XMVECTOR{ x, y, z }));
+
+		// Distance between closest point and sphere (pythagorean theorem)
+		x = pow(x - obbF.x, 2);
+		y = pow(y - obbF.y, 2);
+		z = pow(z - obbF.z, 2);
+		distance = sqrt(x + y + z);
+
+		// Collision if sphere radius is longer than shortest distance to plane
+		if (distance <= _radius + 0.001)
 		{
-			// LERP between previous and current position
-			pos = DirectX::XMVectorLerp(getPrevPos(), getPos(), t);
-			// Transform sphere to obb's local space
-			obbV = DirectX::XMVector3Transform(pos, DirectX::XMMatrixInverse(nullptr, obb->getWorldMatrix()));
-			// Convert xmvector to xmfloat3
-			DirectX::XMStoreFloat3(&obbF, obbV);
-			// Get min and max coordinates
-			obbMin = obb->getMinCoordinates();
-			obbMax = obb->getMaxCoordinates();
-
-			// Point on obb closest to sphere
-			x = max(obbMin.x, min(obbF.x, obbMax.x));
-			y = max(obbMin.y, min(obbF.y, obbMax.y));
-			z = max(obbMin.z, min(obbF.z, obbMax.z));
-
-			// Collision normal (vector from closest point on OBB to sphere)
-			DirectX::XMVECTOR collisionNormal = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(obbV, DirectX::XMVECTOR{ x, y, z }));
-
-			// Distance between closest point and sphere (pythagorean theorem)
-			x = pow(x - obbF.x, 2);
-			y = pow(y - obbF.y, 2);
-			z = pow(z - obbF.z, 2);
-			distance = sqrt(x + y + z);
-
-			// Collision if sphere radius is longer than shortest distance to plane
-			if (distance <= _radius)
-			{
-				if (t == 0.0f)
-					info.pointOfCollision = getPrevPos();
-				else
-					info.pointOfCollision = DirectX::XMVectorAdd(pos, DirectX::XMVectorScale(collisionNormal, _radius - distance));
-
-				info.colliding = true;
-				info.normal = collisionNormal;
-			}
+			info.pointOfCollision = DirectX::XMVectorAdd(getPos(), DirectX::XMVectorScale(collisionNormal, _radius - distance));
+			info.colliding = true;
+			info.normal = collisionNormal;
 		}
 	}
 

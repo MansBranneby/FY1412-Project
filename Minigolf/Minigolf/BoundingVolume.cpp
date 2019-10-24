@@ -55,12 +55,12 @@ std::vector<int>* BoundingVolume::getIndices()
 
 void BoundingVolume::setPos(DirectX::XMVECTOR pos)
 {
-	_pos = pos;
+	_pos = DirectX::XMVectorSetW(pos, 1.0f);
 }
 
 void BoundingVolume::setPrevPos(DirectX::XMVECTOR prevPos)
 {
-	_prevPos = prevPos;
+	_prevPos = DirectX::XMVectorSetW(prevPos, 1.0f);
 }
 
 void BoundingVolume::setWorldMatrix(DirectX::XMMATRIX world)
