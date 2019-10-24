@@ -41,7 +41,7 @@ CollisionInfo BoundingSphere::intersectsWithPlane(BoundingVolume * other)
 			pos = DirectX::XMVectorLerp(getPrevPos(), getPos(), t);
 			// Transform sphere to plane's local space
 			spherePos = DirectX::XMVector3Transform(pos, DirectX::XMMatrixInverse(nullptr, plane->getWorldMatrix()));
-			// Convert xmvector to xmfloat3
+			//// Convert xmvector to xmfloat3
 			DirectX::XMStoreFloat3(&sphere, spherePos);
 			// Get min and max coordinates
 			planeMin = plane->getMinCoordinates();

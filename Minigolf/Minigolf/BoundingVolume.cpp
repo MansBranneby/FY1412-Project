@@ -1,36 +1,5 @@
 #include "BoundingVolume.h"
 
-void BoundingVolume::createBuffers(ID3D11Device * device, std::vector<BoundingVolumeVertex> vertices, std::vector<int> indices)
-{
-	//CREATE VERTEX BUFFER
-	D3D11_BUFFER_DESC vdesc;
-	vdesc.Usage = D3D11_USAGE_IMMUTABLE;
-	vdesc.ByteWidth = sizeof(BoundingVolumeVertex) * (UINT)vertices.size();
-	vdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vdesc.CPUAccessFlags = 0;
-	vdesc.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA initData;
-	initData.pSysMem = &vertices[0];
-
-	HRESULT hr = device->CreateBuffer(&vdesc, &initData, &_vertexBuffer);
-	if (FAILED(hr))
-		MessageBox(NULL, L"Error BoundingVolume VertexBuffer", L"Error", MB_OK | MB_ICONERROR);
-
-	//CREATE INDEX BUFFER
-	D3D11_BUFFER_DESC idesc;
-	idesc.Usage = D3D11_USAGE_IMMUTABLE;
-	idesc.ByteWidth = sizeof(int) * (UINT)indices.size();
-	idesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	idesc.CPUAccessFlags = 0;
-	idesc.MiscFlags = 0;
-
-	initData.pSysMem = &indices[0];
-
-	hr = device->CreateBuffer(&idesc, &initData, &_indexBuffer);
-	if (FAILED(hr))
-		MessageBox(NULL, L"Error BoundingVolume Index Buffer", L"Error", MB_OK | MB_ICONERROR);
-}
 
 BoundingVolume::BoundingVolume()
 {
@@ -95,17 +64,8 @@ void BoundingVolume::setPrevPos(DirectX::XMVECTOR prevPos)
 }
 
 void BoundingVolume::setWorldMatrix(DirectX::XMMATRIX world)
-{	
+{
 	_world = world;
-
-	for (UINT32 i = 0; i < _vertices.size(); ++i)
-	{
-		DirectX::XMVECTOR pos{ _vertices[i].x, _vertices[i].y, _vertices[i].z};
-		pos = DirectX::XMVector3Transform(pos,_world);
-		_vertices[i].x = DirectX::XMVectorGetX(pos);
-		_vertices[i].y = DirectX::XMVectorGetY(pos);
-		_vertices[i].z = DirectX::XMVectorGetZ(pos);
-	}
 }
 
 DirectX::XMFLOAT3 BoundingVolume::getMinCoordinates()
@@ -126,4 +86,37 @@ void BoundingVolume::draw(GraphicResources* graphicResources)
 	graphicResources->getDeviceContext()->IASetVertexBuffers(0, 1, &_vertexBuffer, &vertexSize, &offset);
 	graphicResources->getDeviceContext()->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	graphicResources->getDeviceContext()->DrawIndexed((UINT)_indices.size(), 0, 0);
+}
+
+
+void BoundingVolume::createBuffers(ID3D11Device * device, std::vector<BoundingVolumeVertex> vertices, std::vector<int> indices)
+{
+	//CREATE VERTEX BUFFER
+	D3D11_BUFFER_DESC vdesc;
+	vdesc.Usage = D3D11_USAGE_IMMUTABLE;
+	vdesc.ByteWidth = sizeof(BoundingVolumeVertex) * (UINT)vertices.size();
+	vdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vdesc.CPUAccessFlags = 0;
+	vdesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA initData;
+	initData.pSysMem = &vertices[0];
+
+	HRESULT hr = device->CreateBuffer(&vdesc, &initData, &_vertexBuffer);
+	if (FAILED(hr))
+		MessageBox(NULL, L"Error BoundingVolume VertexBuffer", L"Error", MB_OK | MB_ICONERROR);
+
+	//CREATE INDEX BUFFER
+	D3D11_BUFFER_DESC idesc;
+	idesc.Usage = D3D11_USAGE_IMMUTABLE;
+	idesc.ByteWidth = sizeof(int) * (UINT)indices.size();
+	idesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	idesc.CPUAccessFlags = 0;
+	idesc.MiscFlags = 0;
+
+	initData.pSysMem = &indices[0];
+
+	hr = device->CreateBuffer(&idesc, &initData, &_indexBuffer);
+	if (FAILED(hr))
+		MessageBox(NULL, L"Error BoundingVolume Index Buffer", L"Error", MB_OK | MB_ICONERROR);
 }

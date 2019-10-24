@@ -5,6 +5,7 @@ class BoundingPlane : public BoundingVolume
 private:
 	CollisionInfo intersectsWithPlane(BoundingVolume* other);
 	CollisionInfo intersectsWithOBB(BoundingVolume* other);
+	DirectX::XMVECTOR _normal;
 public:
 	BoundingPlane(ID3D11Device* device, DirectX::XMFLOAT3 minCoordinates, DirectX::XMFLOAT3 maxCoordinates);
 

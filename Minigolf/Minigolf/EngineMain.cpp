@@ -145,7 +145,15 @@ void imGuiUpdate()
 	if (ImGui::CollapsingHeader("Player", 2))
 	{
 		if (ImGui::Button("Reset position"))
+		{
+			player->getBall()->setVelocity(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
+			player->getBall()->setAngularVelocity(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
 			player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+			player->getBall()->setPrevPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+			player->getBall()->setBoundingPrevPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+			player->getBall()->setBoundingPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+			player->getBall()->setMeansOfMovement(PROJECTILE);
+		}
 
 		const char* meansofMovement = "";
 		switch (player->getBall()->getMeansofMovement())
@@ -222,6 +230,7 @@ void render()
 	gGR->getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	gGR->getDeviceContext()->IASetInputLayout(&gGR->getShaderHandler()->getBoundingVolumeVS()->getVertexLayout());
 	gGR->getDeviceContext()->PSSetSamplers(0, 0, nullptr);
+	drawBoundingVolume = true;
 	if (drawBoundingVolume == true)
 	{
 		// Loop through all the objects in levelhandler and draw their bounding volumes

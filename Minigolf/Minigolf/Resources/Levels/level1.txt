@@ -1,2 +1,12 @@
 0 0 0 0.0 10.0 0.0 two-piece.dae
-1 1 0 0.0 0.0 0.0 l2_plane1.dae
+1 1 0 0.0 -10.0 0.0 plane.dae
+1 2 0 0.0 0.0 0.0 l2_startplane.dae
+1 2 0 0.0 0.0 0.0 l2_plane1.dae
+1 2 0 0.0 0.0 0.0 l2_plane2.dae
+1 2 0 0.0 0.0 0.0 l2_plane3.dae
+1 2 0 0.0 0.0 0.0 l2_box1.dae
+1 2 0 0.0 0.0 0.0 l2_box2.dae
+1 2 0 0.0 0.0 0.0 l2_box3.dae
+1 2 0 0.0 0.0 0.0 l2_box4.dae
+1 2 0 0.0 0.0 0.0 l2_bigcube.dae
+1 2 1 0.0 0.0 0.0 l2_pin.dae
