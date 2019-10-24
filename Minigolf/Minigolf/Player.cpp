@@ -34,7 +34,6 @@ Player::Player(DynamicObject * ball)
 	_ball->setMeansOfMovement(MeansOfMovement(REST));
 	_nrOfHits = 0;
 	_prevNrOfHits = 0;
-	//hitBall(XMMatrixRotationY(0.0f), 40.0f, IRON_7);
 }
 
 Player::~Player()
@@ -81,14 +80,13 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 
 		_clubSpeed += _clubSpeedIncrement * deltaSeconds;
 	}
-	if (kb.Space)
-		hitBall(rotationMatrix, _clubSpeed, _clubChoice);
 
 	if (kb.Space && _ball->getMeansofMovement() == REST)
 	{
 		if (!keyPressed)
 		{
 			hitBall(rotationMatrix, _clubSpeed, _clubChoice);
+			_clubSpeed = 0.0f;
 			keyPressed = true;
 		}
 	}

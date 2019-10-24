@@ -33,8 +33,8 @@ void GameState::geometryCollision(Game* game, Player* player, UINT32 nrOfObjects
 				player->setNrOfHits(0);
 				player->getBall()->setVelocity(DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f });
 				player->getBall()->setAngularVelocity(DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f });
-				player->getBall()->setPrevPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
-				player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+				player->getBall()->setPrevPos(DirectX::XMVECTOR{ -1.0f, 10.0f, 1.0f });
+				player->getBall()->setPosition(DirectX::XMVECTOR{ -1.0f, 10.0f, 1.0f });
 				player->getBall()->setMeansOfMovement(MeansOfMovement(PROJECTILE));
 			}
 			else
