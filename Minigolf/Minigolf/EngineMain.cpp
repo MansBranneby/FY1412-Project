@@ -230,7 +230,7 @@ void render()
 	gGR->getDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	gGR->getDeviceContext()->IASetInputLayout(&gGR->getShaderHandler()->getBoundingVolumeVS()->getVertexLayout());
 	gGR->getDeviceContext()->PSSetSamplers(0, 0, nullptr);
-	drawBoundingVolume = true;
+
 	if (drawBoundingVolume == true)
 	{
 		// Loop through all the objects in levelhandler and draw their bounding volumes

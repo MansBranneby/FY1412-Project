@@ -81,7 +81,7 @@ void Player::handleInput(DirectX::Keyboard::State kb, DirectX::GamePad::State gp
 		_clubSpeed += _clubSpeedIncrement * deltaSeconds;
 	}
 
-	if (kb.Space && _ball->getMeansofMovement() == REST)
+	if (kb.Space && _ball->getMeansofMovement() == REST && _clubSpeed != 0.0f)
 	{
 		if (!keyPressed)
 		{
