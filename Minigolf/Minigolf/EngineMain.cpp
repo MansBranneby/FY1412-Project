@@ -148,10 +148,10 @@ void imGuiUpdate()
 		{
 			player->getBall()->setVelocity(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
 			player->getBall()->setAngularVelocity(DirectX::XMVECTOR{ 0.0, 0.0f, 0.0f });
-			player->getBall()->setPosition(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
-			player->getBall()->setPrevPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
-			player->getBall()->setBoundingPrevPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
-			player->getBall()->setBoundingPos(DirectX::XMVECTOR{ 0.0, 10.0f, 0.0f });
+			player->getBall()->setPosition(DirectX::XMVECTOR{ -1.0, 10.0f, 1.0f });
+			player->getBall()->setPrevPos(DirectX::XMVECTOR{ -1.0, 10.0f, 1.0f });
+			player->getBall()->setBoundingPrevPos(DirectX::XMVECTOR{ -1.0, 10.0f, 1.0f });
+			player->getBall()->setBoundingPos(DirectX::XMVECTOR{ -1.0, 10.0f, 1.0f });
 			player->getBall()->setMeansOfMovement(PROJECTILE);
 		}
 
