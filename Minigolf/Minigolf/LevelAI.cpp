@@ -18,7 +18,7 @@ void LevelAI::createLevel(int levelNr, GameObjectHandler * objHandler)
 	{
 	case 1:
 	{
-		infile = std::ifstream(".\\Resources\\Levels\\level1.txt");
+		infile = std::ifstream(".\\Resources\\Levels\\level3.txt");
 		break;
 	}
 	case 2:
