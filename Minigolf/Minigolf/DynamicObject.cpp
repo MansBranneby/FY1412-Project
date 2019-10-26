@@ -66,7 +66,6 @@ XMVECTOR DynamicObject::calculateMovement(float deltaSeconds, Environment* envir
 	}
 
 	//Update objects transformation matrix and return
-	//DirectX::XMMATRIX rotMat = DirectX::XMMatrixRotationRollPitchYawFromVector(_angularVelocity - _rotation);
 	DirectX::XMMATRIX rotMat;
 	float rotGain = DirectX::XMVectorGetX(DirectX::XMVector3Length(_rotation));
 	if (DirectX::XMVectorGetX(_angularVelocity) == 0.0f && DirectX::XMVectorGetY(_angularVelocity) == 0.0f && DirectX::XMVectorGetZ(_angularVelocity) == 0.0f)
@@ -112,11 +111,6 @@ void DynamicObject::setMass(float mass)
 	_mass = mass;
 }
 
-//void DynamicObject::setAcceleration(DirectX::XMVECTOR acceleration)
-//{
-//	_acceleration = acceleration;
-//}
-
 XMVECTOR DynamicObject::getVelocity()
 {
 	return _velocity;
@@ -146,8 +140,3 @@ float DynamicObject::getMass() const
 {
 	return _mass;
 }
-
-//DirectX::XMVECTOR DynamicObject::getAcceleration()
-//{
-//	return _acceleration;
-//}

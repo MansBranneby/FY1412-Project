@@ -36,12 +36,6 @@
     <ClInclude Include="ConstantBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeadState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceHolder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DomainShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,9 +57,6 @@
     <ClInclude Include="GraphicResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HighScoreState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HullShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,9 +73,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -108,9 +96,6 @@
     <ClInclude Include="ShaderHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StartOfGameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,9 +115,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UIHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
@@ -209,9 +191,6 @@
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeadState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DomainShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -236,9 +215,6 @@
     <ClCompile Include="GraphicResources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HightScoreState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HullShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -255,9 +231,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
@@ -281,9 +254,6 @@
     <ClCompile Include="ShaderHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StartOfGameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -303,9 +273,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UIHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">

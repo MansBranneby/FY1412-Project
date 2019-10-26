@@ -2,18 +2,13 @@
 
 void Sphere::planeCol(GameObject * colObj)
 {
-	//Saker ej fullständinga: Ändrar ej ingående rotation. E och friktion ska sparas någonstans. Använder ej _radius.
 	XMVECTOR ep, en;
 	float vp, vn, up, un;
 	if (colObj->getObjectType() == STATICOBJECT)
 	{
 		ep = static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal(); //Sphere on plane, so line-of-action is the normal of the plane
-		//		XMVECTOR test = XMVector3Normalize(XMVector3Cross(this->getVelocity(), ep));
-		//en = XMVector3Cross(test, ep);
 		vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Initial velocity along line-of-action
-		//vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en)); //Initial velocity along plane
-		up = -0.3f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
-
+		up = -0.3f * vp;//Velocity after collision along line-of-actioin 
 
 		XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, ep);
 		float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
@@ -26,7 +21,7 @@ void Sphere::planeCol(GameObject * colObj)
 		}
 		else //Sliding
 		{
-			float collisionTime = 0.01f; //Based on surface?
+			float collisionTime = 0.01f;
 			float dt = 0.001f; //Affects number of iterations
 			float impulse = getMass() * abs(up - vp);
 			float Fp = impulse / collisionTime;
@@ -93,7 +88,7 @@ void Sphere::obbCol(GameObject * colObj, XMVECTOR normal)
 	{
 		XMVECTOR ep = normal, en;
    		float vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Initial velocity along line-of-action
-		float up = -0.2f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
+		float up = -0.2f * vp;//Velocity after collision along line-of-actioin
 		float un, vn;
 
 		XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, ep);
@@ -107,7 +102,7 @@ void Sphere::obbCol(GameObject * colObj, XMVECTOR normal)
 		}
 		else //Sliding
 		{
-			float collisionTime = 0.01f; //Based on surface?
+			float collisionTime = 0.01f;
 			float dt = 0.001f; //Affects number of iterations
 			float impulse = getMass() * (up - vp);
 			float Fp = impulse / collisionTime;
@@ -162,7 +157,7 @@ void Sphere::obbCol(GameObject * colObj, XMVECTOR normal)
 	}
 	else
 	{
-	//Här ska colObj också få en ny vel
+		//Här ska colObj också få en ny vel
 	}
 }
 
@@ -183,10 +178,10 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		XMVECTOR relVel = velocity - environment->windVelocity; //Velocity relative to wind
 		float absRelVel = sqrt(pow(XMVectorGetX(relVel), 2) + pow(XMVectorGetY(relVel), 2) + pow(XMVectorGetZ(relVel), 2)); //The length of vector relVel
 		
-		float ballArea = XM_PI * pow(0.0214f, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
+		float ballArea = XM_PI * pow(0.0214f, 2);
 
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
-		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f);
 
 		if (absVel > 65.0f)
 			dragCoeff = 0.21f;
@@ -199,10 +194,10 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		XMVECTOR relVel = velocity - environment->windVelocity; //Velocity relative to wind
 		float absRelVel = sqrt(pow(XMVectorGetX(relVel), 2) + pow(XMVectorGetY(relVel), 2) + pow(XMVectorGetZ(relVel), 2)); //The length of vector relVel
 
-		float ballArea = XM_PI * pow(0.0214f, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
+		float ballArea = XM_PI * pow(0.0214f, 2);
 
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
-		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); 
 
 		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
@@ -212,10 +207,10 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		XMVECTOR relVel = velocity - environment->windVelocity; //Velocity relative to wind
 		float absRelVel = sqrt(pow(XMVectorGetX(relVel), 2) + pow(XMVectorGetY(relVel), 2) + pow(XMVectorGetZ(relVel), 2)); //The length of vector relVel
 
-		float ballArea = XM_PI * pow(0.0214f, 2); //Kom ihåg att modell för en boll ska ha radien 0.0214 (21,4mm)
+		float ballArea = XM_PI * pow(0.0214f, 2);
 
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
-		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
+		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f);
 
 		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
@@ -240,17 +235,15 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 	XMVECTOR resForce = gForce + normalForce; //Resultant
 
 	//Acceleration
-	acceleration = resForce / getMass(); // a = F/m.
+	acceleration = resForce / getMass();
 
 	XMVECTOR ef = XMVector3Normalize(XMVector3Cross(getAngularVelocity(), -getSurfaceNormal() * 0.0214f) - getVelocity());
 
 	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
 	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
-	float yg = 0.25f, yr = 0.025f; //Ska ej finnas här
-	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
-	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
-	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
+	float yg = 0.25f, yr = 0.025f;
+	
 	setVelocity(getVelocity() + deltaSeconds * yg * 9.82f * ef + acceleration * deltaSeconds);
 	setAngularVelocity(getAngularVelocity() + (5.0f * yg * 9.82f * deltaSeconds / (2.0f * 0.0214f)) * XMVector3Cross(getSurfaceNormal(), ef));
 
@@ -258,7 +251,7 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 
 	XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, getSurfaceNormal());
 	float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
-	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(getVelocity())) <= XMVectorGetX(XMVector3Length(wr))) // v = w*r. Check start of roll-phase. //Ändra radius!
+	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(getVelocity())) <= XMVectorGetX(XMVector3Length(wr))) // v = w*r. Check start of roll-phase
 		setMeansOfMovement(ROLLING);
 	
 	if (dot == 0.0f)

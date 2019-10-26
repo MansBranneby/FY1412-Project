@@ -122,17 +122,13 @@ void imGuiUpdate()
 		ImGui::Text("LeftMouse : club speed");
 		ImGui::Text("Spacebar  : swing club");
 	}
-	if (ImGui::CollapsingHeader("Interface editor", 2))
-	{
-		ImGui::ShowStyleEditor();
-	}
 	if (ImGui::CollapsingHeader("Camera", 2))
 	{
 		float camDistance = gGame->getCamera()->getCamDistance();
 		float SmoothSpeed = gGame->getCamera()->getSmoothSpeed();
 		float LookAtSpeed = gGame->getCamera()->getLookAtSpeed();
 
-		ImGui::SliderFloat("CamDistance", &camDistance, 0.0f, 20.0f);
+		ImGui::SliderFloat("CamDistance", &camDistance, 1.0f, 20.0f);
 		ImGui::SliderFloat("Smoothspeed", &SmoothSpeed, 0.0f, 20.0f);
 		ImGui::SliderFloat("LookAtSpeed", &LookAtSpeed, 0.0f, 20.0f);
 
@@ -185,6 +181,25 @@ void imGuiUpdate()
 	}
 	if (ImGui::CollapsingHeader("Scoreboard", 32))
 	{
+		const char* meansofMovement = "";
+		switch (player->getBall()->getMeansofMovement())
+		{
+		case PROJECTILE:
+			meansofMovement = "PROJECTILE";
+			break;
+		case GLIDING:
+			meansofMovement = "GLIDING";
+			break;
+		case ROLLING:
+			meansofMovement = "ROLLING";
+			break;
+		case REST:
+			meansofMovement = "REST";
+			break;
+		default:
+			break;
+		}
+		ImGui::Text("Ball: %s", meansofMovement);
 		ImGui::Text("Score     : %d", player->getNrOfHits());
 		ImGui::Text("Prev Score: %d", player->getPrevNrOfHits());
 		ImGui::Text("Club speed: %.2f m/s", gGame->getLevelHandler()->getPlayer()->getClubSpeed());

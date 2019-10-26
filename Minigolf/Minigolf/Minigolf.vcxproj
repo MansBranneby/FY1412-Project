@@ -121,8 +121,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="DeadState.h" />
-    <ClInclude Include="DeviceHolder.h" />
     <ClInclude Include="DomainShader.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Game.h" />
@@ -130,7 +128,6 @@
     <ClInclude Include="GameObjectHandler.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GraphicResources.h" />
-    <ClInclude Include="HighScoreState.h" />
     <ClInclude Include="HullShader.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -145,7 +142,6 @@
     <ClInclude Include="LevelAI.h" />
     <ClInclude Include="LevelHandler.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="MenuState.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="OBB.h" />
@@ -154,7 +150,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="ShaderHandler.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="StartOfGameState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Terrain.h" />
@@ -162,7 +157,6 @@
     <ClInclude Include="TerrainVertex.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
-    <ClInclude Include="UIHandler.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="ViewFrustum.h" />
@@ -174,7 +168,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="DomainShader.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="EngineMain.cpp" />
@@ -183,7 +176,6 @@
     <ClCompile Include="GameObjectHandler.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GraphicResources.cpp" />
-    <ClCompile Include="HightScoreState.cpp" />
     <ClCompile Include="HullShader.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -196,7 +188,6 @@
     <ClCompile Include="LevelAI.cpp" />
     <ClCompile Include="LevelHandler.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OBB.cpp" />
@@ -205,7 +196,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShaderHandler.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="StartOfGameState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -213,7 +203,6 @@
     <ClCompile Include="TerrainVertex.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
-    <ClCompile Include="UIHandler.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="ViewFrustum.cpp" />
