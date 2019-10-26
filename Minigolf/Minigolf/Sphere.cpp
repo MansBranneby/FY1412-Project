@@ -7,83 +7,6 @@ void Sphere::planeCol(GameObject * colObj)
 	float vp, vn, up, un;
 	if (colObj->getObjectType() == STATICOBJECT)
 	{
-		//ep = static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal(); //Sphere on plane, so line-of-action is the normal of the plane
-		//
-		//XMVECTOR test = XMVector3Normalize(XMVector3Cross(this->getVelocity(), ep));
-		//en = XMVector3Cross(test, ep);
-
-		//vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Component along line-of-action
-		//vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en));
-
-		//up = -0.8f * vp;//Kolla upp krockkoeff i någon lista
-		//un = (5.0f * vn) / 7.0f;
-
-		//XMVECTOR newVelocity = up * ep + un * en; //New Velocity
-		//this->setVelocity(XMVectorSet(XMVectorGetX(newVelocity), XMVectorGetY(newVelocity), XMVectorGetZ(newVelocity), 1.0f)); //Set w to 1.0f
-
-		//if (XMVectorGetX(XMVector3Dot(newVelocity, ep)) < 10.0f)
-		//{
-		//	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
-		//	float dot = XMVectorGetX(XMVector3Dot(getVelocity(), ep));
-		//	if (getMeansofMovement() == GLIDING || getMeansofMovement() == ROLLING) //If two surfaces
-		//	{
-		//		XMVECTOR newSurfaceNormal = getSurfaceNormal() + ep;
-		//		setSurfaceNormal(XMVector3Normalize(newSurfaceNormal));
-		//	}
-		//	else
-		//		setSurfaceNormal(ep);//Surface normal
-
-		//	setMeansOfMovement(GLIDING);
-		//}
-
-		//ep = static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal(); //Sphere on plane, so line-of-action is the normal of the plane
-		//vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Component along line-of-action
-		//up = -0.8f * vp;//Kolla upp krockkoeff i någon lista
-
-		//float collisionTime = 0.01f; //Based on surface?
-		//float dt = 0.001f; //Affects number of iterations
-		//float impulse = getMass() * (up - vp);
-		//float Fp = impulse / collisionTime;
-		//float Fy = 0.25f * Fp;
-
-		////
-		//XMVECTOR r = -ep;
-		//XMVECTOR wPlane, vPlane, uPlane, Ffriction, torque, angularAcc;
-		//float I = (2.0f / 5.0f) * getMass() * pow(0.0214f, 2.0f);
-		//float I2 = (2.0f / 5.0f) * 0.0214f;
-
-		//for (float f = 0.0f; f < collisionTime; f += dt)
-		//{
-		//	wPlane = XMVector3Cross(getAngularVelocity(), r); //Ska den vara negativ? (Positiv nu ty vänsterorienterat koords.)
-		//	vPlane = getVelocity() - (vp * ep);
-		//	uPlane = wPlane + vPlane;
-
-		//	Ffriction = -Fy * uPlane;
-		//	torque = XMVector3Cross(Ffriction, r);
-		//	angularAcc = torque / I;
-
-		//	setAngularVelocity(getAngularVelocity() + angularAcc * dt); //Updated angular velocity
-		//}
-
-		//setVelocity(uPlane + up * ep); // NEW VELOCITY
-
-		//if (XMVectorGetX(XMVector3Dot(getVelocity(), ep)) < 10.0f) // ARE WE GLIDING?
-		//{
-		//	setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
-		//	float dot = XMVectorGetX(XMVector3Dot(getVelocity(), ep));
-		//	if (getMeansofMovement() == GLIDING || getMeansofMovement() == ROLLING) //If two surfaces
-		//	{
-		//		XMVECTOR newSurfaceNormal = getSurfaceNormal() + ep;
-		//		setSurfaceNormal(XMVector3Normalize(newSurfaceNormal));
-		//	}
-		//	else
-		//		setSurfaceNormal(ep);//Surface normal
-
-		//	setMeansOfMovement(GLIDING);
-		//}
-
-		//https://physics.stackexchange.com/questions/11686/finding-angular-velocity-and-regular-velocity-when-bouncing-off-a-surface-with-f
-
 		ep = static_cast<BoundingPlane*>(colObj->getBoundingVolume())->getNormal(); //Sphere on plane, so line-of-action is the normal of the plane
 		//		XMVECTOR test = XMVector3Normalize(XMVector3Cross(this->getVelocity(), ep));
 		//en = XMVector3Cross(test, ep);
@@ -125,7 +48,7 @@ void Sphere::planeCol(GameObject * colObj)
 					int a = 0;
 				}
 				ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
-				XMVECTOR Fn = 0.35f * Fp * ef; //Force of friction along plane, based on velocity and spin
+				XMVECTOR Fn = 0.24f * Fp * ef; //Force of friction along plane, based on velocity and spin
 				XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
 
 				directionAfter = XMVectorSet(XMVectorGetX(ef) / abs(XMVectorGetX(ef)), XMVectorGetY(ef) / abs(XMVectorGetY(ef)), XMVectorGetZ(ef) / abs(XMVectorGetZ(ef)), 0.0f);
@@ -238,6 +161,9 @@ XMVECTOR Sphere::calculateDrag(Environment * environment)
 		float absVel = sqrt(pow(XMVectorGetX(velocity), 2) + pow(XMVectorGetY(velocity), 2) + pow(XMVectorGetZ(velocity), 2)); //The length of vector velocity
 		float dragCoeff = 0.53f - ((5.1f * absVel) / 1000.0f); //Tillfälligt sätt kanske! Eftersom alla sfärer inte kommer vara golfbollar kan denna info inte finnas här. Ska Cd vara något i dynamicobject?
 
+		if (absVel > 65.0f)
+			dragCoeff = 0.21f;
+
 		drag = -(0.5f * environment->airDensity * ballArea * dragCoeff * absRelVel) * relVel; //The air drag on the object
 		break;
 	}
@@ -294,7 +220,7 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
 	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
-	float yg = 0.4f, yr = 0.025f; //Ska ej finnas här
+	float yg = 0.05f, yr = 0.025f; //Ska ej finnas här
 	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
