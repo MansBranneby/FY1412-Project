@@ -48,7 +48,7 @@ void Sphere::planeCol(GameObject * colObj)
 					int a = 0;
 				}
 				ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
-				XMVECTOR Fn = 0.24f * Fp * ef; //Force of friction along plane, based on velocity and spin
+				XMVECTOR Fn = 0.14f * Fp * ef; //Force of friction along plane, based on velocity and spin
 				XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
 
 				directionAfter = XMVectorSet(XMVectorGetX(ef) / abs(XMVectorGetX(ef)), XMVectorGetY(ef) / abs(XMVectorGetY(ef)), XMVectorGetZ(ef) / abs(XMVectorGetZ(ef)), 0.0f);
@@ -91,33 +91,60 @@ void Sphere::obbCol(GameObject * colObj, XMVECTOR normal)
 {
 	if (colObj->getObjectType() == STATICOBJECT)
 	{
-		XMVECTOR ep = normal;
+		XMVECTOR ep = normal, en;
    		float vp = XMVectorGetX(XMVector3Dot(this->getVelocity(), ep)); //Initial velocity along line-of-action
 		float up = -0.2f * vp;//Velocity after collision along line-of-actioin  //Kolla upp krockkoeff i någon lista
+		float un, vn;
 
-		float collisionTime = 0.01f; //Based on surface?
-		float dt = 0.001f; //Affects number of iterations
-		float impulse = getMass() * (up - vp);
-		float Fp = impulse / collisionTime;
-		float I = (2.0f / 5.0f) * getMass() * pow(0.0214f, 2.0f);
-
-		XMVECTOR r = -ep * 0.0214f; //Center to poiint of collision
-		XMVECTOR un = getVelocity() - (vp * ep);
-		XMVECTOR uw = getAngularVelocity();
-
-		for (float f = 0.0f; f < collisionTime; f += dt)
+		XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, ep);
+		float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
+		if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(getVelocity())) <= XMVectorGetX(XMVector3Length(wr))) // v = w*r. Check start of roll-phase.
 		{
-			XMVECTOR ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
-			XMVECTOR Fn = 0.2f * Fp * ef; //Force of friction along plane, based on velocity and spin
-			XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
-
-			un = un + ef * (XMVectorGetX(XMVector3Length(Fn)) / getMass()) * dt; //Updated velocity
-			uw = uw + ew * (XMVectorGetX(XMVector3Length(Fn)) * 0.0214f / I) * dt; //Updated angular velocity
+			en = XMVector3Cross(XMVector3Normalize(XMVector3Cross(this->getVelocity(), ep)), ep);
+			vn = XMVectorGetX(XMVector3Dot(this->getVelocity(), en));
+			un = (5.0f * vn) / 7.0f;
+			setVelocity(up * ep + un * en);
 		}
+		else //Sliding
+		{
+			float collisionTime = 0.01f; //Based on surface?
+			float dt = 0.001f; //Affects number of iterations
+			float impulse = getMass() * (up - vp);
+			float Fp = impulse / collisionTime;
+			float I = (2.0f / 5.0f) * getMass() * pow(0.0214f, 2.0f);
 
-		setVelocity(up*ep + un); //New velocity
-		setAngularVelocity(uw); //New angular velocity
+			XMVECTOR r = -ep * 0.0214f; //Center to poiint of collision
+			XMVECTOR un = getVelocity() - (vp * ep);
+			XMVECTOR uw = getAngularVelocity();
+			XMVECTOR ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
+			XMVECTOR directionBefore = XMVectorSet(XMVectorGetX(ef) / abs(XMVectorGetX(ef)), XMVectorGetY(ef) / abs(XMVectorGetY(ef)), XMVectorGetZ(ef) / abs(XMVectorGetZ(ef)), 0.0f);
+			XMVECTOR directionAfter;
+			bool notRolling = true;
 
+			for (float f = 0.0f; f < collisionTime && notRolling; f += dt)
+			{
+
+				if (f == 0.001)
+				{
+					int a = 0;
+				}
+				ef = XMVector3Normalize(XMVector3Cross(uw, r) - un); //direction of friction
+				XMVECTOR Fn = 0.14f * Fp * ef; //Force of friction along plane, based on velocity and spin
+				XMVECTOR ew = XMVector3Normalize(XMVector3Cross(ef, r));
+
+				directionAfter = XMVectorSet(XMVectorGetX(ef) / abs(XMVectorGetX(ef)), XMVectorGetY(ef) / abs(XMVectorGetY(ef)), XMVectorGetZ(ef) / abs(XMVectorGetZ(ef)), 0.0f);
+
+				if (XMVectorGetX(directionBefore) + XMVectorGetX(directionAfter) != 0.0f && XMVectorGetY(directionBefore) + XMVectorGetY(directionAfter) != 0.0f && XMVectorGetZ(directionBefore) + XMVectorGetZ(directionAfter) != 0.0f)
+				{
+					un = un + ef * ((XMVectorGetX(XMVector3Length(Fn)) / getMass()) * dt); //Updated velocity
+					uw = uw + ew * ((XMVectorGetX(XMVector3Length(Fn)) * 0.0214f / I) * dt); //Updated angular velocity
+				}
+				else
+					notRolling = false;
+			}
+			setVelocity(up*ep + un); //New velocity
+			setAngularVelocity(uw); //New angular velocity
+		}
 		if (XMVectorGetX(XMVector3Dot(getVelocity(), ep)) < 1.0f) // ARE WE GLIDING?
 		{
 			setVelocity(getVelocity() - XMVectorGetX(XMVector3Dot(getVelocity(), ep)) * ep); //Set velocity along plane
@@ -220,7 +247,7 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 	XMVECTOR newPosition = getPositionVector() + (getVelocity() * deltaSeconds); //New position
 	setRotation(getRotation() + (getAngularVelocity() * deltaSeconds)); //New rotation
 
-	float yg = 0.05f, yr = 0.025f; //Ska ej finnas här
+	float yg = 0.25f, yr = 0.025f; //Ska ej finnas här
 	//_angularVelocity = XMVectorSetY(_angularVelocity, (5.0f * yg * 9.82f *deltaSeconds) / (2.0f * 0.0214f) + XMVectorGetY(_angularVelocity)); //Update angularVelocity //Ersätt radius, getY så länge det bara är backspinn. Annars måste vi räkna beloppet.
 	//float lenghtFactor = (XMVectorGetX(XMVector3Length(_velocity)) - yg * 9.82f * deltaSeconds) / XMVectorGetX(XMVector3Length(_velocity));
 	//_velocity = _velocity * lenghtFactor + acceleration * deltaSeconds; //Update velocity
@@ -231,7 +258,7 @@ XMVECTOR Sphere::calcGliding(float deltaSeconds, Environment *environment)
 
 	XMVECTOR wr = XMVector3Cross(getAngularVelocity() * 0.0214f, getSurfaceNormal());
 	float dot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(wr), XMVector3Normalize(getVelocity())));
-	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(wr)) - XMVectorGetX(XMVector3Length(getVelocity())) <= 0.001) // v = w*r. Check start of roll-phase. //Ändra radius!
+	if (-0.95f > dot && dot >= -1.0f && XMVectorGetX(XMVector3Length(getVelocity())) <= XMVectorGetX(XMVector3Length(wr))) // v = w*r. Check start of roll-phase. //Ändra radius!
 		setMeansOfMovement(ROLLING);
 	
 	if (dot == 0.0f)
