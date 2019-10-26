@@ -80,7 +80,7 @@ CollisionInfo BoundingSphere::intersectsWithOBB(BoundingVolume * other)
 	CollisionInfo info;
 	if (OBB* obb = dynamic_cast<OBB*> (other))
 	{
-		DirectX::XMVECTOR pos, obbV;
+		DirectX::XMVECTOR obbV;
 		DirectX::XMFLOAT3 obbF, obbMin, obbMax;
 		float x, y, z, distance;
 
