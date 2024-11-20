@@ -486,6 +486,8 @@ bool Model::loadModel(ID3D11Device * device, ID3D11DeviceContext * deviceContext
 	aiQuaternion rotation;
 	_scene->mRootNode->mChildren[0]->mTransformation.DecomposeNoScaling(rotation, translation);
 	aiMatrix4x4 mat = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rotation, translation);
+	
+
 	DirectX::XMMATRIX world = DirectX::XMMATRIX(DirectX::XMVECTOR{ mat.a1, mat.a2, mat.a3, mat.a4 },
 												DirectX::XMVECTOR{ mat.b1, mat.b2, mat.b3, mat.b4 },
 												DirectX::XMVECTOR{ mat.c1, mat.c2, mat.c3, mat.c4 },

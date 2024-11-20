@@ -67,7 +67,12 @@ void Camera::handleOrbitCam(DirectX::Keyboard::State kb, DirectX::Mouse::State m
 		_phi = XM_PI * 0.5f;
 
 	// Calculate position based on spherical coordinates
-	_posOffset = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
+
+	float x = cos(_theta) * sin(_phi);
+	float y = cos(_phi);
+	float z = sin(_theta) * sin(_phi);
+
+	_posOffset = { _camDistance * x, _camDistance * y, _camDistance * z, 1.0f };
 	followObject(objPosition, deltaSeconds);
 }
 
@@ -121,8 +126,13 @@ Camera::Camera(ID3D11Device* device, float width, float height)
 	//Smoothspeed of camera, dictates how fast the it will interpolate
 	_smoothSpeed = 10.0f;
 	_lookAtSpeed = 10.0f;
-	_position = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
-	_posOffset = { _camDistance * cos(_theta)* sin(_phi), _camDistance * cos(_phi), _camDistance * sin(_theta)* sin(_phi), 1.0f };
+
+	float x = cos(_theta) * sin(_phi);
+	float y = cos(_phi);
+	float z = sin(_theta)* sin(_phi);
+
+	_position = { _camDistance * x, _camDistance * y, _camDistance * z, 1.0f };
+	_posOffset = { _camDistance * x, _camDistance * y, _camDistance * z, 1.0f };
 
 	// Setup space matricies
 	//_world = XMMatrixTranslation(0.0f, 0.0f, 0.0f);

@@ -332,7 +332,7 @@ HWND InitWindow(HINSTANCE hInstance)
 	wcex.hInstance = hInstance;
 	wcex.lpszClassName = L"BTH_D3D_DEMO";
 	if (!RegisterClassEx(&wcex))
-		return false;
+		return FALSE;
 
 	RECT rc = { 0, 0, (int)WIDTH, (int)HEIGHT };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);

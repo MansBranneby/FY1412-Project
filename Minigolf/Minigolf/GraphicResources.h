@@ -1,5 +1,5 @@
 #pragma once
-#include "assimp/scene.h"
+#include <assimp/scene.h>
 #include <d3d11.h>
 #include "ShaderHandler.h"
 #include "ConstantBuffer.h"
